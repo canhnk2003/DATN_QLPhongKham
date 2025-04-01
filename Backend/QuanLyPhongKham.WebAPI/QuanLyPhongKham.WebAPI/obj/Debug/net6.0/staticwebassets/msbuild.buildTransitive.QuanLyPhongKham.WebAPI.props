@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\QuanLyPhongKham.WebAPI.props" />
+</Project>
