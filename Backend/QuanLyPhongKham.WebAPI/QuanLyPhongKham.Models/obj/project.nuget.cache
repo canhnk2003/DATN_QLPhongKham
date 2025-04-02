@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "u0YVUx0PSM7RCxOKl9DQ3q6fLX2TCz+kbBCMZYdJ/D3zaVT81DnEPXOEj4oKNixxyddC50VCG9fz/pcJVmHulA==",
+  "dgSpecHash": "TzerN4twBAmGtI+phKoz1BhHU6/SyDHhoZvc+fhVpAtfgoZqjB4+6Kmfxw3nOwe6QDQ2ma/0nbJPE+Tva/myJw==",
   "success": true,
   "projectFilePath": "D:\\DATN\\DATN_QLPhongKham\\Backend\\QuanLyPhongKham.WebAPI\\QuanLyPhongKham.Models\\QuanLyPhongKham.Models.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PC\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\entityframework\\6.0.0\\entityframework.6.0.0.nupkg.sha512",
+    "C:\\Users\\PC\\.nuget\\packages\\google.apis\\1.69.0\\google.apis.1.69.0.nupkg.sha512",
+    "C:\\Users\\PC\\.nuget\\packages\\google.apis.core\\1.69.0\\google.apis.core.1.69.0.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.33\\microsoft.aspnetcore.cryptography.internal.6.0.33.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.33\\microsoft.aspnetcore.cryptography.keyderivation.6.0.33.nupkg.sha512",

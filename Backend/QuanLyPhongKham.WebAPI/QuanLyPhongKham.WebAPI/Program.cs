@@ -11,9 +11,14 @@ using QuanLyPhongKham.Data.Repositories;
 using QuanLyPhongKham.Models.Entities;
 using QuanLyPhongKham.Models.Exceptions;
 using QuanLyPhongKham.Models.Helpers;
+using QuanLyPhongKham.Models.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<GoogleAISettings>(builder.Configuration.GetSection("GoogleAI"));
+
+
 ConfigurationManager configuration = builder.Configuration;
 // For Entity Framework
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -84,10 +89,15 @@ builder.Services.AddScoped<IResultService, ResultService>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
+builder.Services.AddScoped<IGeminiService, GeminiService>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Đăng ký MemoryCache
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 

@@ -6,6 +6,7 @@ using QuanLyPhongKham.Business.Interfaces;
 using QuanLyPhongKham.Models.Entities;
 using QuanLyPhongKham.Models.Exceptions;
 using QuanLyPhongKham.Models.Models;
+using System.Security.Claims;
 
 namespace QuanLyPhongKham.WebAPI.Controllers
 {

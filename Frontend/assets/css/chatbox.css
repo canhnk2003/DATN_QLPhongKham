@@ -1,0 +1,102 @@
+#chatbox {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    width: 350px;
+    max-height: 500px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background: #fff;
+    display: none;
+    z-index: 1000;
+}
+
+#chat-header {
+    background: #007bff;
+    color: #fff;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#close-chat {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+#chat-body {
+    height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    background: #f8f9fa;
+}
+
+#chat-footer {
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    display: flex;
+}
+
+#chat-input {
+    flex: 1;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.chat-message {
+    padding: 8px;
+    margin: 5px;
+    border-radius: 5px;
+    max-width: 80%;
+}
+
+.user-message {
+    background: #007bff;
+    color: #fff;
+    align-self: flex-end;
+    text-align: right;
+}
+
+.bot-message {
+    background: #e9ecef;
+    color: black;
+    align-self: flex-start;
+}
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Nút chat hình tròn */
+#open-chat {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    background: #1977cc;
+    color: #fff;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+}
+
+#open-chat:hover {
+    background: #0056b3;
+}
+
+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
