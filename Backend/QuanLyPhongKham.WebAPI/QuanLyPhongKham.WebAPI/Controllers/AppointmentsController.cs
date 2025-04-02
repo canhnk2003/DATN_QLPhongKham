@@ -10,7 +10,7 @@ using QuanLyPhongKham.Models.Exceptions;
 
 namespace QuanLyPhongKham.WebAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/v1/[controller]")]
     [ApiController]
 
@@ -37,7 +37,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         /// 200 - Lấy thành công
         /// <returns>DS lịch khám</returns>
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             var appoinments = await _appointmentService.GetAllAsync();

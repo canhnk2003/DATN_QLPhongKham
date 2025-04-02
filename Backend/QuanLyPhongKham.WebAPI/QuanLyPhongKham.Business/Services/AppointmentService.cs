@@ -28,10 +28,10 @@ namespace QuanLyPhongKham.Business.Services
         {
             var checkData = await CheckDataValidate(entity);
             var existingLichKhams = await _appointmentRepository.GetLichKhamByDateAndTimeAsync((DateTime)entity.NgayKham, entity.GioKham);
-            var count = existingLichKhams.Count(lk => lk.TrangThaiLichKham == "Đang xử lý" || lk.TrangThaiLichKham == "Đã đặt");
+            var count = existingLichKhams.Count(lk => lk.TrangThaiLichKham == "Đã đặt");
 
             // Kiểm tra giới hạn tối đa
-            if (count >= 3)
+            if (count >= 1)
             {
                 checkData.Add("NgayKham-GioKham", ResourceVN.Error_GioKhamExist);
             }
@@ -102,8 +102,8 @@ namespace QuanLyPhongKham.Business.Services
             if (appointment.NgayKham != lichKham.NgayKham || appointment.GioKham != lichKham.GioKham)
             {
                 var appointments = await _appointmentRepository.GetLichKhamByDateAndTimeAsync((DateTime)lichKham.NgayKham, lichKham.GioKham);
-                var count = appointments.Count(l => l.TrangThaiLichKham == "Đang xử lý" || l.TrangThaiLichKham == "Đã đặt");
-                if (count >= 3)
+                var count = appointments.Count(l => l.TrangThaiLichKham == "Đã đặt");
+                if (count >= 1)
                 {
                     checkData.Add("NgayKham-GioKham", ResourceVN.Error_GioKhamExist);
                 }
@@ -181,28 +181,6 @@ namespace QuanLyPhongKham.Business.Services
             {
                 errorData.Add("GioKham", ResourceVN.Error_GioKhamNotEmpty);
             }
-
-            //Kiểm tra bác sĩ được chọn phải tồn tại
-            //var bacSi = await _context.BacSis.Where(b => b.BacSiId == lichKham.BacSiId).FirstOrDefaultAsync();
-
-            //if (bacSi == null)
-            //{
-            //    errorData.Add("BacSiId", ResourceVN.Error_NotFound);
-            //}
-            //else
-            //{
-            //    string gioKhams = bacSi.GioLamViec.ToString();
-            //    if (string.IsNullOrEmpty(gioKhams))
-            //    {
-            //        errorData.Add("GioKham", ResourceVN.Error_GioKhamNotExist);
-            //    }
-            //    else
-            //    {
-            //        string[] gio = gioKhams.Split(',');
-            //        if (gio.Contains(lichKham.GioKham) == false)
-            //            errorData.Add("GioKham", ResourceVN.Error_GioKhamOfBacSiNotExist);
-            //    }
-            //}
             //Kiểm tra thông tin bệnh nhân
             var benhNhan = await _patientRepository.GetByIdAsync(lichKham.BenhNhanId);
             if (benhNhan == null)

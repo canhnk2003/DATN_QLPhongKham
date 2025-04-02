@@ -22,12 +22,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../assets/css/style.css" />
     <link rel="stylesheet" href="../assets/css/content.css" />
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+
     <script src="../assets/libs/jquery/dist/jquery.min.js "></script>
     <script src="../assets/vendor/axios.min.js"></script>
     <script src="../assets/services/axios.js"></script>
@@ -35,21 +30,21 @@
   </head>
 
   <body>
-    <div class="m-popup-block" id="success-popup" style="top: 8%;z-index: 101;">
+    <div class="m-popup-block" id="success-popup" style="top: 8%; z-index: 101">
       <div class="m-popup-item">
-          <div class="m-popup-icon m-popup-icon-success"></div>
-          <div class="m-popup-text-success">
-              <span>Sửa thông tin thành công!</span>
-          </div>
-          <div class="m-popup-tool">
-              <span class="m-popup-close"></span>
-          </div>
+        <div class="m-popup-icon m-popup-icon-success"></div>
+        <div class="m-popup-text-success">
+          <span>Sửa thông tin thành công!</span>
         </div>
+        <div class="m-popup-tool">
+          <span class="m-popup-close"></span>
+        </div>
+      </div>
     </div>
-    <div id="error-popup" class="m-popup-block" style="top: 8%; z-index: 100;">
+    <div id="error-popup" class="m-popup-block" style="top: 8%; z-index: 100">
       <div class="m-popup-item">
         <!-- <div class="m-popup-icon m-popup-icon-error"></div> -->
-        <div class="m-popup-text-error" style="width: calc(100% - 80px);">
+        <div class="m-popup-text-error" style="width: calc(100% - 80px)">
           <span>Có lỗi xảy ra!</span>
         </div>
         <div class="m-popup-tool">
@@ -180,9 +175,8 @@
                   <span class="ml-2 d-none d-lg-inline-block"
                     ><span>Hello,</span>
                     <span class="text-dark">Admin</span>
-                    </span>
+                  </span>
                 </a>
-                
               </li>
               <!-- ============================================================== -->
               <!-- User profile and search -->
@@ -382,8 +376,7 @@
                   <th></th>
                 </tr>
               </thead>
-              <tbody>
-              </tbody>
+              <tbody></tbody>
             </table>
           </div>
           <!-- DIALOG THÊM BÁC SĨ -->
@@ -406,11 +399,21 @@
                   <div class="row-item d-flex">
                     <div class="input-item">
                       <div class="title-input">Mã bác sĩ</div>
-                      <input id="add-mabs" type="text" readonly class="m-input" />
+                      <input
+                        id="add-mabs"
+                        type="text"
+                        readonly
+                        class="m-input"
+                      />
                     </div>
                     <div class="input-item input-item-center">
                       <div class="title-input">Họ tên bác sĩ</div>
-                      <input id="add-tenbs" type="text" class="m-input" oninput="kiemTraTen()"/>
+                      <input
+                        id="add-tenbs"
+                        type="text"
+                        class="m-input"
+                        oninput="kiemTraTen()"
+                      />
                     </div>
                     <div class="input-item">
                       <div class="title-input">Bằng cấp</div>
@@ -432,7 +435,12 @@
                     </div>
                     <div class="input-item input-item-center">
                       <div class="title-input">Email</div>
-                      <input id="add-email" type="email" class="m-input" oninput="kiemTraEmail()"/>
+                      <input
+                        id="add-email"
+                        type="email"
+                        class="m-input"
+                        oninput="kiemTraEmail()"
+                      />
                     </div>
                     <div class="input-item">
                       <div class="title-input">Khoa</div>
@@ -444,9 +452,13 @@
                   <div class="row-item d-flex">
                     <div class="input-item">
                       <div class="title-input">Năm kinh nghiệm</div>
-                      <input id="add-namKinhNghiem" type="text" class="m-input" />
+                      <input
+                        id="add-namKinhNghiem"
+                        type="text"
+                        class="m-input"
+                      />
                     </div>
-                    <div class="input-item-center">
+                    <div class="input-item input-item-center">
                       <div class="title-input">Địa chỉ</div>
                       <input id="add-diaChi" type="text" class="m-input" />
                     </div>
@@ -456,33 +468,33 @@
                     </div>
                   </div>
 
-                <!-- Modal footer -->
-                <div
-                  class="modal-footer"
-                  style="background: rgb(232, 232, 232)"
-                >
-                  <button
-                    type="button"
-                    class="btn btn-light me-2"
-                    data-bs-dismiss="modal"
+                  <!-- Modal footer -->
+                  <div
+                    class="modal-footer"
+                    style="background: rgb(232, 232, 232)"
                   >
-                    Hủy
-                  </button>
-                  <button
-                    type="button"
-                    id="btnAdd"
-                    class="btn btn-success"
-                    data-bs-dismiss="modal"
-                  >
-                    Thêm
-                  </button>
+                    <button
+                      type="button"
+                      class="btn btn-light me-2"
+                      data-bs-dismiss="modal"
+                    >
+                      Hủy
+                    </button>
+                    <button
+                      type="button"
+                      id="btnAdd"
+                      class="btn btn-success"
+                      data-bs-dismiss="modal"
+                    >
+                      Thêm
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          </div>
 
-      <!-- DIALOG SỬA BÁC SĨ -->
+          <!-- DIALOG SỬA BÁC SĨ -->
           <!-- The Modal -->
           <div class="modal fade" id="modalSuaBacSi">
             <div class="modal-dialog modal-lg">
@@ -502,11 +514,21 @@
                   <div class="row-item d-flex">
                     <div class="input-item">
                       <div class="title-input">Mã bác sĩ</div>
-                      <input id="edit-mabs" type="text" readonly class="m-input" />
+                      <input
+                        id="edit-mabs"
+                        type="text"
+                        readonly
+                        class="m-input"
+                      />
                     </div>
                     <div class="input-item input-item-center">
                       <div class="title-input">Họ tên bác sĩ</div>
-                      <input id="edit-tenbs" type="text" class="m-input" oninput="kiemTraTen()"/>
+                      <input
+                        id="edit-tenbs"
+                        type="text"
+                        class="m-input"
+                        oninput="kiemTraTen()"
+                      />
                     </div>
                     <div class="input-item">
                       <div class="title-input">Bằng cấp</div>
@@ -528,7 +550,12 @@
                     </div>
                     <div class="input-item input-item-center">
                       <div class="title-input">Email</div>
-                      <input id="edit-email" type="email" class="m-input" oninput="kiemTraEmail()"/>
+                      <input
+                        id="edit-email"
+                        type="email"
+                        class="m-input"
+                        oninput="kiemTraEmail()"
+                      />
                     </div>
                     <div class="input-item">
                       <div class="title-input">Khoa</div>
@@ -540,7 +567,11 @@
                   <div class="row-item d-flex">
                     <div class="input-item">
                       <div class="title-input">Năm kinh nghiệm</div>
-                      <input id="edit-namKinhNghiem" type="text" class="m-input" />
+                      <input
+                        id="edit-namKinhNghiem"
+                        type="text"
+                        class="m-input"
+                      />
                     </div>
                     <div class="input-item-center">
                       <div class="title-input">Địa chỉ</div>
@@ -551,7 +582,7 @@
                       <input id="edit-gioLamViec" type="text" class="m-input" />
                     </div>
                   </div>
-
+                </div>
                 <!-- Modal footer -->
                 <div
                   class="modal-footer"
@@ -580,50 +611,47 @@
 
         <!-- DIALOG XÁC NHẬN XÓA -->
         <div class="modal fade" id="confirm-delete">
-            <div class="modal-dialog modal-md">
-              <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                  <h4 class="modal-title">Xác nhận xóa</h4>
-                  <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                  ></button>
-                </div>
+          <div class="modal-dialog modal-md">
+            <div class="modal-content">
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h4 class="modal-title">Xác nhận xóa</h4>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                ></button>
+              </div>
 
-                <!-- Modal body -->
-                <div class="modal-body">
-                  <div class="content">Bạn có chắc chắn muốn xóa</div>
-                </div>
-                <!-- Modal footer -->
-                <div
-                  class="modal-footer"
-                  style="background: rgb(232, 232, 232)"
+              <!-- Modal body -->
+              <div class="modal-body">
+                <div class="content">Bạn có chắc chắn muốn xóa</div>
+              </div>
+              <!-- Modal footer -->
+              <div class="modal-footer" style="background: rgb(232, 232, 232)">
+                <button
+                  type="button"
+                  class="btn btn-light me-2"
+                  data-bs-dismiss="modal"
                 >
-                  <button
-                    type="button"
-                    class="btn btn-light me-2"
-                    data-bs-dismiss="modal"
-                  >
-                    Hủy
-                  </button>
-                  <button
-                    type="button"
-                    id="btnDelete"
-                    class="btn btn-danger"
-                    data-bs-dismiss="modal"
-                  >
-                    Xóa
-                  </button>
-                </div>
+                  Hủy
+                </button>
+                <button
+                  type="button"
+                  id="btnDelete"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Xóa
+                </button>
               </div>
             </div>
+          </div>
         </div>
-      <!-- ============================================================== -->
-      <!-- End Page wrapper  -->
-      <!-- ============================================================== -->
-        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+      </div>
     </div>
     <footer class="footer text-center text-muted">
       Designed and Developed by <b class="text-primary">Nhóm 7</b>
@@ -661,6 +689,5 @@
     <script src="../assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
     <script src="../assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js"></script>
     <script src="../assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js"></script>
-    <!-- <script src="../assets/js/pages/dashboards/dashboard1.min.js"></script> -->
   </body>
 </html>

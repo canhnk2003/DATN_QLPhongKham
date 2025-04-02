@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "9E9mfXj+cNZcJXZD1PhiSE7eKr6r+6pLWrMHflaYaiV18vYOafznN8UMC27eK2+XAM8+DxUgjBv19OGGNIeQdg==",
+  "dgSpecHash": "GqGomCb6Hfnp7TmiK6nnG3uSknxVkOhF5ws+TTairUJ7IQh4jwnW3cKCm12yaLpvuEV/8oPPHVLrACqlimmq9Q==",
   "success": true,
   "projectFilePath": "D:\\DATN\\DATN_QLPhongKham\\Backend\\QuanLyPhongKham.WebAPI\\QuanLyPhongKham.WebAPI\\QuanLyPhongKham.WebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PC\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\entityframework\\6.0.0\\entityframework.6.0.0.nupkg.sha512",
+    "C:\\Users\\PC\\.nuget\\packages\\google.apis\\1.69.0\\google.apis.1.69.0.nupkg.sha512",
+    "C:\\Users\\PC\\.nuget\\packages\\google.apis.core\\1.69.0\\google.apis.core.1.69.0.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",

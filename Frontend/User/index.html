@@ -49,6 +49,7 @@
     <!-- Dialog CSS File -->
     <link rel="stylesheet" href="../assets/css/dialog.css" />
     <link href="../assets/css/popup.css" rel="stylesheet" />
+    <link href="../assets/css/chatbox.css" rel="stylesheet"/>
 
     <script src="../assets/libs/jquery/dist/jquery.min.js "></script>
     <script src="../assets/vendor/axios.min.js"></script>
@@ -1230,6 +1231,21 @@
     <!-- Preloader -->
     <div id="preloader"></div>
 
+    <!-- Chatbox -->
+    <button id="open-chat"><i class="fa-solid fa-comment-dots"></i></button>
+
+    <div id="chatbox">
+        <div id="chat-header">
+            Chatbot - Hỗ trợ đặt lịch
+            <button id="close-chat"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="chat-body" class="chat-container"></div>
+        <div id="chat-footer">
+            <input type="text" id="chat-input" class="form-control" placeholder="Nhập câu hỏi...">
+            <button id="send-btn" class="btn btn-success ms-2"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+
     <!-- Vendor JS Files -->
     <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- <script src="../assets/vendor/jquery/jquery-3.7.1.js"></script> -->
@@ -1244,6 +1260,7 @@
 
     <!-- Dialog JS File -->
     <script src="../assets/services/appointmentServiceByPatient.js"></script>
+    <script src="../assets/services/chatbotService.js"></script>
     <script>
       function getAvata() {
         var userId = localStorage.getItem("userId");
