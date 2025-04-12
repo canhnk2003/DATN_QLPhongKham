@@ -1244,7 +1244,7 @@ section,
   padding: 10px 12px;
 }
 
-.appointment .php-email-form button#btnDatLich, button#btnXemLichKham {
+.appointment .php-email-form button{
   background: var(--accent-color);
   border: 0;
   padding: 10px 35px;
@@ -1259,7 +1259,7 @@ section,
   background: color-mix(in srgb, var(--accent-color) 90%, white 15%);
 }
 
-.appointment .php-email-form button#btnXemLichKham:hover {
+.appointment .php-email-form button:hover {
   background: #10a43f;
 }
 

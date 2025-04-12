@@ -7,6 +7,7 @@ using QuanLyPhongKham.Models.Entities;
 using QuanLyPhongKham.Models.Models;
 using QuanLyPhongKham.Models.Resources;
 using QuanLyPhongKham.Models.Exceptions;
+using System.Security.Claims;
 
 namespace QuanLyPhongKham.WebAPI.Controllers
 {
@@ -37,7 +38,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         /// 200 - Lấy thành công
         /// <returns>DS lịch khám</returns>
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             var appoinments = await _appointmentService.GetAllAsync();
@@ -63,7 +64,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         /// 201 - Tạo thành công
         /// </returns>
         [HttpPost]
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Patient")]
         public async Task<IActionResult> Post([FromBody] AppointmentModel lichKham)
         {
             BenhNhan benhNhan = await _patientService.GetByIdAsync(lichKham.BenhNhanId);
@@ -119,7 +120,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         /// 400 - Lỗi hủy
         /// </returns>
         [HttpPut("cancel/{LichKhamId}")]
-        [Authorize(Roles = "User,Doctor")]
+        [Authorize(Roles = "Patient,Doctor")]
         public async Task<IActionResult> Cancel(Guid LichKhamId, [FromBody] string? lyDo)
         {
             int res = await _appointmentService.CancelAppointment(LichKhamId, lyDo);
@@ -144,7 +145,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         /// <param name="LichKhamId">id</param>
         /// <returns>201 - Xóa thành công</returns>
         [HttpDelete("{LichKhamId}")]
-        [Authorize(Roles = "Admin,User")]
+        [Authorize(Roles = "Admin,Patient")]
         public async Task<IActionResult> Delete(Guid LichKhamId)
         {
             int res = await _appointmentService.DeleteAsync(LichKhamId);
@@ -174,5 +175,18 @@ namespace QuanLyPhongKham.WebAPI.Controllers
             var lichKham = await _appointmentService.GetLichKhamLatest(PatientId);
             return Ok(_mapper.Map<AppointmentModel>(lichKham));
         }
+
+        [Authorize]
+        [HttpGet("test-auth")]
+        public IActionResult TestAuth()
+        {
+            var userName = User.Identity?.Name;
+            var isAuth = User.Identity?.IsAuthenticated;
+            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+
+            return Ok(new { userName, isAuth, roles });
+        }
+
+
     }
 }

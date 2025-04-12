@@ -133,7 +133,7 @@ namespace QuanLyPhongKham.Models.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chỉ được phép đăng ký 1 ca khám có 3 bệnh nhân, vui lòng chọn giờ khác!.
+        ///   Looks up a localized string similar to Chỉ được phép đăng ký 1 ca khám có 1 bệnh nhân, vui lòng chọn giờ khác!.
         /// </summary>
         public static string Error_GioKhamExist {
             get {
@@ -169,7 +169,7 @@ namespace QuanLyPhongKham.Models.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mã bệnh nhân không được phép để trống!.
+        ///   Looks up a localized string similar to Họ tên không được phép để trống!.
         /// </summary>
         public static string Error_HoTenNotEmpty {
             get {
