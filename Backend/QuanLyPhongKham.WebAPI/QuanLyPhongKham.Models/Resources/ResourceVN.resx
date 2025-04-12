@@ -149,7 +149,7 @@
     <comment>Lỗi ngoại lệ</comment>
   </data>
   <data name="Error_GioKhamExist" xml:space="preserve">
-    <value>Chỉ được phép đăng ký 1 ca khám có 3 bệnh nhân, vui lòng chọn giờ khác!</value>
+    <value>Chỉ được phép đăng ký 1 ca khám có 1 bệnh nhân, vui lòng chọn giờ khác!</value>
   </data>
   <data name="Error_GioKhamNotEmpty" xml:space="preserve">
     <value>Giờ khám không được phép để trống!</value>

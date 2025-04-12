@@ -71,6 +71,7 @@ namespace QuanLyPhongKham.Business.Services
             //Thêm danh sách bác sĩ
             if (doctors.Any())
             {
+                var link = @"<a href=""../User/XemDSBacSi.html"" target=""_blank"">Danh sách bác sĩ</a>"; // [MODIFIED]
                 prompt.AppendLine("Dưới đây là danh sách bác sĩ trong hệ thống:\n");
                 foreach (var doctor in doctors)
                 {
@@ -79,20 +80,21 @@ namespace QuanLyPhongKham.Business.Services
 
                     prompt.AppendLine($"- ID: {doctor.BacSiId}, Họ tên: {doctor.HoTen}, Bằng cấp: {doctor.TenBangCap}, Chuyên khoa: {tenKhoa}" +
                         $"Số điện thoại: {doctor.SoDienThoai}, Địa chỉ: {doctor.DiaChi}, Kinh nghiệm: {doctor.SoNamKinhNghiem} năm, " +
-                        $"Giờ làm việc (là giờ có thể đăng ký lịch khám): {doctor.GioLamViec}\n");
+                        $"Giờ làm việc (là giờ có thể đăng ký lịch khám): {doctor.GioLamViec}, 🔗 Link danh sách bác sĩ: {link}\n");
                 }
             }
 
             //Thêm danh sách dịch vụ
             if (services.Any())
             {
+                var link = @"<a href=""../User/xemdichvu.html"" target=""_blank"">Danh sách dịch vụ</a>"; // [MODIFIED]
                 prompt.AppendLine("\nDưới đây là danh sách dịch vụ khám có sẵn:\n");
                 foreach (var service in services)
                 {
                     var tenKhoa = service.Khoa != null ? service.Khoa.TenKhoa :
                     (service.KhoaId.HasValue ? (await _departmentRepository.GetByIdAsync(service.KhoaId.Value))?.TenKhoa : "Chưa cập nhật");
                     prompt.AppendLine($"- ID:{service.DichVuId}, Dịch vụ: {service.TenDichVu}, Giá: {service.DonGia:0,0 VNĐ}, " +
-                        $"Mô tả: {service.MoTaDichVu}, Khoa (Dịch vụ nằm ở khoa nào): {tenKhoa}\n");
+                        $"Mô tả: {service.MoTaDichVu}, Khoa (Dịch vụ nằm ở khoa nào): {tenKhoa}, 🔗 Link danh sách dịch vụ: {link}\n");
                 }
             }
             //Thêm danh sách lịch khám
@@ -122,8 +124,11 @@ namespace QuanLyPhongKham.Business.Services
             prompt.AppendLine("- Đề xuất lịch trống cho bệnh nhân.");
             prompt.AppendLine("- Nếu không có lịch trống trong ngày yêu cầu, hãy đề xuất ngày gần nhất có lịch trống.");
             prompt.AppendLine("- Chú ý: Mỗi ca khám chỉ cho phép có một bệnh nhân, ngày khám phải lớn hơn ngày hiện tại.");
+            prompt.AppendLine("- Chú ý: Hãy đưa ra link danh sách bác sĩ khi câu hỏi liên quan đến bác sĩ hoặc link danh sách dịch vụ khi câu hỏi liên quan đến dịch vụ.");
             // Hướng dẫn AI về xác nhận thông tin đặt lịch
-            prompt.AppendLine("\nKhi bệnh nhân muốn đặt lịch, hãy xác nhận lại thông tin:");
+            prompt.AppendLine("\nKhi bệnh nhân muốn đặt lịch, hãy xác nhận và kiểm tra lại thông tin:");
+            prompt.AppendLine("- Chú ý: Nếu mà trạng thái trong lịch khám là 'Đang xử lý' hoặc 'Đã hủy' thì vẫn có thể đặt lịch được, có 'Đã đặt' hoặc 'Đã hoàn thành' sẽ không đặt được. Lúc đó hãy thông báo là bị trùng lịch.");
+            prompt.AppendLine("- Chú ý: Để đặt được lịch khám thì 'Ngày khám phải lớn hơn ngày hiện tại' ngày hiện tại là 11/04/2025, 'email phải đúng định dạng', số điện thoại phải là số.");
             prompt.AppendLine($"- Nếu bệnh nhân cung cấp đầy đủ thông tin (họ tên, số điện thoại, email, ngày khám, ca khám, bác sĩ, dịch vụ khám), hãy hỏi: ");
             prompt.AppendLine($"'Bạn có muốn đặt lịch khám với thông tin sau không?' ");
             prompt.AppendLine($"Sau đó, hiển thị thông tin theo định dạng: ");
@@ -136,7 +141,6 @@ namespace QuanLyPhongKham.Business.Services
             prompt.AppendLine($"👉 Dịch vụ: [Tên dịch vụ]");
             prompt.AppendLine($"💬 'Vui lòng xác nhận (Nhập 'Đồng ý' để tiếp tục hoặc 'Chỉnh sửa' nếu cần thay đổi).'");
             prompt.AppendLine("- Nếu thông tin không đầy đủ, yêu cầu bệnh nhân bổ sung.");
-            prompt.AppendLine("- Chú ý: Nếu mà trạng thái trong lịch khám là 'Đang xử lý' hoặc 'Đã hủy' thì vẫn có thể đặt lịch được, có 'Đã đặt' hoặc 'Đã hoàn thành' sẽ không đặt được.");
             prompt.AppendLine($"Câu hỏi của người dùng: {userInput}");
 
             // Gửi yêu cầu đến Gemini
@@ -155,37 +159,61 @@ namespace QuanLyPhongKham.Business.Services
 
             var json = JsonSerializer.Serialize(requestData);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PostAsync(url, content);
-            response.EnsureSuccessStatusCode();
-            var responseString = await response.Content.ReadAsStringAsync();
-
-            // Parse JSON để lấy text
-            using JsonDocument doc = JsonDocument.Parse(responseString);
-            var text = doc.RootElement.GetProperty("candidates")[0]
-                   .GetProperty("content")
-                   .GetProperty("parts")[0]
-                   .GetProperty("text")
-                   .GetString();
-
-            // Nếu AI xác nhận thông tin, lưu vào ChatContext
-            if (text.Contains("Bạn có muốn đặt lịch khám với thông tin sau không?", StringComparison.OrdinalIgnoreCase))
+            try
             {
-                context.IsReadyForBooking = true;
-                context.PatientName = ExtractValue(text, "Họ tên:");
-                context.PatientPhone = ExtractValue(text, "Số điện thoại:");
-                context.PatientEmail = ExtractValue(text, "Email:");
-                context.AppointmentDate = DateTime.Parse(ExtractValue(text, "Ngày khám:"));
-                context.AppointmentTime = ExtractValue(text, "Ca khám:");
-                context.DoctorName = ExtractValue(text, "Bác sĩ:");
-                context.ServiceName = ExtractValue(text, "Dịch vụ:");
+                var response = await _httpClient.PostAsync(url, content);
+                response.EnsureSuccessStatusCode();
+                var responseString = await response.Content.ReadAsStringAsync();
 
-                // Lấy ID từ danh sách đã cung cấp
-                context.DoctorId = doctors.FirstOrDefault(d => d.HoTen == context.DoctorName)?.BacSiId ?? Guid.Empty;
-                context.ServiceId = services.FirstOrDefault(s => s.TenDichVu == context.ServiceName)?.DichVuId ?? Guid.Empty;
+                // Parse JSON để lấy text
+                using JsonDocument doc = JsonDocument.Parse(responseString);
+                var text = doc.RootElement.GetProperty("candidates")[0]
+                       .GetProperty("content")
+                       .GetProperty("parts")[0]
+                       .GetProperty("text")
+                       .GetString();
+
+                // Nếu AI xác nhận thông tin, lưu vào ChatContext
+                if (text.Contains("Bạn có muốn đặt lịch khám với thông tin sau không?", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.IsReadyForBooking = true;
+                    context.PatientName = ExtractValue(text, "Họ tên:");
+                    context.PatientPhone = ExtractValue(text, "Số điện thoại:");
+                    context.PatientEmail = ExtractValue(text, "Email:");
+                    //context.AppointmentDate = DateTime.Parse(ExtractValue(text, "Ngày khám:"));
+
+                    if (DateTime.TryParse(ExtractValue(text, "Ngày khám:"), out var date))
+                    {
+                        context.AppointmentDate = date;
+                    }
+                    else
+                    {
+                        context.AppointmentDate = default;
+                    }
+
+                    context.AppointmentTime = ExtractValue(text, "Ca khám:");
+                    context.DoctorName = ExtractValue(text, "Bác sĩ:");
+                    context.ServiceName = ExtractValue(text, "Dịch vụ:");
+
+                    // Lấy ID từ danh sách đã cung cấp
+                    context.DoctorId = doctors.FirstOrDefault(d => d.HoTen == context.DoctorName)?.BacSiId ?? Guid.Empty;
+                    context.ServiceId = services.FirstOrDefault(s => s.TenDichVu == context.ServiceName)?.DichVuId ?? Guid.Empty;
+                }
+
+                return text ?? "Không có phản hồi!";
             }
-
-            return text ?? "Không có phản hồi!";
+            catch (HttpRequestException ex)
+            {
+                return "Không thể kết nối tới AI. Vui lòng thử lại sau.";
+            }
+            catch (JsonException ex)
+            {
+                return "Đã xảy ra lỗi khi xử lý phản hồi từ AI.";
+            }
+            catch (Exception ex)
+            {
+                return "Đã xảy ra lỗi không xác định.";
+            }
         }
 
         // Hàm hỗ trợ trích xuất thông tin từ phản hồi của AI

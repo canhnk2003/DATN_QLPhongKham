@@ -30,24 +30,12 @@ $(document).ready(function () {
       '<div class="chat-message bot-message">Đang suy nghĩ...</div>'
     );
     $("#chat-body").scrollTop($("#chat-body")[0].scrollHeight);
-
-    var token = localStorage.getItem("accessToken"); // Lấy token từ LocalStorage
-    console.log(token);
     // Gọi API bằng Axios
     axiosJWT
-      .post(
-        "/api/v1/Chats/chat",
-        { message: userMessage },
-        {
-          headers: {
-            Authorization: "Bearer " + token, // Gửi token lên server
-          },
-        }
-      )
+      .post("/api/v1/Chats/chat", { message: userMessage })
       .then(function (response) {
         // Lấy câu trả lời từ API (giả sử câu trả lời là trong response.data.choices[0].message.content)
-        let botReply = response.data.candidates[0].content.parts[0].text; // Cập nhật dữ liệu với cấu trúc đúng
-
+        let botReply = response.data; // Cập nhật dữ liệu với cấu trúc đúng
         // Cập nhật tin nhắn bot
         $(".bot-message:last").html(botReply);
         $("#chat-body").scrollTop($("#chat-body")[0].scrollHeight);

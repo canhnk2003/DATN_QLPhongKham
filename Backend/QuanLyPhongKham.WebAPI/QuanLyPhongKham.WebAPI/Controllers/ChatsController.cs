@@ -52,10 +52,10 @@ namespace QuanLyPhongKham.WebAPI.Controllers
             {
                 if (context.DoctorId == Guid.Empty || context.ServiceId == Guid.Empty || context.DoctorId == null || context.ServiceId == null||
                     string.IsNullOrEmpty(context.PatientName) || string.IsNullOrEmpty(context.PatientPhone) ||
-                    string.IsNullOrEmpty(context.PatientEmail) || context.AppointmentDate == default || context.AppointmentDate < DateTime.Now ||
+                    string.IsNullOrEmpty(context.PatientEmail) || context.AppointmentDate == default || context.AppointmentDate <= DateTime.Now ||
                     string.IsNullOrEmpty(context.AppointmentTime))
                 {
-                    return BadRequest("Thông tin đăng ký lịch khám không phù hợp hoặc bị thiếu.");
+                    return BadRequest("Thông tin đăng ký lịch khám không phù hợp (bạn kiểm tra lại ngày khám, ca khám và dịch vụ khám của bác sĩ) hoặc bị thiếu.");
                 }
                 int count = 0;
                 var benhNhans = await _petientService.GetAllAsync();
@@ -82,10 +82,14 @@ namespace QuanLyPhongKham.WebAPI.Controllers
                 {
                     response += "\n✅ Lịch khám đã được đặt thành công!";
                 }
+                else
+                {
+                    response += "\n❌ Có lỗi xảy ra khi đặt lịch. Vui lòng thử lại!";
+                }
             }
 
             // Lưu lại session (cập nhật context)
-            _cache.Set(sessionKey, context, TimeSpan.FromMinutes(30));
+            _cache.Set(sessionKey, context, TimeSpan.FromDays(3));
 
             return Ok(response);
         }
