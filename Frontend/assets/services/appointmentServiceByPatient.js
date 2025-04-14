@@ -231,12 +231,46 @@ function editAppointment() {
   checkData(appointment, "modalEditAppointment", "-edit");
 }
 
+//Thêm trạng thái cho việc xem lịch khám 
+function updateStatusBadge(status) {
+  let icon = "";
+  let text = status;
+  let colorClass = "";
+
+  switch (status) {
+    case "Đã đặt":
+      icon = "fa-solid fa-check";
+      colorClass = "badge-booked";
+      break;
+    case "Đang xử lý":
+      icon = "fas fa-spinner fa-spin";
+      colorClass = "bg-primary";
+      break;
+    case "Đã hủy":
+      icon = "fa-solid fa-xmark";
+      colorClass = "bg-danger";
+      break;
+    default:
+      icon = "fa-solid fa-check";
+      colorClass = "bg-success";
+      break;
+  }
+
+  $("#modalEditAppointment #status")
+    .removeClass("bg-primary bg-success bg-danger badge-booked")
+    .addClass(colorClass)
+    .html(`<i class="${icon} me-1"></i>${text}`);
+}
+
+
 // Hàm điền thông tin vào modal
 function fillEditModal() {
   if (!lichKham) {
     console.error("Không có thông tin lịch khám để điền!");
     return;
   }
+  console.log(lichKham);
+  updateStatusBadge(lichKham.trangThaiLichKham);
   // Điền thông tin lịch khám
   const formattedDate = lichKham.ngayKham
     ? new Date(lichKham.ngayKham).toLocaleDateString("en-CA") // Định dạng YYYY-MM-DD theo múi giờ cục bộ

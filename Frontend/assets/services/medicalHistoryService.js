@@ -227,6 +227,19 @@ function getBadgeClass(trangThai) {
       return "bg-success";
   }
 }
+// Hàm để chuyển trạng thái thành icon
+function getIcon(trangThai) {
+  switch (trangThai) {
+    case "Đã đặt":
+      return '<i class="fa-solid fa-check me-1"></i>';
+    case "Đang xử lý":
+      return '<i class="fas fa-spinner fa-spin me-1"></i>';
+    case "Đã hủy":
+      return '<i class="fa-solid fa-xmark me-1"></i>';
+    default:
+      return '<i class="fa-solid fa-check me-1"></i>';
+  }
+}
 
 //Lấy tên bác sĩ theo id
 async function getNameById(id) {
@@ -289,8 +302,8 @@ async function display1(dsLK) {
                   <div class="d-flex justify-content-between align-items-start">
                       <span class="badge rounded-pill ${getBadgeClass(
                         status
-                      )}" style="min-width: 70px">
-                          ${status}
+                      )}">
+                         ${getIcon(status)} ${status}
                       </span>
                       <span class="dropdown">
                           <button class="optionButton btn btn-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">

@@ -50,6 +50,7 @@
     <link rel="stylesheet" href="../assets/css/dialog.css" />
     <link href="../assets/css/popup.css" rel="stylesheet" />
     <link href="../assets/css/chatbox.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../assets/css/xemlichkham.css" />
 
     <script src="../assets/libs/jquery/dist/jquery.min.js "></script>
     <script src="../assets/vendor/axios.min.js"></script>
@@ -652,7 +653,10 @@
             <!-- Modal Header -->
             <div class="modal-header">
               <h4 class="modal-title">Thông tin lịch khám</h4>
-              <button class="btn-close" data-bs-dismiss="modal"></button>
+              <div class="d-flex align-items-center ms-auto">
+                <span id="status" class="badge rounded-pill bg-primary me-2"></span>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
             </div>
 
             <!-- Modal body -->
