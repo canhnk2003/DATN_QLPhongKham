@@ -176,17 +176,5 @@ namespace QuanLyPhongKham.WebAPI.Controllers
             return Ok(_mapper.Map<AppointmentModel>(lichKham));
         }
 
-        [Authorize]
-        [HttpGet("test-auth")]
-        public IActionResult TestAuth()
-        {
-            var userName = User.Identity?.Name;
-            var isAuth = User.Identity?.IsAuthenticated;
-            var roles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
-
-            return Ok(new { userName, isAuth, roles });
-        }
-
-
     }
 }

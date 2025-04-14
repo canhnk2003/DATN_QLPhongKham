@@ -41,9 +41,13 @@ $(document).ready(function () {
         $("#chat-body").scrollTop($("#chat-body")[0].scrollHeight);
       })
       .catch(function (error) {
-        // Xử lý lỗi nếu có
-        console.error("Lỗi khi gọi API:", error);
-        $(".bot-message:last").html("Xin lỗi, chatbot đang gặp lỗi.");
+        if (error.response && error.response.status === 400) {
+          console.warn("Yêu cầu không hợp lệ (400):", error.response.data);
+          $(".bot-message:last").html("⚠️ " + error.response.data);
+        } else {
+          console.error("Lỗi khi gọi API:", error);
+          $(".bot-message:last").html("Xin lỗi, chatbot đang gặp lỗi.");
+        }
       });
   }
 });

@@ -123,14 +123,14 @@ namespace QuanLyPhongKham.Business.Services
             prompt.AppendLine("- Kiểm tra lịch hẹn đã có, tránh trùng lặp.");
             prompt.AppendLine("- Đề xuất lịch trống cho bệnh nhân.");
             prompt.AppendLine("- Nếu không có lịch trống trong ngày yêu cầu, hãy đề xuất ngày gần nhất có lịch trống.");
-            prompt.AppendLine("- Chú ý: Mỗi ca khám chỉ cho phép có một bệnh nhân, ngày khám phải lớn hơn ngày hiện tại.");
+            prompt.AppendLine("- Chú ý: Nếu ca khám có trạng thái 'Đã đặt' hoặc 'Hoàn thành' hoặc 'Đã hoàn thành' thì tư vấn cho bệnh nhân ca khám khác hoặc bác sĩ khác, lúc đó hãy thông báo là bị trùng lịch. Ngày khám phải lớn hơn ngày hiện tại.");
             prompt.AppendLine("- Chú ý: Hãy đưa ra link danh sách bác sĩ khi câu hỏi liên quan đến bác sĩ hoặc link danh sách dịch vụ khi câu hỏi liên quan đến dịch vụ.");
             // Hướng dẫn AI về xác nhận thông tin đặt lịch
             prompt.AppendLine("\nKhi bệnh nhân muốn đặt lịch, hãy xác nhận và kiểm tra lại thông tin:");
-            prompt.AppendLine("- Chú ý: Nếu mà trạng thái trong lịch khám là 'Đang xử lý' hoặc 'Đã hủy' thì vẫn có thể đặt lịch được, có 'Đã đặt' hoặc 'Đã hoàn thành' sẽ không đặt được. Lúc đó hãy thông báo là bị trùng lịch.");
-            prompt.AppendLine("- Chú ý: Để đặt được lịch khám thì 'Ngày khám phải lớn hơn ngày hiện tại' ngày hiện tại là 11/04/2025, 'email phải đúng định dạng', số điện thoại phải là số.");
+            prompt.AppendLine("- Chú ý: Nếu mà trạng thái trong lịch khám là 'Đang xử lý' hoặc 'Đã hủy' thì vẫn có thể đặt lịch được.");
+            prompt.AppendLine("- Chú ý: Để đặt được lịch khám thì 'Ngày khám phải lớn hơn ngày hiện tại' ngày hiện tại là 14/04/2025, 'email phải đúng định dạng', số điện thoại phải là số.");
             prompt.AppendLine($"- Nếu bệnh nhân cung cấp đầy đủ thông tin (họ tên, số điện thoại, email, ngày khám, ca khám, bác sĩ, dịch vụ khám), hãy hỏi: ");
-            prompt.AppendLine($"'Bạn có muốn đặt lịch khám với thông tin sau không?' ");
+            prompt.AppendLine($"'Bạn có muốn đặt lịch khám với thông tin sau không?'\n ");
             prompt.AppendLine($"Sau đó, hiển thị thông tin theo định dạng: ");
             prompt.AppendLine($"👉 Họ tên: [Tên bệnh nhân]");
             prompt.AppendLine($"👉 Số điện thoại: [SĐT]");
@@ -174,7 +174,7 @@ namespace QuanLyPhongKham.Business.Services
                        .GetString();
 
                 // Nếu AI xác nhận thông tin, lưu vào ChatContext
-                if (text.Contains("Bạn có muốn đặt lịch khám với thông tin sau không?", StringComparison.OrdinalIgnoreCase))
+                if (text.ToLower().Contains("đặt lịch khám với thông tin sau", StringComparison.OrdinalIgnoreCase))
                 {
                     context.IsReadyForBooking = true;
                     context.PatientName = ExtractValue(text, "Họ tên:");
@@ -182,13 +182,21 @@ namespace QuanLyPhongKham.Business.Services
                     context.PatientEmail = ExtractValue(text, "Email:");
                     //context.AppointmentDate = DateTime.Parse(ExtractValue(text, "Ngày khám:"));
 
-                    if (DateTime.TryParse(ExtractValue(text, "Ngày khám:"), out var date))
+                    string[] formats = new[]
+                    {
+                        "d/M/yyyy", "d-M-yyyy", "d.M.yyyy", "d M yyyy",
+                        "dd/MM/yyyy", "dd-MM-yyyy", "dd.MM.yyyy", "dd MM yyyy"
+                    };
+
+                    if (DateTime.TryParseExact(ExtractValue(text, "Ngày khám:"), 
+                        formats, System.Globalization.CultureInfo.InvariantCulture, 
+                        System.Globalization.DateTimeStyles.None, out var date))
                     {
                         context.AppointmentDate = date;
                     }
                     else
                     {
-                        context.AppointmentDate = default;
+                        return "Lỗi! Định dạng ngày khám không hợp lệ!";
                     }
 
                     context.AppointmentTime = ExtractValue(text, "Ca khám:");

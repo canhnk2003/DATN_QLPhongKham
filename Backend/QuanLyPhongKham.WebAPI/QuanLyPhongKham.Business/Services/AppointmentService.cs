@@ -43,6 +43,8 @@ namespace QuanLyPhongKham.Business.Services
             {
                 entity.LichKhamId = Guid.NewGuid();
                 entity.TrangThaiLichKham = "Đang xử lý";
+                entity.NgayTao = DateTime.Now;
+                entity.NgayCapNhat = DateTime.Now;
                 int res = await _appointmentRepository.AddAsync(entity);
                 if (res > 0)
                 {
@@ -235,6 +237,7 @@ namespace QuanLyPhongKham.Business.Services
                 if(appointment.TrangThaiLichKham == "Đang xử lý")
                 {
                     appointment.TrangThaiLichKham = "Đã đặt";
+                    appointment.NgayCapNhat = DateTime.Now;
                     int res = await _repository.UpdateAsync(appointment);
                     if (res > 0)
                     {
@@ -258,6 +261,7 @@ namespace QuanLyPhongKham.Business.Services
                 if (appointment.TrangThaiLichKham == "Hoàn thành")
                 {
                     appointment.TrangThaiLichKham = "Đã hoàn thành";
+                    appointment.NgayCapNhat = DateTime.Now;
                     int res = await _repository.UpdateAsync(appointment);
                     if (res > 0)
                     {
@@ -281,6 +285,7 @@ namespace QuanLyPhongKham.Business.Services
                 if (appointment.TrangThaiLichKham == "Đã đặt")
                 {
                     appointment.TrangThaiLichKham = "Hoàn thành";
+                    appointment.NgayCapNhat = DateTime.Now;
                     int res = await _repository.UpdateAsync(appointment);
                     if (res > 0)
                     {
