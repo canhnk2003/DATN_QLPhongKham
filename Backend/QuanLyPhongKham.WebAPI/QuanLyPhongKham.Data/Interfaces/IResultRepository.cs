@@ -1,4 +1,5 @@
 ﻿using QuanLyPhongKham.Models.Entities;
+using QuanLyPhongKham.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace QuanLyPhongKham.Data.Interfaces
 
         KetQuaKham? GetKetQuaKhamByLichKhamId(Guid lichKhamId);
         string GetBenhNhanNameByLichKhamId(Guid lichKhamId);
-        IEnumerable<KetQuaKham> GetAllByPatientId(Guid benhNhanId);
+        IEnumerable<KetQuaKhamModel> GetAllByPatientId(Guid benhNhanId);
 
     }
 }

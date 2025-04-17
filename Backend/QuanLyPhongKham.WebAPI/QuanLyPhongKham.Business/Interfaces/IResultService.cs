@@ -1,4 +1,5 @@
 ﻿using QuanLyPhongKham.Models.Entities;
+using QuanLyPhongKham.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace QuanLyPhongKham.Business.Interfaces
     {
         // Thêm phương thức để lấy kết quả khám theo bác sĩ ID
         Task<IEnumerable<KetQuaKham>> GetAllByDoctorIdAsync(Guid bacSiId);
-        Task<IEnumerable<KetQuaKham>> GetAllByPatientIdAsync(Guid benhNhanId);
+        Task<IEnumerable<KetQuaKhamModel>> GetAllByPatientIdAsync(Guid benhNhanId);
         KetQuaKham? GetKetQuaKhamByLichKhamId(Guid lichKhamId);
         string GetBenhNhanNameByLichKhamId(Guid lichKhamId);
     }

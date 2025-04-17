@@ -2,7 +2,7 @@ var userId = localStorage.getItem("userId");
 var lkId = "";
 var kq;
 $(document).ready(function () {
-  console.log(userId);
+  // console.log(userId);
 
   // Lắng nghe sự kiện click trên các nút .optionButton
   $(document).on("click", ".optionButton", function () {
@@ -11,7 +11,7 @@ $(document).ready(function () {
 
     // Lấy giá trị lkId từ thuộc tính của phần tử cha
     lkId = parentCard.attr("lkId");
-    console.log(lkId);
+    // console.log(lkId);
   });
 
   //Xử lý khi nhấn nút đồng ý hủy
@@ -39,13 +39,13 @@ $(document).ready(function () {
   });
   //Xử lý khi nhấn nút đồng ý xóa
   $("#btnDelete").click(function () {
-    console.log(lkId);
+    // console.log(lkId);
     //Gọi API Hủy lịch khám
     deleteAppointment();
   });
   //Xử lý khi nhấn nút đồng ý xóa
   $("#btnComplete").click(function () {
-    console.log(lkId);
+    // console.log(lkId);
     //Gọi API Hủy lịch khám
     completeAppointment();
   });
@@ -190,7 +190,7 @@ function getAvata() {
     .get(`/api/Patients/getbyuserid/${userId}`)
     .then(function (response) {
       const bn = response.data;
-      console.log(bn);
+      // console.log(bn);
       if (bn.hinhAnh != null) {
         $("#avatar").attr("src", "http://localhost:37649" + bn.hinhAnh);
       }
@@ -203,7 +203,7 @@ function getAvata() {
 }
 //Lấy danh sách lịch khám
 function getAllAppointmentByBenhNhanId(benhNhanId) {
-  console.log(benhNhanId);
+  // console.log(benhNhanId);
   axiosJWT
     .get(`/api/v1/Appointments/patient/${benhNhanId}`)
     .then(function (response) {
@@ -255,7 +255,7 @@ async function getNameById(id) {
 
 //Hiển thị lịch khám theo benhNhanId
 async function display1(dsLK) {
-  console.log(dsLK);
+  // console.log(dsLK);
   // Hiển thị dữ liệu
   const container = $("#container_lk .row");
   container.empty(); // Xóa nội dung cũ
@@ -266,7 +266,7 @@ async function display1(dsLK) {
 
   const response = await axiosJWT.get(`/api/Services`);
   const dsDichVu = response.data;
-  console.log(dsDichVu);
+  // console.log(dsDichVu);
   // Kiểm tra dsDichVu có tồn tại và là một mảng không
   if (!Array.isArray(dsDichVu)) {
     console.error("dsDichVu không phải là mảng hợp lệ.");
