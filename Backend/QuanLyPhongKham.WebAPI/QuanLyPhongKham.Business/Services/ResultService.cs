@@ -4,6 +4,7 @@ using QuanLyPhongKham.Data.Interfaces;
 using QuanLyPhongKham.Data.Repositories;
 using QuanLyPhongKham.Models.Entities;
 using QuanLyPhongKham.Models.Exceptions;
+using QuanLyPhongKham.Models.Models;
 using QuanLyPhongKham.Models.Resources;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace QuanLyPhongKham.Business.Services
             return results;
         }
 
-        public async Task<IEnumerable<KetQuaKham>> GetAllByPatientIdAsync(Guid benhNhanId)
+        public async Task<IEnumerable<KetQuaKhamModel>> GetAllByPatientIdAsync(Guid benhNhanId)
         {
             var results = _resultRepository.GetAllByPatientId(benhNhanId); // Lấy kết quả khám từ repository
             return results;

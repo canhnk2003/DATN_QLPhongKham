@@ -359,48 +359,59 @@
               </div>
 
               <!-- Modal body -->
-              <div class="modal-body">
-                <div class="container" data-aos="fade-up" data-aos-delay="100">
-                  <div class="php-email-form">
-                    <div class="row">
-                      <div class="col-md form-group mt-3 mt-md-0">
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="diagnose"
-                          id="diagnose"
-                          placeholder="Chẩn đoán"
-                          readonly
-                        />
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md form-group mt-3">
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="prescription"
-                          id="prescription"
-                          placeholder="Chỉ định thuốc"
-                          readonly
-                        />
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md form-group mt-3">
-                        <textarea
-                          class="form-control"
-                          id="note"
-                          name="note"
-                          rows="5"
-                          placeholder="Ghi chú"
-                          readonly
-                        ></textarea>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+<div class="modal-body">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="php-email-form">
+      
+      <!-- Chẩn đoán -->
+      <div class="row">
+        <div class="col-md form-group mt-2 mt-md-0">
+          <label for="diagnose" class="form-label fw-bold">Chẩn đoán</label>
+          <input
+            type="text"
+            class="form-control"
+            name="diagnose"
+            id="diagnose"
+            placeholder="Chẩn đoán"
+            readonly
+          />
+        </div>
+      </div>
+
+      <!-- Chỉ định thuốc -->
+      <div class="row">
+        <div class="col-md form-group mt-3">
+          <label for="prescription" class="form-label fw-bold">Chỉ định thuốc</label>
+          <input
+            type="text"
+            class="form-control"
+            name="prescription"
+            id="prescription"
+            placeholder="Chỉ định thuốc"
+            readonly
+          />
+        </div>
+      </div>
+
+      <!-- Ghi chú -->
+      <div class="row">
+        <div class="col-md form-group mt-3">
+          <label for="note" class="form-label fw-bold">Ghi chú</label>
+          <textarea
+            class="form-control"
+            id="note"
+            name="note"
+            rows="5"
+            placeholder="Ghi chú"
+            readonly
+          ></textarea>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
 
               <!-- Modal footer -->
               <div class="modal-footer" style="background: rgb(232, 232, 232)">

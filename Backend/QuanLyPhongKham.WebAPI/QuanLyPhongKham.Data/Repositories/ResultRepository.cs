@@ -1,6 +1,7 @@
 ﻿using QuanLyPhongKham.Data.Context;
 using QuanLyPhongKham.Data.Interfaces;
 using QuanLyPhongKham.Models.Entities;
+using QuanLyPhongKham.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -88,11 +89,48 @@ namespace QuanLyPhongKham.Data.Repositories
             return null;  // Nếu không tìm thấy tên bệnh nhân
         }
 
-        public IEnumerable<KetQuaKham> GetAllByPatientId(Guid benhNhanId)
+        public IEnumerable<KetQuaKhamModel> GetAllByPatientId(Guid benhNhanId)
         {
-            var results = _context.KetQuaKhams
-                    .Where(k => k.LichKham.BenhNhanId == benhNhanId)
-                    .ToList();
+            //var results = _context.KetQuaKhams
+            //        .Where(k => k.LichKham.BenhNhanId == benhNhanId)
+            //        .ToList();
+            var results = (from kq in _context.KetQuaKhams
+                           join lk in _context.LichKhams on kq.LichKhamId equals lk.LichKhamId
+                           join bs in _context.BacSis on lk.BacSiId equals bs.BacSiId
+                           join bn in _context.BenhNhans on lk.BenhNhanId equals bn.BenhNhanId
+                           join dv in _context.DichVus on lk.DichVuId equals dv.DichVuId into dvGroup
+                           from dv in dvGroup.DefaultIfEmpty() // left join
+                           where bn.BenhNhanId == benhNhanId
+                           orderby lk.NgayKham descending
+                           select new KetQuaKhamModel
+                           {
+                               KetQuaKhamId = kq.KetQuaKhamId,
+                               ChanDoan = kq.ChanDoan,
+                               ChiDinhThuoc = kq.ChiDinhThuoc,
+                               GhiChu = kq.GhiChu,
+                               NgayKham = lk.NgayKham ?? DateTime.MinValue,
+                               GioKham = lk.GioKham,
+                               BacSi = new BacSiModel
+                               {
+                                   HoTen = bs.HoTen
+                               },
+                               BenhNhan = new BenhNhanModel
+                               {
+                                   BenhNhanId = bn.BenhNhanId,
+                                   MaBenhNhan = bn.MaBenhNhan,
+                                   HoTen = bn.HoTen,
+                                   NgaySinh = bn.NgaySinh,
+                                   SoDienThoai = bn.SoDienThoai,
+                                   DiaChi = bn.DiaChi,
+                                   Email = bn.Email,
+                                   LoaiGioiTinh = bn.LoaiGioiTinh,
+                                   TienSuBenhLy = bn.TienSuBenhLy
+                               },
+                               DichVu = dv == null ? null : new DichVuModel
+                               {
+                                   TenDichVu = dv.TenDichVu
+                               }
+                           }).ToList();
 
             return results;
         }
