@@ -4,7 +4,7 @@ var dsBacSi;
 var dsDichVu;
 var userId = localStorage.getItem("userId");
 $(document).ready(function () {
-  console.log(userId);
+  // console.log(userId);
 
   //Lấy danh sách phòng ban, bác sĩ điền vào select trong form đăng ký
   const departmentSelect = $("#appointment #department");
@@ -12,9 +12,9 @@ $(document).ready(function () {
   const appointmentTimeSelect = $("#appointment #appointment-time");
   const serviceSelect = $("#appointment #service");
 
-  getAllService(serviceSelect);
+  // getAllService(serviceSelect);
 
-  getAllDoctor(doctorSelect, appointmentTimeSelect);
+  getAllDoctor(doctorSelect, appointmentTimeSelect, serviceSelect);
 
   getAllDepartment(
     departmentSelect,
@@ -30,9 +30,9 @@ $(document).ready(function () {
     "#modalEditAppointment #appointment-time-edit"
   );
   const serviceSelectEdit = $("#modalEditAppointment #service-edit");
-  getAllService(serviceSelectEdit);
+  // getAllService(serviceSelectEdit);
 
-  getAllDoctor(doctorSelectEdit, appointmentTimeSelectEdit);
+  getAllDoctor(doctorSelectEdit, appointmentTimeSelectEdit, serviceSelectEdit);
 
   getAllDepartment(
     departmentSelectEdit,
@@ -231,7 +231,7 @@ function editAppointment() {
   checkData(appointment, "modalEditAppointment", "-edit");
 }
 
-//Thêm trạng thái cho việc xem lịch khám 
+//Thêm trạng thái cho việc xem lịch khám
 function updateStatusBadge(status) {
   let icon = "";
   let text = status;
@@ -262,14 +262,13 @@ function updateStatusBadge(status) {
     .html(`<i class="${icon} me-1"></i>${text}`);
 }
 
-
 // Hàm điền thông tin vào modal
 function fillEditModal() {
   if (!lichKham) {
     console.error("Không có thông tin lịch khám để điền!");
     return;
   }
-  console.log(lichKham);
+  // console.log(lichKham);
   updateStatusBadge(lichKham.trangThaiLichKham);
   // Điền thông tin lịch khám
   const formattedDate = lichKham.ngayKham
@@ -306,7 +305,7 @@ function fillEditModal() {
   }
   if (
     lichKham.trangThaiLichKham === "Đã hủy" ||
-    lichKham.trangThaiLichKham === "Hoàn thành"
+    lichKham.trangThaiLichKham === "Hoàn thành"||lichKham.trangThaiLichKham === "Đã hoàn thành"
   ) {
     $("#btnCancelAppointment").attr("disabled", true);
     $("#btnEditAppointment").attr("disabled", true);
@@ -477,18 +476,18 @@ function checkData(appointment, formPrefix, str) {
     clearError(`#${formPrefix} #name${str}`);
   }
 
-  // Kiểm tra ngày sinh
-  if (appointment.benhNhan.ngaySinh) {
-    if (appointment.benhNhan.ngaySinh >= today) {
-      setError(
-        `#${formPrefix} #dateOfBirth${str}`,
-        "Ngày sinh phải nhỏ hơn ngày hiện tại."
-      );
+  // Kiểm tra email
+  if (!appointment.benhNhan.email.trim()) {
+    setError(`#${formPrefix} #email${str}`, "Email không được để trống.");
+  } else if (appointment.benhNhan.email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(appointment.benhNhan.email)) {
+      setError(`#${formPrefix} #email${str}`, "Email không đúng định dạng.");
     } else {
-      clearError(`#${formPrefix} #dateOfBirth${str}`);
+      clearError(`#${formPrefix} #email${str}`);
     }
   } else {
-    clearError(`#${formPrefix} #dateOfBirth${str}`);
+    clearError(`#${formPrefix} #email${str}`);
   }
 
   // Kiểm tra số điện thoại
@@ -506,34 +505,32 @@ function checkData(appointment, formPrefix, str) {
     clearError(`#${formPrefix} #phone${str}`);
   }
 
-  // Kiểm tra email
-  if (!appointment.benhNhan.email.trim()) {
-    setError(`#${formPrefix} #email${str}`, "Email không được để trống.");
-  } else if (appointment.benhNhan.email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(appointment.benhNhan.email)) {
-      setError(`#${formPrefix} #email${str}`, "Email không đúng định dạng.");
+  // Kiểm tra ngày sinh
+  if (appointment.benhNhan.ngaySinh) {
+    if (appointment.benhNhan.ngaySinh >= today) {
+      setError(
+        `#${formPrefix} #dateOfBirth${str}`,
+        "Ngày sinh phải nhỏ hơn ngày hiện tại."
+      );
     } else {
-      clearError(`#${formPrefix} #email${str}`);
+      clearError(`#${formPrefix} #dateOfBirth${str}`);
     }
   } else {
-    clearError(`#${formPrefix} #email${str}`);
+    clearError(`#${formPrefix} #dateOfBirth${str}`);
   }
 
-  // Kiểm tra ngày khám
-  if (!appointment.ngayKham.trim()) {
-    setError(
-      `#${formPrefix} #appointment-date${str}`,
-      "Ngày khám không được để trống."
-    );
-  } else if (appointment.ngayKham < today) {
-    setError(
-      `#${formPrefix} #appointment-date${str}`,
-      "Ngày khám không được nhỏ hơn ngày hiện tại."
-    );
-  } else {
-    clearError(`#${formPrefix} #appointment-date${str}`);
-  }
+  // Kiểm tra chọn khoa để lọc ra bác sĩ và dịch vụ
+  // const khoaValue = $(`#${formPrefix} #department${str}`).val();
+  // console.log(khoaValue);
+  // if (!khoaValue.trim()) {
+  //   setError(
+  //     `#${formPrefix} #department${str}`,
+  //     "Chọn khoa để chọn bác sĩ và dịch vụ khám tương ứng."
+  //   );
+  // } else {
+  //   clearError(`#${formPrefix} #department${str}`);
+  // }
+
   // Kiểm tra bác sĩ
   if (!appointment.bacSiId) {
     setError(`#${formPrefix} #doctor${str}`, "Bác sĩ không được để trống.");
@@ -549,6 +546,26 @@ function checkData(appointment, formPrefix, str) {
     );
   } else {
     clearError(`#${formPrefix} #appointment-time${str}`);
+  }
+  // Kiểm tra ngày khám
+  if (!appointment.ngayKham.trim()) {
+    setError(
+      `#${formPrefix} #appointment-date${str}`,
+      "Ngày khám không được để trống."
+    );
+  } else if (appointment.ngayKham < today) {
+    setError(
+      `#${formPrefix} #appointment-date${str}`,
+      "Ngày khám không được nhỏ hơn ngày hiện tại."
+    );
+  } else {
+    clearError(`#${formPrefix} #appointment-date${str}`);
+  }
+  // Kiểm tra dịch vụ
+  if (!appointment.dichVuId.trim()) {
+    setError(`#${formPrefix} #service${str}`, "Dịch vụ không được để trống.");
+  } else {
+    clearError(`#${formPrefix} #service${str}`);
   }
 
   // Nếu có lỗi, hiển thị danh sách lỗi và focus vào lỗi đầu tiên
@@ -591,8 +608,13 @@ function edit(appointment) {
     })
     .catch(function (error) {
       console.error("Lỗi khi sửa lịch khám: ", error);
-      $("#modalEditAppointment .sent-message").hide();
       $("#modalEditAppointment .loading").hide();
+      const errorDiv =  $("#modalEditAppointment .error-message");
+      errorDiv.text("Sửa thông lịch khám thất bại!")
+      errorDiv.show();
+      setTimeout(function () {
+        errorDiv.hide();
+      }, 5000); // 5000ms = 5 giây
     });
 }
 
@@ -624,8 +646,23 @@ function register(appointment) {
     })
     .catch(function (error) {
       console.error("Lỗi khi thêm lịch khám: ", error);
-      $("#appointment .sent-message").hide();
       $("#appointment .loading").hide();
+      const errorDiv = $("#appointment .error-message");
+      errorDiv.text("Đăng ký lịch khám thất bại!")
+      errorDiv.show();
+      setTimeout(function () {
+        // Xóa nội dung input
+        $("#appointment input").val("");
+
+        // Xóa lựa chọn trong select (trả về mặc định)
+        $("#appointment select").prop("selectedIndex", 0);
+
+        //Xóa nội dung trong text area
+        $("#appointment #message").val("");
+
+        // Xóa nội dung trong các phần tử có class cụ thể
+        errorDiv.hide();
+      }, 5000); // 5000ms = 5 giây
     });
 }
 
@@ -651,12 +688,12 @@ function showErrorList(formPrefix, errors, firstErrorSelector) {
 }
 
 // Lấy toàn bộ Bác sĩ
-function getAllDoctor(selectElement, appointmentTimeSelect) {
+function getAllDoctor(selectElement, appointmentTimeSelect, serviceSelect) {
   axiosJWT
     .get(`/api/Doctors`)
     .then(function (response) {
       dsBacSi = response.data;
-
+      // console.log(dsBacSi);
       // Đổ dữ liệu vào select bác sĩ
       dsBacSi.forEach((item) => {
         const option = $("<option>").val(item.bacSiId).text(item.hoTen);
@@ -665,41 +702,15 @@ function getAllDoctor(selectElement, appointmentTimeSelect) {
 
       // Thêm sự kiện change
       selectElement.on("change", () => {
-        addEventSelect(selectElement, dsBacSi, appointmentTimeSelect);
+        addEventSelect(selectElement, dsBacSi, appointmentTimeSelect, serviceSelect);
       });
 
       // Gọi hàm xử lý ban đầu
-      addEventSelect(selectElement, dsBacSi, appointmentTimeSelect);
+      addEventSelect(selectElement, dsBacSi, appointmentTimeSelect, serviceSelect);
     })
     .catch(function (error) {
       console.error("Lỗi không tìm được:", error);
     });
-}
-
-//Tạo sự kiện khi chọn bác sĩ
-function addEventSelect(selectElement, dsBacSi, appointmentTimeSelect) {
-  const selectedDoctorId = selectElement.val();
-  appointmentTimeSelect.html('<option value="">Chọn ca khám</option>'); // Reset giờ khám
-
-  if (selectedDoctorId) {
-    const selectedDoctor = dsBacSi.find(
-      (doc) => doc.bacSiId == selectedDoctorId
-    );
-    if (selectedDoctor && selectedDoctor.gioLamViec) {
-      const gioKhamArray = selectedDoctor.gioLamViec
-        .split(",")
-        .map((time) => time.trim());
-      gioKhamArray.forEach((time) => {
-        const timeOption = $("<option>").val(time).text(time);
-        appointmentTimeSelect.append(timeOption);
-      });
-      appointmentTimeSelect.removeAttr("disabled");
-    } else {
-      appointmentTimeSelect.attr("disabled", true); // Disable nếu không có giờ khám
-    }
-  } else {
-    appointmentTimeSelect.attr("disabled", true); // Disable nếu chưa chọn bác sĩ
-  }
 }
 
 // Lấy toàn bộ khoa
@@ -748,7 +759,7 @@ function getAllDepartment(
 
           // Lắng nghe sự kiện chọn bác sĩ
           doctorSelect.off("change").on("change", function () {
-            addEventSelect(doctorSelect, dsBacSi, appointmentTimeSelect);
+            addEventSelect(doctorSelect, dsBacSi, appointmentTimeSelect, serviceSelect);
           });
         })
         .catch(function (error) {
@@ -774,8 +785,69 @@ function getAllDepartment(
         });
     } else {
       // Nếu không chọn khoa, lấy toàn bộ bác sĩ và dịch vụ
-      getAllDoctor(doctorSelect, appointmentTimeSelect);
+      getAllDoctor(doctorSelect, appointmentTimeSelect, serviceSelect);
       getAllService(serviceSelect);
     }
   });
+}
+
+//Tạo sự kiện khi chọn bác sĩ
+function addEventSelect(selectElement, dsBacSi, appointmentTimeSelect, serviceSelect) {
+  const selectedDoctorId = selectElement.val();
+  appointmentTimeSelect.html('<option value="">Chọn ca khám</option>'); // Reset giờ khám
+  serviceSelect.html('<option value="">Chọn dịch vụ</option>'); // Reset dịch vụ
+
+  if (selectedDoctorId) {
+    const selectedDoctor = dsBacSi.find(
+      (doc) => doc.bacSiId == selectedDoctorId
+    );
+
+    // Nếu tìm được bác sĩ
+    if (selectedDoctor) {
+      // ✅ Đổ giờ khám
+      if (selectedDoctor.gioLamViec) {
+        const gioKhamArray = selectedDoctor.gioLamViec
+          .split(",")
+          .map((time) => time.trim());
+        gioKhamArray.forEach((time) => {
+          const timeOption = $("<option>").val(time).text(time);
+          appointmentTimeSelect.append(timeOption);
+        });
+        appointmentTimeSelect.removeAttr("disabled");
+      } else {
+        appointmentTimeSelect.attr("disabled", true); // Disable nếu không có giờ khám
+      }
+
+      // ✅ Đổ dịch vụ theo khoaId của bác sĩ
+      if (selectedDoctor.khoaId) {
+        axiosJWT
+          .get(`/api/Services/${selectedDoctor.khoaId}`)
+          .then(function (response) {
+            const dsDichVu = response.data;
+            dsDichVu.forEach((item) => {
+              const option = $("<option>")
+                .val(item.dichVuId)
+                .text(item.tenDichVu);
+              serviceSelect.append(option);
+            });
+            serviceSelect.removeAttr("disabled");
+          })
+          .catch(function (error) {
+            console.error("Lỗi khi lấy dịch vụ theo bác sĩ:", error);
+            serviceSelect.attr("disabled", true);
+          });
+      } else {
+        serviceSelect.attr("disabled", true);
+      }
+
+    } else {
+      // Không tìm thấy bác sĩ
+      appointmentTimeSelect.attr("disabled", true);
+      serviceSelect.attr("disabled", true);
+    }
+  } else {
+    // Không chọn bác sĩ
+    appointmentTimeSelect.attr("disabled", true);
+    serviceSelect.attr("disabled", true);
+  }
 }
