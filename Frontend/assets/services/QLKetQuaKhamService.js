@@ -138,9 +138,6 @@ async function displayResults(results) {
                 <td>${formatDate(result.ngayTao)}</td>
                 <td>${result.chanDoan || "Không có chẩn đoán"}</td>
                 <td>${result.chiDinhThuoc || "Không có chỉ định thuốc"}</td>
-                <td>${result.ghiChu || "Không có ghi chú"}</td>
-                <td>${formatDate(result.ngayTao)}</td>
-                <td>${formatDate(result.ngayCapNhat)}</td>
                 <td>
                     <div class="m-table-tool">
                         <div class="m-edit m-tool-icon" data-result-id="${result.ketQuaKhamId}" data-bs-toggle="modal" data-bs-target="#dialog-edit">

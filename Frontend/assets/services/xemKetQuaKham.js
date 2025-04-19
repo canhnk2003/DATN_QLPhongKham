@@ -36,7 +36,7 @@ function generateMedicalExaminationForm(ketQuaKhamId) {
   doc.addFont("NotoSerif-SemiBold-bold.ttf", "NotoSerif-SemiBold-Bold", "bold");
 
   // --- Tiêu đề ---
-  doc.setFontSize(13);
+  doc.setFontSize(12);
   doc.setFont("NotoSerif-SemiBold-Bold", "bold");
   doc.text("Phòng khám Đa khoa Quang Việt", 20, 20);
   doc.text("CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM", 100, 20);
@@ -55,15 +55,14 @@ function generateMedicalExaminationForm(ketQuaKhamId) {
   doc.setDrawColor(0); // màu đen
   doc.line(115, 29, 178, 29);
 
-  doc.setFontSize(15);
-  doc.text("PHIẾU KẾT QUẢ KHÁM BỆNH", 70, 45);
+  doc.setFontSize(14);
+  doc.text("PHIẾU KẾT QUẢ KHÁM BỆNH", 70, 43);
 
   // --- Thông tin bệnh nhân ---
-  let y = 60;
-  doc.setFontSize(14);
+  let y = 56;
+  doc.setFontSize(12);
   doc.setFont("NotoSerif-Light", "normal");
   doc.text("THÔNG TIN BỆNH NHÂN", 40, y);
-  doc.setFontSize(13);
   // Mã bệnh nhân
   y += 10;
   printBoldNormal(
@@ -117,58 +116,102 @@ function generateMedicalExaminationForm(ketQuaKhamId) {
     30,
     y
   );
+  // Hiển thị tiêu đề
   y += 10;
-  y = drawMultilineSection(
+  y = drawSection(
+    doc,
     "1. Tiền sử bệnh lý:",
-    safeText(result.benhNhan?.tienSuBenhLy),
+    result.benhNhan?.tienSuBenhLy,
     30,
-    y,
-    doc
-  );
-  y = drawMultilineSection(
-    "2. Chẩn đoán:",
-    safeText(result.chanDoan),
-    30,
-    y,
-    doc
-  );
-  y = drawMultilineSection(
-    "3. Chỉ định:",
-    safeText(result.chiDinhThuoc),
-    30,
-    y,
-    doc
+    y
   );
 
-  // --- Chỉ định thuốc (nếu có thể dùng sau) ---
-  // Bỏ autoTable nếu chưa cần
-
-  // --- Bác sĩ ký tên ---
+  y += 10;
+  y = drawSection(doc, "2. Chẩn đoán:", result.chanDoan, 30, y);
+  y += 10;
   doc.setFont("NotoSerif-SemiBold-Bold", "bold");
-  let finalY = y + 10;
-  doc.text("Bác sĩ khám bệnh", 140, finalY);
-  doc.setFont("NotoSerif-Light-Italic", "italic");
-  doc.setFontSize(8);
-  doc.text("(Ký và ghi rõ họ tên)", 148, finalY + 7);
-  doc.setFont("NotoSerif-Light", "normal");
-  doc.setFontSize(14);
-  doc.text(`${safeText(result.bacSi?.hoTen)}`, 143, finalY + 35);
+  doc.text("3. Chỉ định:", 30, y);
+
+  // Tách chiDinhThuoc và ghiChu thành mảng
+  const chiDinhThuoc = result.chiDinhThuoc
+    ? result.chiDinhThuoc.split(",")
+    : [];
+  const ghiChu = result.ghiChu ? result.ghiChu.split(";") : [];
+
+  // Dữ liệu bảng
+  const tableData = chiDinhThuoc.map((thuoc, index) => [
+    index + 1,
+    thuoc.trim(),
+    ghiChu[index] ? ghiChu[index].trim() : "Không có ghi chú",
+  ]);
+  // Tạo bảng cách tiêu đề 10px
+  doc.autoTable({
+    startY: y + 5, // cách tiêu đề đúng 10px
+    head: [["STT", "Chỉ định thuốc", "Ghi chú"]],
+    body: tableData,
+    theme: "grid",
+    styles: {
+      font: "NotoSerif-Light", // font nhẹ cho nội dung bảng
+      fontStyle: "normal",
+      fontSize: 12,
+      cellPadding: 2, // padding nhỏ để mỗi dòng khoảng 10px
+      minCellHeight: 10, // dòng cao đúng 10px
+      lineWidth: 0.005, // đường viền mỏng
+      lineColor: [200, 200, 200],
+    },
+    headStyles: {
+      fillColor: [255, 255, 255],
+      textColor: [0, 0, 0],
+      font: "NotoSerif-SemiBold-Bold",
+      fontStyle: "bold",
+      lineWidth: 0.005, // đường viền mỏng
+      lineColor: [200, 200, 200],
+      halign: "center",
+    },
+  });
+  
+  // --- Bác sĩ ký tên ---
+doc.setFont("NotoSerif-SemiBold-Bold", "bold");
+
+// Lấy vị trí Y kết thúc của bảng
+let finalY = doc.lastAutoTable.finalY + 10; // +20 để có khoảng cách thoáng
+
+// Kiểm tra xem phần ký tên có vượt quá chiều cao của trang không
+if (finalY + 40 > doc.internal.pageSize.height) {
+  doc.addPage(); // Thêm trang mới nếu phần ký tên sẽ vượt quá trang hiện tại
+  finalY = 30;  // Cập nhật lại vị trí Y trên trang mới
+}
+
+doc.text("Bác sĩ khám bệnh", 140, finalY);
+doc.setFont("NotoSerif-Light-Italic", "italic");
+doc.setFontSize(8);
+doc.text("(Ký và ghi rõ họ tên)", 148, finalY + 7);
+doc.setFont("NotoSerif-Light", "normal");
+doc.setFontSize(12);
+doc.text(`${safeText(result.bacSi?.hoTen)}`, 144, finalY + 35);
 
   // --- Hiển thị PDF ---
   window.open(doc.output("bloburl"), "_blank");
 }
 
 //Hàm hiển thị phần nội dung khám
-function drawMultilineSection(title, content, x, yStart, doc) {
+function drawSection(doc, title, content, x, yStart) {
+  const safeText = (text) => (text ? text : "Không có");
+  // Hiển thị tiêu đề
   doc.setFont("NotoSerif-SemiBold-Bold", "bold");
   doc.text(title, x, yStart);
 
+  // Hiển thị nội dung, cách tiêu đề 10px
   doc.setFont("NotoSerif-Light", "normal");
-  const lines = doc.splitTextToSize(content, 160);
-  doc.text(lines, x, yStart + 8); // nội dung cách tiêu đề 8px
+  const lines = doc.splitTextToSize(safeText(content), 160);
+  const lineHeight = 10;
+
+  for (let i = 0; i < lines.length; i++) {
+    doc.text(lines[i], x, yStart + 10 + i * lineHeight);
+  }
 
   // Trả về y tiếp theo để dùng cho mục sau
-  return yStart + lines.length * 8 + 10; // 7 là chiều cao 1 dòng, 10 là khoảng cách giữa các mục
+  return yStart + lines.length * lineHeight;
 }
 
 //Hàm hiển thị tiêu đề + nội dung
@@ -258,7 +301,6 @@ function displayResults(results) {
                 }</td>
                 <td>${result.chanDoan || "Không có chẩn đoán"}</td>
                 <td>${result.chiDinhThuoc || "Không có chỉ định thuốc"}</td>
-                <td>${result.ghiChu || "Không có ghi chú"}</td>
                 <td><button class="btnXemKQKham btn btn-outline-primary" data-id="${
                   result.ketQuaKhamId
                 }">Xem thêm</button></td>
