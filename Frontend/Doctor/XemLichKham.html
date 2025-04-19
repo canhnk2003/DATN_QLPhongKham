@@ -557,7 +557,7 @@
           <!-- DIALOG ADD RESULT APPOINTMENT -->
           <!-- The Modal -->
           <div class="modal fade" id="dialog-add-result">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-xl">
               <div class="modal-content">
                 <!-- Modal Header -->
                 <div class="modal-header">
@@ -571,8 +571,17 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                  <div class="row-item-long">
-                    <div class="input-item">
+                  <div class="row-item d-flex">
+                    <div class="input-item" style="width: 49%; margin-right: 2%;">
+                      <div class="title-input">Tiền sử bệnh lý</div>
+                      <input
+                        id="medicalHistory"
+                        type="text"
+                        class="m-input"
+                        required
+                      />
+                    </div>
+                    <div class="input-item" style="width: 49%;">
                       <div class="title-input">Chẩn đoán</div>
                       <input
                         id="diagnose"
@@ -582,18 +591,34 @@
                       />
                     </div>
                   </div>
-                  <div class="row-item-long">
-                    <div class="input-item">
+                  <div class="row-item d-flex">
+                    <div class="input-item" style="width: 49%; margin-right: 2%;">
                       <div class="title-input">Chỉ định thuốc</div>
                       <input id="prescription" type="text" class="m-input" />
                     </div>
-                  </div>
-                  <div class="row-item-long">
-                    <div class="input-item">
+                    <div class="input-item" style="width: 49%;">
                       <div class="title-input">Ghi chú</div>
                       <input id="note" type="text" class="m-input" />
                     </div>
                   </div>
+                  <div class="mt-3 text-end">
+                    <button class="btn btn-primary" id="btnAddRow" title="Thêm thuốc và ghi chú">Thêm</button>
+                    <button class="btn btn-danger ms-2" id="btnDeleteRow" title="Xóa thuốc và ghi chú">Xóa</button>
+                  </div>
+                  <div class="table-responsive mt-4">
+                    <table class="table table-bordered table-striped" id="resultTable">
+                      <thead class="table-light">
+                        <tr>
+                          <th style="width: 30px;"><input type="checkbox" id="checkAll" /></th>
+                          <th>STT</th>
+                          <th>Chỉ định thuốc</th>
+                          <th>Ghi chú</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+
                 </div>
 
                 <!-- Modal footer -->
@@ -611,7 +636,7 @@
                   <button
                     type="button"
                     class="btn btn-success"
-                    id="btnAddResult"
+                    id="btnAddResult" title="Tạo kết quả khám"
                   >
                     Tạo
                   </button>
