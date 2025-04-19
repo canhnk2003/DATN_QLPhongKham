@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using QuanLyPhongKham.Business.Interfaces;
 using QuanLyPhongKham.Models.Entities;
 using QuanLyPhongKham.Models.Exceptions;
@@ -64,28 +65,73 @@ namespace QuanLyPhongKham.WebAPI.Controllers
             return StatusCode(201, res);
         }
 
+        //[HttpPut("{benhNhanId}")]
+        //public async Task<IActionResult> UpdatePatient(Guid benhNhanId, [FromBody] BenhNhanModel benhNhan)
+        //{
+        //    if(benhNhanId != benhNhan.BenhNhanId)
+        //    {
+        //        return BadRequest("Id không giống!");
+        //    }
+        //    var existingBN = await _patientService.GetByIdAsync(benhNhanId);
+        //    existingBN.HoTen = benhNhan.HoTen;
+        //    existingBN.NgaySinh = benhNhan.NgaySinh;
+        //    existingBN.LoaiGioiTinh = benhNhan.LoaiGioiTinh;
+        //    existingBN.SoDienThoai = benhNhan.SoDienThoai;
+        //    existingBN.Email = benhNhan.Email;
+        //    existingBN.DiaChi = benhNhan.DiaChi;
+        //    existingBN.TienSuBenhLy = benhNhan.TienSuBenhLy;
+        //    if (benhNhan.HinhAnh != null)
+        //    {
+        //        existingBN.HinhAnh = benhNhan.HinhAnh;
+        //    }
+        //    int res = await _patientService.UpdateAsync(_mapper.Map<BenhNhan>(existingBN));
+        //    return StatusCode(201, res);
+        //}
         [HttpPut("{benhNhanId}")]
         public async Task<IActionResult> UpdatePatient(Guid benhNhanId, [FromBody] BenhNhanModel benhNhan)
         {
-            if(benhNhanId != benhNhan.BenhNhanId)
+            if (benhNhanId != benhNhan.BenhNhanId)
             {
                 return BadRequest("Id không giống!");
             }
+
             var existingBN = await _patientService.GetByIdAsync(benhNhanId);
-            existingBN.HoTen = benhNhan.HoTen;
-            existingBN.NgaySinh = benhNhan.NgaySinh;
-            existingBN.LoaiGioiTinh = benhNhan.LoaiGioiTinh;
-            existingBN.SoDienThoai = benhNhan.SoDienThoai;
-            existingBN.Email = benhNhan.Email;
-            existingBN.DiaChi = benhNhan.DiaChi;
-            existingBN.TienSuBenhLy = benhNhan.TienSuBenhLy;
-            if (benhNhan.HinhAnh != null)
+            if (existingBN == null)
             {
-                existingBN.HinhAnh = benhNhan.HinhAnh;
+                return NotFound("Không tìm thấy bệnh nhân.");
             }
-            int res = await _patientService.UpdateAsync(existingBN);
+
+            // Chỉ cập nhật nếu có giá trị (khác null)
+            if (!string.IsNullOrEmpty(benhNhan.HoTen))
+                existingBN.HoTen = benhNhan.HoTen;
+
+            if (benhNhan.NgaySinh.HasValue)
+                existingBN.NgaySinh = benhNhan.NgaySinh.Value;
+
+            if (!string.IsNullOrEmpty(benhNhan.LoaiGioiTinh.ToString()))
+                existingBN.LoaiGioiTinh = benhNhan.LoaiGioiTinh;
+
+            if (!string.IsNullOrEmpty(benhNhan.SoDienThoai))
+                existingBN.SoDienThoai = benhNhan.SoDienThoai;
+
+            if (!string.IsNullOrEmpty(benhNhan.Email))
+                existingBN.Email = benhNhan.Email;
+
+            if (!string.IsNullOrEmpty(benhNhan.DiaChi))
+                existingBN.DiaChi = benhNhan.DiaChi;
+
+            if (!string.IsNullOrEmpty(benhNhan.TienSuBenhLy))
+                existingBN.TienSuBenhLy = benhNhan.TienSuBenhLy;
+
+            if (!string.IsNullOrEmpty(benhNhan.HinhAnh))
+                existingBN.HinhAnh = benhNhan.HinhAnh;
+
+            // Gọi cập nhật
+            int res = await _patientService.UpdateAsync(_mapper.Map<BenhNhan>(existingBN));
             return StatusCode(201, res);
         }
+
+
         [Authorize(Roles = "Admin")]
         [HttpDelete("{benhNhanId}")]
         public async Task<IActionResult> DeletePatient(Guid benhNhanId)

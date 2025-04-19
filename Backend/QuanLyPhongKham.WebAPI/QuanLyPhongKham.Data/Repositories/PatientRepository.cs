@@ -41,18 +41,19 @@ namespace QuanLyPhongKham.Data.Repositories
             }
 
             //1.3. Email không được để trống
-            if (string.IsNullOrEmpty(benhNhan.Email))
+            //if (string.IsNullOrEmpty(benhNhan.Email))
+            //{
+            //    errorData.Add("Email", ResourceVN.Error_EmailNotEmpty);
+            //}
+            //else
+            //{
+            //Kiểm tra Email đúng định dạng
+            if (!string.IsNullOrEmpty(benhNhan.Email))
             {
-                errorData.Add("Email", ResourceVN.Error_EmailNotEmpty);
-            }
-            else
-            {
-                //Kiểm tra Email đúng định dạng
                 if (CheckEmailValid(benhNhan.Email) == false)
-                {
                     errorData.Add("Email", ResourceVN.Error_ValidEmail);
-                }
             }
+            //}
             //2. Thực hiện validate dữ liệu
             //2.1. Họ tên không được có số
             //if (benhNhan.HoTen.Any(char.IsDigit))
