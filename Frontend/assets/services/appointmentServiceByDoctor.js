@@ -4,7 +4,7 @@ var dsDichVu;
 var lkId = "";
 var bnId = "";
 var bsId = "";
-var patientName="";
+var patientName = "";
 var prescriptions = [];
 var notes = [];
 $(document).ready(async function () {
@@ -141,6 +141,14 @@ $(document).ready(async function () {
   $("#checkAll").on("change", function () {
     $(".row-check").prop("checked", this.checked);
   });
+  //Tạo sự kiện khi nhấn 1 hàng thì dữ liệu điền vào ô input
+  $(document).on("click", "#resultTable tbody tr", function () {
+    const prescription = $(this).find("td:eq(2)").text();
+    const note = $(this).find("td:eq(3)").text();
+
+    $("#prescription").val(prescription);
+    $("#note").val(note);
+  });
 });
 
 //Tạo kết quả khám
@@ -204,38 +212,6 @@ function checkData(ketQua, patient) {
   }
 }
 
-//Lưu kết quả khám
-// function saveResulAppointment(ketQua, patient) {
-//   // Hiển thị trạng thái đang xử lý
-//   $("#dialog-add-result #btnAddResult")
-//     .prop("disabled", true)
-//     .text("Đang lưu...");
-//   // Gửi yêu cầu cập nhật tới API
-//   // Gửi yêu cầu thêm kết quả khám
-//   axiosJWT
-//     .post(`/api/Results`, ketQua)
-//     .then(function (response) {
-//       console.log("Thêm mới thành công:", response.data);
-//       // Hiển thị trạng thái thành công
-//       showPopup("success", "Thành công! Kết quả khám đã được tạo.");
-//       $("#dialog-add-result #btnAddResult").prop("disabled", false).text("Tạo");
-//       $("#dialog-add-result").modal("hide");
-//       getData(); // Tải lại dữ liệu sau khi cập nhật
-//     })
-//     .catch(function (error) {
-//       if (
-//         error.response.data.Error.LichKhamId === "Lich kham nay da co ket qua"
-//       ) {
-//         showPopup("error", "Lỗi! Lịch khám này đã có kết quả.");
-//       } else {
-//         console.error("Lỗi khi tạo: ", error);
-//         showPopup("error", "Lỗi! Không thể lưu kết quả khám.");
-//       }
-//       $("#dialog-add-result #btnAddResult").prop("disabled", false).text("Tạo");
-//       $("#dialog-add-result").modal("hide");
-//     });
-// }
-
 // Lưu kết quả khám
 function saveResulAppointment(ketQua, patient) {
   // Hiển thị trạng thái đang xử lý
@@ -250,20 +226,20 @@ function saveResulAppointment(ketQua, patient) {
       console.log("Thêm mới kết quả khám thành công:", response.data);
 
       // Sau khi thêm kết quả thành công, tiếp tục cập nhật thông tin bệnh nhân
-      // Giả sử bệnh nhân có ID là patient.id hoặc patient.patientId
-      // const patientId = patient.id || patient.patientId;
-      // if (!patientId) {
-      //   throw new Error("Không tìm thấy ID bệnh nhân để cập nhật.");
-      // }
-
       // Gửi yêu cầu cập nhật thông tin bệnh nhân (PUT)
       return axiosJWT.put(`/api/Patients/${bnId}`, patient);
     })
     .then(function (updateResponse) {
-      console.log("Cập nhật thông tin bệnh nhân thành công:", updateResponse.data);
+      console.log(
+        "Cập nhật thông tin bệnh nhân thành công:",
+        updateResponse.data
+      );
 
       // Hiển thị trạng thái thành công khi cả hai thao tác đều thành công
-      showPopup("success", "Thành công! Kết quả khám và thông tin bệnh nhân đã được lưu.");
+      showPopup(
+        "success",
+        "Thành công! Kết quả khám và thông tin bệnh nhân đã được lưu."
+      );
       $("#dialog-add-result #btnAddResult").prop("disabled", false).text("Tạo");
       $("#dialog-add-result").modal("hide");
       getData(); // Tải lại dữ liệu sau khi cập nhật
@@ -277,7 +253,10 @@ function saveResulAppointment(ketQua, patient) {
         showPopup("error", "Lỗi! Lịch khám này đã có kết quả.");
       } else {
         console.error("Lỗi khi lưu:", error);
-        showPopup("error", "Lỗi! Không thể lưu kết quả khám hoặc cập nhật bệnh nhân.");
+        showPopup(
+          "error",
+          "Lỗi! Không thể lưu kết quả khám hoặc cập nhật bệnh nhân."
+        );
       }
 
       // Trả lại nút và ẩn modal
@@ -285,7 +264,6 @@ function saveResulAppointment(ketQua, patient) {
       $("#dialog-add-result").modal("hide");
     });
 }
-
 
 // Hàm dùng chung để xử lý sự kiện
 function findLichKham(selector, callback) {
@@ -544,7 +522,7 @@ function getData() {
     .get(`/api/v1/Appointments/doctor/${bsId}`)
     .then(function (response) {
       dsLK = response.data;
-      console.log(dsLK);
+      // console.log(dsLK);
       display(dsLK);
     })
     .catch(function (error) {
