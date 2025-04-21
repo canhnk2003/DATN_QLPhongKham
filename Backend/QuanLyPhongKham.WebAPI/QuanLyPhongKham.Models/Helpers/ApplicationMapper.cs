@@ -21,7 +21,7 @@ namespace QuanLyPhongKham.Models.Helpers
         
 
 			CreateMap<DichVu, DichVuModel>().ReverseMap();
-
+            CreateMap<DanhGiaDichVu, DanhGiaDichvuModel>().ReverseMap();
 		}
 	}
 }

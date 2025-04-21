@@ -65,28 +65,6 @@ namespace QuanLyPhongKham.WebAPI.Controllers
             return StatusCode(201, res);
         }
 
-        //[HttpPut("{benhNhanId}")]
-        //public async Task<IActionResult> UpdatePatient(Guid benhNhanId, [FromBody] BenhNhanModel benhNhan)
-        //{
-        //    if(benhNhanId != benhNhan.BenhNhanId)
-        //    {
-        //        return BadRequest("Id không giống!");
-        //    }
-        //    var existingBN = await _patientService.GetByIdAsync(benhNhanId);
-        //    existingBN.HoTen = benhNhan.HoTen;
-        //    existingBN.NgaySinh = benhNhan.NgaySinh;
-        //    existingBN.LoaiGioiTinh = benhNhan.LoaiGioiTinh;
-        //    existingBN.SoDienThoai = benhNhan.SoDienThoai;
-        //    existingBN.Email = benhNhan.Email;
-        //    existingBN.DiaChi = benhNhan.DiaChi;
-        //    existingBN.TienSuBenhLy = benhNhan.TienSuBenhLy;
-        //    if (benhNhan.HinhAnh != null)
-        //    {
-        //        existingBN.HinhAnh = benhNhan.HinhAnh;
-        //    }
-        //    int res = await _patientService.UpdateAsync(_mapper.Map<BenhNhan>(existingBN));
-        //    return StatusCode(201, res);
-        //}
         [HttpPut("{benhNhanId}")]
         public async Task<IActionResult> UpdatePatient(Guid benhNhanId, [FromBody] BenhNhanModel benhNhan)
         {
