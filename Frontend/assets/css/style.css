@@ -7546,7 +7546,8 @@ a.text-purple:hover, a.text-purple:focus {
 
 .page-wrapper > .container-fluid {
   padding: 35px;
-  min-height: calc(100vh - 210px); }
+  min-height: calc(100vh - 210px); 
+}
 
 /*******************
  Footer
