@@ -365,6 +365,9 @@ namespace QuanLyPhongKham.WebAPI.Migrations
                     b.Property<int?>("DanhGia")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("LichKhamId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("NgayCapNhat")
                         .HasColumnType("datetime2");
 
@@ -379,6 +382,10 @@ namespace QuanLyPhongKham.WebAPI.Migrations
                     b.HasIndex("BacSiId");
 
                     b.HasIndex("BenhNhanId");
+
+                    b.HasIndex("LichKhamId")
+                        .IsUnique()
+                        .HasFilter("[LichKhamId] IS NOT NULL");
 
                     b.ToTable("DanhGiaDichVus");
                 });
@@ -630,9 +637,16 @@ namespace QuanLyPhongKham.WebAPI.Migrations
                         .HasForeignKey("BenhNhanId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("QuanLyPhongKham.Models.Entities.LichKham", "LichKham")
+                        .WithOne("DanhGiaDichVu")
+                        .HasForeignKey("QuanLyPhongKham.Models.Entities.DanhGiaDichVu", "LichKhamId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("BacSi");
 
                     b.Navigation("BenhNhan");
+
+                    b.Navigation("LichKham");
                 });
 
             modelBuilder.Entity("QuanLyPhongKham.Models.Entities.DichVu", b =>
@@ -704,6 +718,8 @@ namespace QuanLyPhongKham.WebAPI.Migrations
 
             modelBuilder.Entity("QuanLyPhongKham.Models.Entities.LichKham", b =>
                 {
+                    b.Navigation("DanhGiaDichVu");
+
                     b.Navigation("KetQuaKham");
                 });
 #pragma warning restore 612, 618

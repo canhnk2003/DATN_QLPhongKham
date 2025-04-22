@@ -68,13 +68,20 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         public async Task<IActionResult> Post([FromBody] AppointmentModel lichKham)
         {
             BenhNhan benhNhan = await _patientService.GetByIdAsync(lichKham.BenhNhanId);
-            benhNhan.HoTen = lichKham.BenhNhan.HoTen;
-            benhNhan.NgaySinh = lichKham.BenhNhan.NgaySinh;
-            benhNhan.Email = lichKham.BenhNhan.Email;
-            benhNhan.SoDienThoai = lichKham.BenhNhan.SoDienThoai;
-            benhNhan.TienSuBenhLy = lichKham.BenhNhan.TienSuBenhLy;
-            benhNhan.DiaChi = lichKham.BenhNhan.DiaChi;
-            benhNhan.LoaiGioiTinh = lichKham.BenhNhan.LoaiGioiTinh;
+            if (!string.IsNullOrEmpty(lichKham.BenhNhan.HoTen))
+                benhNhan.HoTen = lichKham.BenhNhan.HoTen;
+            if (!string.IsNullOrEmpty(lichKham.BenhNhan.NgaySinh.ToString()))
+                benhNhan.NgaySinh = lichKham.BenhNhan.NgaySinh;
+            if (!string.IsNullOrEmpty(lichKham.BenhNhan.Email))
+                benhNhan.Email = lichKham.BenhNhan.Email;
+            if (!string.IsNullOrEmpty(lichKham.BenhNhan.SoDienThoai))
+                benhNhan.SoDienThoai = lichKham.BenhNhan.SoDienThoai;
+            if (!string.IsNullOrEmpty(lichKham.BenhNhan.TienSuBenhLy))
+                benhNhan.TienSuBenhLy = lichKham.BenhNhan.TienSuBenhLy;
+            if (!string.IsNullOrEmpty(lichKham.BenhNhan.DiaChi))
+                benhNhan.DiaChi = lichKham.BenhNhan.DiaChi;
+            if (!string.IsNullOrEmpty(lichKham.BenhNhan.LoaiGioiTinh.ToString()))
+                benhNhan.LoaiGioiTinh = lichKham.BenhNhan.LoaiGioiTinh;
 
             lichKham.BenhNhan = benhNhan;
             int res = await _appointmentService.AddAsync(_mapper.Map<LichKham>(lichKham));
@@ -97,13 +104,20 @@ namespace QuanLyPhongKham.WebAPI.Controllers
             appointment.GioKham = lichKham.GioKham;
             appointment.TrangThaiLichKham = "Đang xử lý";
             appointment.DichVuId = lichKham.DichVuId;
-            benhNhan.HoTen = lichKham.BenhNhan.HoTen;
-            benhNhan.NgaySinh = lichKham.BenhNhan.NgaySinh;
-            benhNhan.Email = lichKham.BenhNhan.Email;
-            benhNhan.SoDienThoai = lichKham.BenhNhan.SoDienThoai;
-            benhNhan.DiaChi = lichKham.BenhNhan.DiaChi;
-            benhNhan.TienSuBenhLy = lichKham.BenhNhan.TienSuBenhLy;
-            benhNhan.LoaiGioiTinh = lichKham.BenhNhan.LoaiGioiTinh;
+            if (!string.IsNullOrEmpty(lichKham.BenhNhan.HoTen))
+                benhNhan.HoTen = lichKham.BenhNhan.HoTen;
+            if (!string.IsNullOrEmpty(lichKham.BenhNhan.NgaySinh.ToString()))
+                benhNhan.NgaySinh = lichKham.BenhNhan.NgaySinh;
+            if (!string.IsNullOrEmpty(lichKham.BenhNhan.Email))
+                benhNhan.Email = lichKham.BenhNhan.Email;
+            if (!string.IsNullOrEmpty(lichKham.BenhNhan.SoDienThoai))
+                benhNhan.SoDienThoai = lichKham.BenhNhan.SoDienThoai;
+            if (!string.IsNullOrEmpty(lichKham.BenhNhan.DiaChi))
+                benhNhan.DiaChi = lichKham.BenhNhan.DiaChi;
+            if (!string.IsNullOrEmpty(lichKham.BenhNhan.TienSuBenhLy))
+                benhNhan.TienSuBenhLy = lichKham.BenhNhan.TienSuBenhLy;
+            if (!string.IsNullOrEmpty(lichKham.BenhNhan.LoaiGioiTinh.ToString()))
+                benhNhan.LoaiGioiTinh = lichKham.BenhNhan.LoaiGioiTinh;
             appointment.BenhNhan = benhNhan;
             appointment.NgayCapNhat = DateTime.Now;
             int res = await _appointmentService.EditAsync(appointment, LichKhamId);

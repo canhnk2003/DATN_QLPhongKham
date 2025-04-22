@@ -26,19 +26,13 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../assets/css/style.css" />
     <link rel="stylesheet" href="../assets/css/content.css" />
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script src="../assets/libs/jquery/dist/jquery.min.js "></script>
     <script src="../assets/vendor/axios.min.js"></script>
     <script src="../assets/services/axios.js"></script>
-    <script src="../assets/services/appointmentService.js"></script>
+    <script src="../assets/services/serviceRatingService.js"></script>
   </head>
 
   <body>
@@ -304,12 +298,28 @@
                 placeholder="Tìm kiếm..."
               />
             </div>
-            <div class="m-toolbar-actionbar" title="Tải xuống">
-              <div class="m-toolbar-export m-toolbar-icon">
-                <i class="fas fa-download" style="color: #35a9d0"></i>
+            <div class="m-toolbar-actionbar">
+              <div
+                class="m-toolbar-view m-toolbar-icon"
+                title="Xem đánh giá trung bình"
+                data-bs-toggle="modal"
+                data-bs-target="#dialog-show-rating"
+              >
+                <i class="fa-solid fa-eye text-success" data-bs-toggle="tooltip"></i>
               </div>
-              <div class="m-toolbar-refresh m-toolbar-icon" title="Refresh">
-                <i class="fas fa-sync-alt" style="color: #35a9d0"></i>
+              <div
+                class="m-toolbar-export m-toolbar-icon"
+                title="Tải xuống"
+                data-bs-toggle="tooltip"
+              >
+                <i class="fas fa-download text-secondary"></i>
+              </div>
+              <div
+                class="m-toolbar-refresh m-toolbar-icon"
+                title="Refresh"
+                data-bs-toggle="tooltip"
+              >
+                <i class="fas fa-sync-alt text-primary"></i>
               </div>
             </div>
           </div>
@@ -339,18 +349,11 @@
                   <td style="text-align: center">Hoàng Hưng Chung</td>
                   <td style="text-align: center">Nguyễn Khắc Cảnh</td>
                   <td style="text-align: center">
-                    5 / 5 <i class="fa-solid fa-star" style="color: #fbff00"></i>
+                    5 <i class="fa-solid fa-star" style="color: #fff200"></i>
                   </td>
                   <td style="text-align: center">Nguyễn Khắc Cảnh</td>
                   <td>
                     <div class="m-table-tool">
-                      <div
-                        class="m-edit m-tool-icon"
-                        data-bs-toggle="modal"
-                        data-bs-target="#dialog-appointment-edit"
-                      >
-                        <i class="fas fa-edit text-primary"></i>
-                      </div>
                       <div
                         class="m-delete m-tool-icon"
                         data-bs-toggle="modal"
@@ -365,14 +368,13 @@
             </table>
           </div>
 
-          <!-- DIALOG EDIT APPOINTMENT -->
-          <!-- The Modal -->
-          <div class="modal fade" id="dialog-appointment-edit">
+          <!-- DIALOG HIỂN THỊ ĐÁNH GIÁ TRUNG BÌNH CỦA CÁC BÁC SĨ -->
+          <div class="modal fade" id="dialog-show-rating">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <!-- Modal Header -->
                 <div class="modal-header">
-                  <h4 class="modal-title">Sửa lịch khám</h4>
+                  <h4 class="modal-title">Xem đánh giá trung bình</h4>
                   <button
                     type="button"
                     class="btn-close"
@@ -382,85 +384,58 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                  <div class="row-item d-flex">
-                    <div class="input-item">
-                      <div class="title-input">Họ tên bệnh nhân</div>
-                      <input id="name" type="text" class="m-input" />
+                  <div class="table-responsive">
+                    <div class="input-group mb-3" style="width: 40%">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="searchInput"
+                        placeholder="Tìm kiếm bác sĩ..."
+                      />
+                      <span class="input-group-text"
+                        ><i class="fa-solid fa-magnifying-glass"></i
+                      ></span>
                     </div>
-                    <div class="input-item input-item-center">
-                      <div class="title-input">Số điện thoại</div>
-                      <input id="phone-number" type="text" class="m-input" />
-                    </div>
-                    <div class="input-item">
-                      <div class="title-input">Địa chỉ email</div>
-                      <input id="email" type="email" class="m-input" />
-                    </div>
-                  </div>
-                  <div class="row-item d-flex">
-                    <div class="input-item">
-                      <div class="title-input">Giới tính</div>
-                      <select name="gender" id="gender">
-                        <option value="">Chọn giới tính</option>
-                        <option value="0">Nam</option>
-                        <option value="1">Nữ</option>
-                        <option value="2">Khác</option>
-                      </select>
-                    </div>
-                    <div class="input-item input-item-center">
-                      <div class="title-input">Ngày sinh</div>
-                      <input id="dOBirth" type="date" class="m-input" />
-                    </div>
-                    <div class="input-item">
-                      <div class="title-input">Khoa</div>
-                      <select name="department" id="department">
-                        <option value="">Chọn khoa</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row-item d-flex">
-                    <div class="input-item">
-                      <div class="title-input">Bác sĩ</div>
-                      <select name="doctor" id="doctor">
-                        <option value="">Chọn bác sĩ</option>
-                      </select>
-                    </div>
-                    <div class="input-item input-item-center">
-                      <div class="title-input">Ca khám</div>
-                      <select
-                        name="appointmentTime"
-                        id="appointmentTime"
-                        disabled
-                      >
-                        <option value="">Chọn ca khám</option>
-                      </select>
-                    </div>
-                    <div class="input-item">
-                      <div class="title-input">Ngày khám</div>
-                      <input id="appointmentDate" type="date" class="m-input" />
-                    </div>
-                  </div>
-                  <div class="row-item-long">
-                    <div class="input-item">
-                      <div class="title-input">Dịch vụ</div>
-                      <select name="service" id="service">
-                        <option value="">Chọn dịch vụ</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row-item-long">
-                    <div class="input-item">
-                      <div class="title-input">Địa chỉ</div>
-                      <input id="address" type="text" class="m-input" />
-                    </div>
-                  </div>
-                  <div class="row-item-long">
-                    <div class="input-item">
-                      <div class="title-input">Tiền sử bệnh lý</div>
-                      <input id="medicalHistory" type="text" class="m-input" />
-                    </div>
+                    <table
+                      class="table table-hover table-striped text-center"
+                      id="tblRatingAverage"
+                    >
+                      <thead class="table-success">
+                        <tr>
+                          <th class="align-middle" scope="col">STT</th>
+                          <th class="align-middle" scope="col">Bác sĩ</th>
+                          <th class="align-middle" scope="col">
+                            Tổng số lượt đánh giá
+                          </th>
+                          <th class="align-middle" scope="col">
+                            Đánh giá trung bình
+                          </th>
+                          <th class="align-middle" scope="col">Xếp hạng</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="align-middle">1</td>
+                          <td class="align-middle">Nguyễn Văn A</td>
+                          <td class="align-middle">5</td>
+                          <td class="align-middle">
+                            4.5
+                            <i
+                              class="fa-solid fa-star"
+                              style="color: #fff200"
+                            ></i>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>Trần Thị B</td>
+                          <td>10</td>
+                          <td>4.2</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
-
                 <!-- Modal footer -->
                 <div
                   class="modal-footer"
@@ -469,44 +444,6 @@
                   <button
                     type="button"
                     class="btn btn-light me-2"
-                    data-bs-dismiss="modal"
-                  >
-                    Hủy
-                  </button>
-                  <button type="button" id="btnEdit" class="btn btn-success">
-                    Lưu
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- DIALOG HIỂN THỊ LỖI -->
-          <div class="modal fade" id="dialog-errorList">
-            <div class="modal-dialog modal-md">
-              <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                  <h4 class="modal-title">Lỗi</h4>
-                  <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                  ></button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                  <div class="content"></div>
-                </div>
-                <!-- Modal footer -->
-                <div
-                  class="modal-footer"
-                  style="background: rgb(232, 232, 232)"
-                >
-                  <button
-                    id="btnClose"
-                    type="button"
-                    class="btn btn-success"
                     data-bs-dismiss="modal"
                   >
                     Đóng
@@ -531,7 +468,9 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                  <div class="content">Bạn có chắc chắn muốn xóa?</div>
+                  <div class="content">
+                    Bạn có chắc chắn muốn xóa đánh giá này?
+                  </div>
                 </div>
                 <!-- Modal footer -->
                 <div
@@ -571,28 +510,6 @@
               </div>
               <div class="m-popup-tool">
                 <div class="m-popup-undo">Xem hướng dẫn</div>
-                <div class="m-popup-close"></div>
-              </div>
-            </div>
-            <div class="m-popup-item m-popup-warning">
-              <div class="m-popup-icon m-popup-icon-warning"></div>
-              <div class="m-popup-text m-popup-text-warning">
-                <span>Cảnh báo! </span>Dữ liệu của bạn đã bị thay đổi bởi người
-                dùng khác
-              </div>
-              <div class="m-popup-tool">
-                <div class="m-popup-undo"></div>
-                <div class="m-popup-close"></div>
-              </div>
-            </div>
-            <div class="m-popup-item m-popup-info">
-              <div class="m-popup-icon m-popup-icon-info"></div>
-              <div class="m-popup-text m-popup-text-info">
-                <span>Thông tin! </span>Bạn nên đọc kỹ nội dung trước khi phê
-                duyệt.
-              </div>
-              <div class="m-popup-tool">
-                <div class="m-popup-undo"></div>
                 <div class="m-popup-close"></div>
               </div>
             </div>
