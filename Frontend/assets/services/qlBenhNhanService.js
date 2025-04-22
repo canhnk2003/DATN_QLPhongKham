@@ -139,10 +139,7 @@ function display(data) {
 
     data.forEach((item, index) => {
         const row = `
-      <tr bn-id="${item.benhNhanId}">
-        <td class="chk">
-          <input type="checkbox" />
-        </td>
+        <tr bn-id="${item.benhNhanId}">
         <td class="m-data-left">${index + 1}</td>
         <td class="m-data-left">${item.maBenhNhan}</td>
         <td class="m-data-left">${item.hoTen}</td>
@@ -151,15 +148,15 @@ function display(data) {
         <td class="m-data-left">${item.email || "Chưa có email"}</td>
         <td class="m-data-left">${item.diaChi || "Chưa có địa chỉ"}</td>
         <td>
-                  <div class="m-table-tool">
-                    <div class="m-edit m-tool-icon" data-bs-toggle="modal" data-bs-target="#edit-patient" data-id="${item.benhNhanId}">
-                      <i class="fas fa-edit text-primary"></i>
-                    </div>
-                    <div class="m-delete m-tool-icon" data-bs-toggle="modal" data-bs-target="#confirm-delete">
-                      <i class="fas fa-trash-alt text-danger"></i>
-                    </div>
-                  </div>
-                </td>
+            <div class="m-table-tool">
+            <div class="m-edit m-tool-icon" data-bs-toggle="modal" data-bs-target="#edit-patient" data-id="${item.benhNhanId}">
+                <i class="fas fa-edit text-primary"></i>
+            </div>
+            <div class="m-delete m-tool-icon" data-bs-toggle="modal" data-bs-target="#confirm-delete">
+                <i class="fas fa-trash-alt text-danger"></i>
+            </div>
+            </div>
+        </td>
       </tr>
     `;
         tableBody.innerHTML += row; // Thêm hàng vào bảng

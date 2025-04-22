@@ -27,8 +27,6 @@
     <link rel="stylesheet" href="../assets/css/style.css" />
     <link rel="stylesheet" href="../assets/css/content.css" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
     <script src="../assets/libs/jquery/dist/jquery.min.js "></script>
     <script src="../assets/vendor/axios.min.js"></script>
     <script src="../assets/services/axios.js"></script>
@@ -233,6 +231,7 @@
                   ><span class="hide-menu">Dịch vụ</span></a
                 >
               </li>
+              <li class="list-divider"></li>
               <li class="nav-small-cap">
                 <span class="hide-menu">Khách hàng</span>
               </li>
@@ -306,13 +305,6 @@
                 data-bs-target="#dialog-show-rating"
               >
                 <i class="fa-solid fa-eye text-success" data-bs-toggle="tooltip"></i>
-              </div>
-              <div
-                class="m-toolbar-export m-toolbar-icon"
-                title="Tải xuống"
-                data-bs-toggle="tooltip"
-              >
-                <i class="fas fa-download text-secondary"></i>
               </div>
               <div
                 class="m-toolbar-refresh m-toolbar-icon"
@@ -408,7 +400,10 @@
                             Tổng số lượt đánh giá
                           </th>
                           <th class="align-middle" scope="col">
-                            Đánh giá trung bình
+                            Trung bình
+                          </th>
+                          <th class="align-middle" scope="col">
+                            Số sao
                           </th>
                           <th class="align-middle" scope="col">Xếp hạng</th>
                         </tr>

@@ -29,7 +29,7 @@ namespace QuanLyPhongKham.Business.Services
             entity.NgayCapNhat = DateTime.Now;
             entity.NgayTao = DateTime.Now;
             int res = await _serviceRatingRepository.AddAsync(entity);
-            if(res > 0)
+            if (res > 0)
             {
                 return res;
             }
@@ -42,7 +42,7 @@ namespace QuanLyPhongKham.Business.Services
         public async Task<int> EditAsync(DanhGiaDichVu danhGia, Guid id)
         {
             var rating = await _serviceRatingRepository.GetByIdAsync(id);
-            if(rating == null)
+            if (rating == null)
             {
                 throw new ErrorNotFoundException();
             }
@@ -52,7 +52,7 @@ namespace QuanLyPhongKham.Business.Services
                 rating.PhanHoi = danhGia.PhanHoi;
                 rating.NgayCapNhat = DateTime.Now;
                 var res = await _serviceRatingRepository.UpdateAsync(rating);
-                if(res > 0)
+                if (res > 0)
                 {
                     return res;
                 }
@@ -77,19 +77,54 @@ namespace QuanLyPhongKham.Business.Services
                 DanhGia = d.DanhGia
             });
 
-            // Nhóm theo tên bác sĩ, tính trung bình
-            var result = dataWithNames
-                .Where(x => !string.IsNullOrEmpty(x.TenBacSi)) // bỏ qua nếu không có tên bác sĩ
+            // Nhóm theo tên bác sĩ, tính trung bình và số lượt
+            var grouped = dataWithNames
+                .Where(x => !string.IsNullOrEmpty(x.TenBacSi))
                 .GroupBy(x => x.TenBacSi)
                 .Select(g => new ThongKeDanhGiaModel
                 {
                     TenBacSi = g.Key,
-                    SoSaoTrungBinh = Math.Round(g.Average(x =>(double) x.DanhGia), 1),
+                    SoSaoTrungBinh = Math.Round(g.Average(x => (double)x.DanhGia), 1),
                     SoLuotDanhGia = g.Count()
-                });
+                })
+                .OrderByDescending(x => x.SoSaoTrungBinh)
+                .ThenByDescending(x => x.SoLuotDanhGia)
+                .ToList();
+
+            int tongSoBacSi = grouped.Count;
+
+            for (int i = 0; i < grouped.Count; i++)
+            {
+                grouped[i].TongSoBacSi = tongSoBacSi;
+                grouped[i].ThuHang = i + 1;
+            }
+
+            return grouped;
+        }
+
+        public async Task<IEnumerable<DanhGiaDichvuModel>> GetAllRatingByDoctor(Guid doctorId)
+        {
+            var ratings = await _serviceRatingRepository.GetAllAsync();
+            var doctor = await _doctorRepository.GetByIdAsync(doctorId);
+            var patients = await _patientRepository.GetAllAsync();
+
+            var patientDict = patients.ToDictionary(b => b.BenhNhanId, b => b.HoTen);
+
+            var result = ratings
+                .Where(x => x.BacSiId == doctorId)
+                .Select(d => new DanhGiaDichvuModel
+                {
+                    DanhGiaId = d.DanhGiaId,
+                    TenBacSi = doctor?.HoTen,
+                    TenBenhNhan = d.BenhNhanId.HasValue ? patientDict.GetValueOrDefault(d.BenhNhanId.Value) : null,
+                    DanhGia = d.DanhGia,
+                    PhanHoi = d.PhanHoi
+                })
+                .OrderByDescending(x => x.NgayCapNhat);
 
             return result;
         }
+
 
         public async Task<IEnumerable<DanhGiaDichvuModel>> GetAllWithNameAsync()
         {
@@ -110,6 +145,49 @@ namespace QuanLyPhongKham.Business.Services
             });
 
             return result;
+        }
+
+        public async Task<ThongKeDanhGiaModel?> GetRatingByDoctor(Guid doctorId)
+        {
+            var ratings = await _serviceRatingRepository.GetAllAsync();
+            var doctors = await _doctorRepository.GetAllAsync();
+
+            var doctorDict = doctors.ToDictionary(b => b.BacSiId, b => b.HoTen);
+
+            // Gắn tên bác sĩ cho từng đánh giá
+            var dataWithNames = ratings
+                .Where(x => x.BacSiId.HasValue && doctorDict.ContainsKey(x.BacSiId.Value))
+                .Select(d => new
+                {
+                    BacSiId = d.BacSiId.Value,
+                    TenBacSi = doctorDict[d.BacSiId.Value],
+                    DanhGia = d.DanhGia
+                });
+
+            // Nhóm theo bác sĩ, tính trung bình
+            var grouped = dataWithNames
+                .GroupBy(x => new { x.BacSiId, x.TenBacSi })
+                .Select(g => new ThongKeDanhGiaModel
+                {
+                    BacSiId = g.Key.BacSiId,
+                    TenBacSi = g.Key.TenBacSi,
+                    SoSaoTrungBinh = Math.Round(g.Average(x => (double)x.DanhGia), 1),
+                    SoLuotDanhGia = g.Count()
+                })
+                .OrderByDescending(x => x.SoSaoTrungBinh)
+                .ThenByDescending(x => x.SoLuotDanhGia)
+                .ToList();
+
+            int tongSoBacSi = grouped.Count;
+
+            for (int i = 0; i < grouped.Count; i++)
+            {
+                grouped[i].TongSoBacSi = tongSoBacSi;
+                grouped[i].ThuHang = i + 1;
+            }
+
+            // Lấy đúng bác sĩ được yêu cầu
+            return grouped.FirstOrDefault(x => x.BacSiId == doctorId);
         }
     }
 }
