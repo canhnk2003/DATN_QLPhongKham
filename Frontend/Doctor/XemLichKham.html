@@ -238,21 +238,22 @@
                 <span class="hide-menu">Quản lý</span>
               </li>
 
-              <li class="sidebar-item selected">
-                <a
-                  class="sidebar-link active"
-                  href="XemLichKham.html"
-                  aria-expanded="false"
-                  ><i data-feather="user" class="feather-icon"></i
-                  ><span class="hide-menu">Lịch khám</span></a
-                >
-              </li>
               <li class="sidebar-item">
                 <a
                   class="sidebar-link sidebar-link"
+                  href="XemLichKham.html"
+                  aria-expanded="false"
+                  ><i data-feather="calendar" class="feather-icon"></i
+                  ><span class="hide-menu">Lịch khám</span></a
+                >
+              </li>
+
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
                   href="XemBenhNhan.html"
                   aria-expanded="false"
-                  ><i data-feather="users" class="feather-icon"></i
+                  ><i data-feather="user" class="feather-icon"></i
                   ><span class="hide-menu">Bệnh nhân</span></a
                 >
               </li>
@@ -261,8 +262,21 @@
                   class="sidebar-link sidebar-link"
                   href="QLKhamBenh.html"
                   aria-expanded="false"
-                  ><i data-feather="users" class="feather-icon"></i
+                  ><i data-feather="file-plus" class="feather-icon"></i
                   ><span class="hide-menu">Kết quả khám</span></a
+                >
+              </li>
+              <li class="list-divider"></li>
+              <li class="nav-small-cap">
+                <span class="hide-menu">Khách hàng</span>
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link sidebar-link"
+                  href="XemDanhGia.html"
+                  aria-expanded="false"
+                  ><i data-feather="star" class="feather-icon"></i
+                  ><span class="hide-menu">Đánh giá - Phản hồi</span></a
                 >
               </li>
 
@@ -270,13 +284,12 @@
               <li class="nav-small-cap">
                 <span class="hide-menu">Người dùng</span>
               </li>
-
               <li class="sidebar-item">
                 <a
                   class="sidebar-link sidebar-link"
                   href="ThongTinCaNhanBacSi.html"
                   aria-expanded="false"
-                  ><i data-feather="user" class="feather-icon"></i
+                  ><i data-feather="edit-3" class="feather-icon"></i
                   ><span class="hide-menu">Thông tin cá nhân</span></a
                 >
               </li>
@@ -572,7 +585,10 @@
                 <!-- Modal body -->
                 <div class="modal-body">
                   <div class="row-item d-flex">
-                    <div class="input-item" style="width: 49%; margin-right: 2%;">
+                    <div
+                      class="input-item"
+                      style="width: 49%; margin-right: 2%"
+                    >
                       <div class="title-input">Tiền sử bệnh lý</div>
                       <input
                         id="medicalHistory"
@@ -581,7 +597,7 @@
                         required
                       />
                     </div>
-                    <div class="input-item" style="width: 49%;">
+                    <div class="input-item" style="width: 49%">
                       <div class="title-input">Chẩn đoán</div>
                       <input
                         id="diagnose"
@@ -592,24 +608,44 @@
                     </div>
                   </div>
                   <div class="row-item d-flex">
-                    <div class="input-item" style="width: 49%; margin-right: 2%;">
+                    <div
+                      class="input-item"
+                      style="width: 49%; margin-right: 2%"
+                    >
                       <div class="title-input">Chỉ định thuốc</div>
                       <input id="prescription" type="text" class="m-input" />
                     </div>
-                    <div class="input-item" style="width: 49%;">
+                    <div class="input-item" style="width: 49%">
                       <div class="title-input">Ghi chú</div>
                       <input id="note" type="text" class="m-input" />
                     </div>
                   </div>
                   <div class="mt-3 text-end">
-                    <button class="btn btn-primary" id="btnAddRow" title="Thêm thuốc và ghi chú">Thêm</button>
-                    <button class="btn btn-danger ms-2" id="btnDeleteRow" title="Xóa thuốc và ghi chú">Xóa</button>
+                    <button
+                      class="btn btn-primary"
+                      id="btnAddRow"
+                      title="Thêm thuốc và ghi chú"
+                    >
+                      Thêm
+                    </button>
+                    <button
+                      class="btn btn-danger ms-2"
+                      id="btnDeleteRow"
+                      title="Xóa thuốc và ghi chú"
+                    >
+                      Xóa
+                    </button>
                   </div>
                   <div class="table-responsive mt-4">
-                    <table class="table table-bordered table-striped" id="resultTable">
+                    <table
+                      class="table table-bordered table-striped"
+                      id="resultTable"
+                    >
                       <thead class="table-light">
                         <tr>
-                          <th style="width: 30px;"><input type="checkbox" id="checkAll" /></th>
+                          <th style="width: 30px">
+                            <input type="checkbox" id="checkAll" />
+                          </th>
                           <th>STT</th>
                           <th>Chỉ định thuốc</th>
                           <th>Ghi chú</th>
@@ -618,7 +654,6 @@
                       <tbody></tbody>
                     </table>
                   </div>
-
                 </div>
 
                 <!-- Modal footer -->
@@ -636,7 +671,8 @@
                   <button
                     type="button"
                     class="btn btn-success"
-                    id="btnAddResult" title="Tạo kết quả khám"
+                    id="btnAddResult"
+                    title="Tạo kết quả khám"
                   >
                     Tạo
                   </button>

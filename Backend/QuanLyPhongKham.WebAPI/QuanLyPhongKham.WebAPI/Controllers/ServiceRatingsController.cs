@@ -8,7 +8,7 @@ using QuanLyPhongKham.Models.Models;
 
 namespace QuanLyPhongKham.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class ServiceRatingsController : ControllerBase
     {
@@ -22,18 +22,32 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             var ratings = await _serviceRatingService.GetAllWithNameAsync();
             return Ok(ratings);
         }
         [HttpGet("average")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllWithAverage()
         {
             var ratings = await _serviceRatingService.GetAllAverageAsync();
             return Ok(ratings);
+        }
+        [HttpGet("doctor/{doctorId}")]
+        //[Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllByDoctor(Guid doctorId)
+        {
+            var ratings = await _serviceRatingService.GetAllRatingByDoctor(doctorId);
+            return Ok(ratings);
+        }
+        [HttpGet("average/{doctorId}")]
+        //[Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetWithAverageByDoctor(Guid doctorId)
+        {
+            var rating = await _serviceRatingService.GetRatingByDoctor(doctorId);
+            return Ok(rating);
         }
 
         [HttpGet("{DanhGiaId}")]
@@ -51,6 +65,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
             return StatusCode(201, res);
         }
 
+        [Authorize(Roles = "Patient")]
         [HttpPut("{DanhGiaId}")]
         public async Task<IActionResult> Update(Guid DanhGiaId, [FromBody] DanhGiaDichvuModel danhGia)
         {

@@ -26,9 +26,6 @@ function display(data) {
     data.forEach((item, index) => {
         const row = `
       <tr bn-id="${item.benhNhanId}">
-        <td class="chk">
-          <input type="checkbox" />
-        </td>
         <td class="m-data-left">${index + 1}</td>
         <td class="m-data-left">${item.maBenhNhan}</td>
         <td class="m-data-left">${item.hoTen}</td>

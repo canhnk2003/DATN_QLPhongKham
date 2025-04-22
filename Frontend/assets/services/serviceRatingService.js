@@ -23,11 +23,6 @@ $(document).ready(async function () {
     getData();
   });
 
-  //Xử lý sự kiện khi nhấn nút Export
-  $(".m-toolbar-export").click(function () {
-    exportToExcel();
-  });
-
   // Tìm kiếm bảng đánh giá chi tiết
   initTableSearch(".m-input-search", "#tblRating");
 
@@ -83,6 +78,7 @@ async function displayDGByDoctor(data) {
                   item.soSaoTrungBinh
                 } / 5 ">${item.soSaoTrungBinh}</span></td>
                 <td class="align-middle">${star}</td>
+                <td class="align-middle">${item.thuHang} / ${item.tongSoBacSi}</td>
             </tr>
           `;
     tbody.append(row);

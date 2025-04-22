@@ -204,7 +204,6 @@ function displayServices(data) {
         const khoaName = khoa ? khoa.tenKhoa : "Chưa phân khoa";
         const serviceRow = `
             <tr>
-                <td class="chk"><input type="checkbox" /></td>
                 <td empIdCell style="display: none">${service.dichVuId}</td>
                 <td>${index + 1}</td>
                 <td>${service.tenDichVu}</td>
