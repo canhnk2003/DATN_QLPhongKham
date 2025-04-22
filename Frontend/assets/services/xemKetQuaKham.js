@@ -53,7 +53,7 @@ function generateMedicalExaminationForm(ketQuaKhamId) {
   // Kẻ dòng bên dưới
   doc.setLineWidth(0.05);
   doc.setDrawColor(0); // màu đen
-  doc.line(115, 29, 178, 29);
+  doc.line(115, 29, 173, 29);
 
   doc.setFontSize(14);
   doc.text("PHIẾU KẾT QUẢ KHÁM BỆNH", 70, 43);

@@ -1,4 +1,5 @@
 ﻿using QuanLyPhongKham.Models.Entities;
+using QuanLyPhongKham.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace QuanLyPhongKham.Data.Interfaces
 {
     public interface IServiceRatingRepository:IBaseRepository<DanhGiaDichVu>
     {
+        //Task<IEnumerable<DanhGiaDichVu>>? GetRatingsByDoctor(Guid bacSiId);
     }
 }

@@ -50,11 +50,11 @@ namespace QuanLyPhongKham.Data.Context
 
             modelBuilder.Entity<DanhGiaDichVu>()
                 .HasKey(d => d.DanhGiaId);
-            //modelBuilder.Entity<DanhGiaDichVu>()
-            //    .HasOne<BenhNhan>()
-            //    .WithOne()
-            //    .HasForeignKey<BenhNhan>(b => b.BenhNhanId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<DanhGiaDichVu>()
+                .HasOne(dg => dg.LichKham)
+                .WithOne(lk => lk.DanhGiaDichVu)
+                .HasForeignKey<DanhGiaDichVu>(b => b.LichKhamId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Mối quan hệ giữa BenhNhan và LichKham
             modelBuilder.Entity<BenhNhan>()
@@ -63,7 +63,7 @@ namespace QuanLyPhongKham.Data.Context
                 .HasForeignKey(l => l.BenhNhanId)
                 .OnDelete(DeleteBehavior.Cascade); // Đổi thành Restrict
 
- 
+
 
             // Mối quan hệ giữa BacSi và LichKham
             modelBuilder.Entity<BacSi>()
@@ -111,5 +111,5 @@ namespace QuanLyPhongKham.Data.Context
                 .WithMany(d => d.BacSiDichVus) // Một DichVu có nhiều BacSiDichVu
                 .HasForeignKey(bsdv => bsdv.DichVuId); // Khóa ngoại đến DichVuId
         }
-       }
+    }
 }

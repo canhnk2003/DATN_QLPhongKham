@@ -25,9 +25,15 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
-            var ratings = await _serviceRatingService.GetAllAsync();
-            ratings = ratings.OrderByDescending(l => l.NgayCapNhat).ToList();
-            return Ok(_mapper.Map<IEnumerable<DanhGiaDichvuModel>>(ratings));
+            var ratings = await _serviceRatingService.GetAllWithNameAsync();
+            return Ok(ratings);
+        }
+        [HttpGet("average")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllWithAverage()
+        {
+            var ratings = await _serviceRatingService.GetAllAverageAsync();
+            return Ok(ratings);
         }
 
         [HttpGet("{DanhGiaId}")]

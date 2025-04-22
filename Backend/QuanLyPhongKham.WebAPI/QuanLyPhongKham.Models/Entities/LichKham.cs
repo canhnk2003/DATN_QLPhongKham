@@ -25,5 +25,7 @@ namespace QuanLyPhongKham.Models.Entities
         public BacSi BacSi { get; set; }
         public virtual KetQuaKham? KetQuaKham { get; set; }
 
+        public DanhGiaDichVu? DanhGiaDichVu { get; set; }
+
     }
 }

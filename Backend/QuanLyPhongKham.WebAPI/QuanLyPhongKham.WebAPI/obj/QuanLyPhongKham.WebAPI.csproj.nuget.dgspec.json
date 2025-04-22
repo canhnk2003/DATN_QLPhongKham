@@ -327,10 +327,6 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "EntityFramework": {
-              "target": "Package",
-              "version": "[6.0.0, )"
-            },
             "Google.Apis": {
               "target": "Package",
               "version": "[1.69.0, )"

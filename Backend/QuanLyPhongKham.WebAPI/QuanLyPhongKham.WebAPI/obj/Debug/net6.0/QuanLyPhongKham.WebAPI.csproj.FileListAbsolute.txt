@@ -154,7 +154,6 @@ D:\DATN\DATN_QLPhongKham\Backend\QuanLyPhongKham.WebAPI\QuanLyPhongKham.WebAPI\o
 D:\DATN\DATN_QLPhongKham\Backend\QuanLyPhongKham.WebAPI\QuanLyPhongKham.WebAPI\obj\Debug\net6.0\QuanLyPhongKham.WebAPI.AssemblyInfoInputs.cache
 D:\DATN\DATN_QLPhongKham\Backend\QuanLyPhongKham.WebAPI\QuanLyPhongKham.WebAPI\obj\Debug\net6.0\QuanLyPhongKham.WebAPI.AssemblyInfo.cs
 D:\DATN\DATN_QLPhongKham\Backend\QuanLyPhongKham.WebAPI\QuanLyPhongKham.WebAPI\obj\Debug\net6.0\QuanLyPhongKham.WebAPI.csproj.CoreCompileInputs.cache
-D:\DATN\DATN_QLPhongKham\Backend\QuanLyPhongKham.WebAPI\QuanLyPhongKham.WebAPI\obj\Debug\net6.0\QuanLyPhongKham.WebAPI.MvcApplicationPartsAssemblyInfo.cs
 D:\DATN\DATN_QLPhongKham\Backend\QuanLyPhongKham.WebAPI\QuanLyPhongKham.WebAPI\obj\Debug\net6.0\QuanLyPhongKham.WebAPI.MvcApplicationPartsAssemblyInfo.cache
 D:\DATN\DATN_QLPhongKham\Backend\QuanLyPhongKham.WebAPI\QuanLyPhongKham.WebAPI\obj\Debug\net6.0\staticwebassets\msbuild.QuanLyPhongKham.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
 D:\DATN\DATN_QLPhongKham\Backend\QuanLyPhongKham.WebAPI\QuanLyPhongKham.WebAPI\obj\Debug\net6.0\staticwebassets\msbuild.build.QuanLyPhongKham.WebAPI.props
@@ -172,3 +171,4 @@ D:\DATN\DATN_QLPhongKham\Backend\QuanLyPhongKham.WebAPI\QuanLyPhongKham.WebAPI\o
 D:\DATN\DATN_QLPhongKham\Backend\QuanLyPhongKham.WebAPI\QuanLyPhongKham.WebAPI\obj\Debug\net6.0\ref\QuanLyPhongKham.WebAPI.dll
 D:\DATN\DATN_QLPhongKham\Backend\QuanLyPhongKham.WebAPI\QuanLyPhongKham.WebAPI\bin\Debug\net6.0\Google.Apis.dll
 D:\DATN\DATN_QLPhongKham\Backend\QuanLyPhongKham.WebAPI\QuanLyPhongKham.WebAPI\bin\Debug\net6.0\Google.Apis.Core.dll
+D:\DATN\DATN_QLPhongKham\Backend\QuanLyPhongKham.WebAPI\QuanLyPhongKham.WebAPI\obj\Debug\net6.0\QuanLyPhongKham.WebAPI.MvcApplicationPartsAssemblyInfo.cs
