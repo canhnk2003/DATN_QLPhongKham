@@ -205,7 +205,7 @@ function showPopup(type, message) {
   });
 }
 
-//Xử lý Thêm lịch khám mới
+//Xử lý Sửa lịch khám
 function editAppointment() {
   const patient = {
     maBenhNhan: "",

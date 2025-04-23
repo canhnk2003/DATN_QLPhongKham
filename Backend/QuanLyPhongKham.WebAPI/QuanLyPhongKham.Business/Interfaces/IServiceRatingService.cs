@@ -35,6 +35,19 @@ namespace QuanLyPhongKham.Business.Interfaces
         /// <returns></returns>
 
         Task<IEnumerable<DanhGiaDichvuModel>> GetAllRatingByDoctor(Guid doctorId);
+
+        /// <summary>
+        /// Lấy ra 1 đánh giá theo bác sĩ id
+        /// </summary>
+        /// <param name="doctorId"></param>
+        /// <returns></returns>
         Task<ThongKeDanhGiaModel> GetRatingByDoctor(Guid doctorId);
+
+        /// <summary>
+        /// Lấy ra đánh giá theo lichkhamid
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        //Task<DanhGiaDichVu> GetRatingByAppointmentId(Guid id);
     }
 }

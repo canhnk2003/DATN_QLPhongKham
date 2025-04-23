@@ -33,8 +33,8 @@ $(document).ready(async function () {
     chanDoan.val(result.chanDoan);
     chiDinhThuoc.val("");
     ghiChu.val("");
-    prescriptionStr = result.chiDinhThuoc;
-    noteStr = result.ghiChu;
+    const prescriptionStr = result.chiDinhThuoc;
+    const noteStr = result.ghiChu;
 
     //Tách prescriptionStr, noteStr và gắn vào mảng
     prescriptions = prescriptionStr.split(",").map((x) => x.trim());

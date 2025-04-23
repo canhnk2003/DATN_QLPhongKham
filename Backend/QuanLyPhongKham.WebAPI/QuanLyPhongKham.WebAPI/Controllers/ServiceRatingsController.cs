@@ -51,11 +51,18 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         }
 
         [HttpGet("{DanhGiaId}")]
-        public async Task<IActionResult> GetAppointmentById(Guid DanhGiaId)
+        public async Task<IActionResult> GetRatingById(Guid DanhGiaId)
         {
             var rating = await _serviceRatingService.GetByIdAsync(DanhGiaId);
             return Ok(_mapper.Map<DanhGiaDichvuModel>(rating));
         }
+
+        //[HttpGet("appointment/{AppointmentId}")]
+        //public async Task<IActionResult> GetRatingByAppointmentId(Guid AppointmentId)
+        //{
+        //    var rating = await _serviceRatingService.GetRatingByAppointmentId(AppointmentId);
+        //    return Ok(_mapper.Map<DanhGiaDichvuModel>(rating));
+        //}
 
         [HttpPost]
         [Authorize(Roles = "Patient")]

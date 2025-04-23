@@ -10,6 +10,6 @@ namespace QuanLyPhongKham.Data.Interfaces
 {
     public interface IServiceRatingRepository:IBaseRepository<DanhGiaDichVu>
     {
-        //Task<IEnumerable<DanhGiaDichVu>>? GetRatingsByDoctor(Guid bacSiId);
+        //Task<DanhGiaDichVu>? GetRatingByAppointmentId(Guid id);
     }
 }
