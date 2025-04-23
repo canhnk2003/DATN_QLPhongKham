@@ -48,9 +48,20 @@ namespace QuanLyPhongKham.Business.Services
             }
             else
             {
-                rating.DanhGia = danhGia.DanhGia;
-                rating.PhanHoi = danhGia.PhanHoi;
-                rating.NgayCapNhat = DateTime.Now;
+                if (!string.IsNullOrEmpty(danhGia.BenhNhanId.ToString()))
+                    rating.BenhNhanId = danhGia.BenhNhanId;
+                if (!string.IsNullOrEmpty(danhGia.BacSiId.ToString()))
+                    rating.BacSiId = danhGia.BacSiId;
+                if (!string.IsNullOrEmpty(danhGia.LichKhamId.ToString()))
+                    rating.LichKhamId = danhGia.LichKhamId;
+                if (!string.IsNullOrEmpty(danhGia.DanhGia.ToString()))
+                    rating.DanhGia = danhGia.DanhGia;
+                if (!string.IsNullOrEmpty(danhGia.PhanHoi))
+                    rating.PhanHoi = danhGia.PhanHoi;
+                if (!string.IsNullOrEmpty(danhGia.NgayCapNhat.ToString()))
+                    rating.NgayCapNhat = DateTime.Now;
+                if (!string.IsNullOrEmpty(danhGia.NgayTao.ToString()))
+                    rating.NgayTao = danhGia.NgayTao;
                 var res = await _serviceRatingRepository.UpdateAsync(rating);
                 if (res > 0)
                 {
@@ -138,6 +149,7 @@ namespace QuanLyPhongKham.Business.Services
             var result = ratings.Select(d => new DanhGiaDichvuModel
             {
                 DanhGiaId = d.DanhGiaId,
+                LichKhamId = d.LichKhamId,
                 TenBacSi = d.BacSiId.HasValue ? doctorDict.GetValueOrDefault(d.BacSiId.Value) : null,
                 TenBenhNhan = d.BenhNhanId.HasValue ? patientDict.GetValueOrDefault(d.BenhNhanId.Value) : null,
                 DanhGia = d.DanhGia,
@@ -146,6 +158,20 @@ namespace QuanLyPhongKham.Business.Services
 
             return result;
         }
+
+        //public async Task<DanhGiaDichVu> GetRatingByAppointmentId(Guid id)
+        //{
+        //    var ratings = await _serviceRatingRepository.GetAllAsync();
+        //    var rating = ratings.FirstOrDefault(x=>x.LichKhamId == id);
+        //    if(rating == null)
+        //    {
+        //        throw new ErrorNotFoundException();
+        //    }
+        //    else
+        //    {
+        //        return rating;
+        //    }
+        //}
 
         public async Task<ThongKeDanhGiaModel?> GetRatingByDoctor(Guid doctorId)
         {
