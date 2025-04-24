@@ -159,20 +159,6 @@ namespace QuanLyPhongKham.Business.Services
             return result;
         }
 
-        //public async Task<DanhGiaDichVu> GetRatingByAppointmentId(Guid id)
-        //{
-        //    var ratings = await _serviceRatingRepository.GetAllAsync();
-        //    var rating = ratings.FirstOrDefault(x=>x.LichKhamId == id);
-        //    if(rating == null)
-        //    {
-        //        throw new ErrorNotFoundException();
-        //    }
-        //    else
-        //    {
-        //        return rating;
-        //    }
-        //}
-
         public async Task<ThongKeDanhGiaModel?> GetRatingByDoctor(Guid doctorId)
         {
             var ratings = await _serviceRatingRepository.GetAllAsync();

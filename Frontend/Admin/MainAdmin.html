@@ -39,6 +39,19 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+      .table-scroll {
+        max-height: 330px; /* khoảng này trừ đi header & padding */
+        overflow-y: auto;
+      }
+
+      /* Cố định thead */
+      .sticky-header th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+    </style>
   </head>
 
   <body>
@@ -177,28 +190,6 @@
                     <span class="text-dark" id="displayUser">Admin</span></span
                   >
                 </a>
-                <!-- <div class="dropdown-menu dropdown-menu-end user-dd animated flipInY">
-                                <a class="dropdown-item my-2" href="javascript:void(0)"><i data-feather="user"
-                                        class="svg-icon mr-2 ml-1"></i>
-                                    My Profile</a>
-                                <a class="dropdown-item my-2" href="javascript:void(0)"><i data-feather="credit-card"
-                                        class="svg-icon mr-2 ml-1"></i>
-                                    My Balance</a>
-                                <a class="dropdown-item my-2" href="javascript:void(0)"><i data-feather="mail"
-                                        class="svg-icon mr-2 ml-1"></i>
-                                    Inbox</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="settings"
-                                        class="svg-icon mr-2 ml-1"></i>
-                                    Account Setting</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)"><i data-feather="power"
-                                        class="svg-icon mr-2 ml-1"></i>
-                                    Logout</a>
-                                <div class="dropdown-divider"></div>
-                                <div class="pl-4 p-3"><a href="javascript:void(0)" class="btn btn-sm btn-info">View
-                                        Profile</a></div>
-                            </div> -->
               </li>
               <!-- ============================================================== -->
               <!-- User profile and search -->
@@ -320,7 +311,7 @@
       <!-- Page wrapper  -->
       <!-- ============================================================== -->
       <div class="page-wrapper">
-        <div class="main container-fluid mt-4 h-100">
+        <div class="main container-fluid h-100">
           <!-- Tabs Navigation -->
           <ul class="nav nav-tabs" id="doctorTabs" role="tablist">
             <li class="nav-item">
@@ -360,7 +351,7 @@
             >
               <div class="row">
                 <!-- Tổng số lịch khám -->
-                <div class="col-md-3">
+                <div class="col-md-3 mb-3">
                   <div class="card text-center h-100">
                     <div class="card-body">
                       <i
@@ -372,7 +363,7 @@
                   </div>
                 </div>
                 <!-- Lịch đăng ký thành công -->
-                <div class="col-md-3">
+                <div class="col-md-3 mb-3">
                   <div class="card text-center h-100">
                     <div class="card-body">
                       <i
@@ -385,7 +376,7 @@
                   </div>
                 </div>
                 <!-- Lịch hủy -->
-                <div class="col-md-3">
+                <div class="col-md-3 mb-3">
                   <div class="card text-center h-100">
                     <div class="card-body">
                       <i class="fas fa-times-circle fa-2x text-danger mb-2"></i>
@@ -396,7 +387,7 @@
                   </div>
                 </div>
                 <!-- Số lượng bệnh nhân -->
-                <div class="col-md-3">
+                <div class="col-md-3 mb-3">
                   <div class="card text-center h-100">
                     <div class="card-body">
                       <i class="fas fa-user-injured fa-2x text-info mb-2"></i>
@@ -406,19 +397,138 @@
                   </div>
                 </div>
               </div>
-
-              <!-- Ô chọn năm -->
-              <div class="d-flex align-items-center justify-content-end mb-3">
-                <label for="yearSelect" class="me-2 pt-3">Chọn năm:</label>
-                <select id="yearSelect" class="form-select w-auto">
-                  <option value="2025" selected>2025</option>
-                  <option value="2024">2024</option>
-                  <option value="2023">2023</option>
-                </select>
+              <!-- Hiển thị bác sĩ tiêu biểu + biểu đồ lịch khám theo tháng -->
+              <div class="row">
+                <div class="col-md-6 p-2">
+                  <div class="card" style="min-height: 420px">
+                    <div class="card-header">
+                      <h6 class="card-title pt-2">Bác sĩ nổi bật</h6>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive table-scroll">
+                        <table
+                          class="table table-hover table-striped text-center"
+                          id="tblRatingAverage"
+                        >
+                          <thead class="table-primary sticky-header">
+                            <tr>
+                              <th class="align-middle" scope="col">STT</th>
+                              <th class="align-middle" scope="col">Bác sĩ</th>
+                              <th class="align-middle" scope="col">
+                                Tổng số lượt đánh giá
+                              </th>
+                              <th class="align-middle" scope="col">
+                                Trung bình
+                              </th>
+                              <th class="align-middle" scope="col">Số sao</th>
+                              <th class="align-middle" scope="col">Xếp hạng</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="align-middle">1</td>
+                              <td class="align-middle">Nguyễn Văn A</td>
+                              <td class="align-middle">5</td>
+                              <td class="align-middle">
+                                4.5
+                                <i
+                                  class="fa-solid fa-star"
+                                  style="color: #fff200"
+                                ></i>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td>Trần Thị B</td>
+                              <td>10</td>
+                              <td>4.2</td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td>Trần Thị B</td>
+                              <td>10</td>
+                              <td>4.2</td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td>Trần Thị B</td>
+                              <td>10</td>
+                              <td>4.2</td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td>Trần Thị B</td>
+                              <td>10</td>
+                              <td>4.2</td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td>Trần Thị B</td>
+                              <td>10</td>
+                              <td>4.2</td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td>Trần Thị B</td>
+                              <td>10</td>
+                              <td>4.2</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 p-2">
+                  <div class="card" style="min-height: 420px">
+                    <div class="card-header">
+                      <div class="d-flex">
+                        <h6 class="card-title pt-2">Thống kê lịch khám</h6>
+                        <!-- Ô chọn năm -->
+                        <div class="text-end ms-auto">
+                          <div
+                            class="d-flex align-items-center justify-content-end"
+                          >
+                            <label for="yearSelect" class="me-2 pt-2"
+                              >Chọn năm:</label
+                            >
+                            <select id="yearSelect" class="form-select w-auto">
+                              <option value="2025" selected>2025</option>
+                              <option value="2024">2024</option>
+                              <option value="2023">2023</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="chartStatistics"></canvas>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <!-- Biểu đồ -->
-              <div class="mt-4">
-                <canvas id="chartStatistics"></canvas>
+              <!-- Hiển thị bệnh nhân theo khoa + Dịch vụ khám phổ biến -->
+              <div class="row">
+                <div class="col-md-6 p-2">
+                  <div class="card" style="min-height: 420px">
+                    <div class="card-header">
+                      <h6 class="card-title pt-2">Tình trạng lịch khám</h6>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="chartAppointmentStatus"></canvas>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 p-2">
+                  <div class="card" style="min-height: 420px">
+                    <div class="card-header">
+                      <h6 class="card-title pt-2">Dịch vụ khám phổ biến</h6>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="chartPopularServices"></canvas>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -531,6 +641,133 @@
               const selectedYear = $(this).val(); // Lấy giá trị năm được chọn
               chart.data.datasets[0].data = dataByYear[selectedYear]; // Cập nhật dữ liệu
               chart.update(); // Cập nhật biểu đồ
+            });
+          });
+        </script>
+
+        <script>
+          $(document).ready(function () {
+            // Dữ liệu mẫu
+            const statuses = [
+              "Đang xử lý",
+              "Đã đặt",
+              "Hoàn thành",
+              "Đã hoàn thành",
+              "Đã hủy",
+            ];
+            const counts = [50, 80, 60, 40, 20]; // Số lượng tương ứng với từng trạng thái
+
+            // Khởi tạo biểu đồ
+            const ctx = document
+              .getElementById("chartAppointmentStatus")
+              .getContext("2d");
+            const chart = new Chart(ctx, {
+              type: "bar", // Loại biểu đồ: thanh ngang
+              data: {
+                labels: statuses, // Tên các trạng thái
+                datasets: [
+                  {
+                    label: "Số lượng lịch khám",
+                    data: counts, // Số lượng lịch khám theo trạng thái
+                    backgroundColor: [
+                      "rgba(255, 159, 64, 0.6)", // Đang xử lý
+                      "rgba(54, 162, 235, 0.6)", // Đã đặt
+                      "rgba(75, 192, 192, 0.6)", // Hoàn thành
+                      "rgba(153, 102, 255, 0.6)", // Đã hoàn thành
+                      "rgba(255, 99, 132, 0.6)", // Đã hủy
+                    ],
+                    borderColor: [
+                      "rgba(255, 159, 64, 1)",
+                      "rgba(54, 162, 235, 1)",
+                      "rgba(75, 192, 192, 1)",
+                      "rgba(153, 102, 255, 1)",
+                      "rgba(255, 99, 132, 1)",
+                    ],
+                    borderWidth: 1,
+                  },
+                ],
+              },
+              options: {
+                indexAxis: "y", // Đặt trục Y làm trục chính (thanh ngang)
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: "top", // Vị trí của chú thích
+                  },
+                },
+                scales: {
+                  x: {
+                    beginAtZero: true, // Bắt đầu trục X từ 0
+                  },
+                },
+              },
+            });
+          });
+        </script>
+
+        <script>
+          $(document).ready(function () {
+            // Dữ liệu mẫu
+            const services = [
+              "Dịch vụ 1",
+              "Dịch vụ 2",
+              "Dịch vụ 3",
+              "Dịch vụ 4",
+              "Dịch vụ 5",
+              "Khác",
+            ];
+            const percentages = [30, 20, 15, 10, 15, 10]; // Tỷ lệ phần trăm
+
+            // Khởi tạo biểu đồ
+            const ctx = document
+              .getElementById("chartPopularServices")
+              .getContext("2d");
+            const chart = new Chart(ctx, {
+              type: "pie", // Loại biểu đồ: hình tròn
+              data: {
+                labels: services, // Tên các dịch vụ
+                datasets: [
+                  {
+                    data: percentages, // Tỷ lệ phần trăm
+                    backgroundColor: [
+                      "rgba(255, 99, 132, 0.6)", // Màu sắc cho từng phần
+                      "rgba(54, 162, 235, 0.6)",
+                      "rgba(255, 206, 86, 0.6)",
+                      "rgba(75, 192, 192, 0.6)",
+                      "rgba(153, 102, 255, 0.6)",
+                      "rgba(201, 203, 207, 0.6)",
+                    ],
+                    borderColor: [
+                      "rgba(255, 99, 132, 1)",
+                      "rgba(54, 162, 235, 1)",
+                      "rgba(255, 206, 86, 1)",
+                      "rgba(75, 192, 192, 1)",
+                      "rgba(153, 102, 255, 1)",
+                      "rgba(201, 203, 207, 1)",
+                    ],
+                    borderWidth: 1,
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: "top", // Vị trí của chú thích
+                  },
+                  tooltip: {
+                    callbacks: {
+                      label: function (tooltipItem) {
+                        const label = services[tooltipItem.dataIndex];
+                        const value = percentages[tooltipItem.dataIndex];
+                        return `${label}: ${value}%`;
+                      },
+                    },
+                  },
+                },
+              },
             });
           });
         </script>

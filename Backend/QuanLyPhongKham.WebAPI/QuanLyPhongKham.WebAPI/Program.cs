@@ -93,6 +93,8 @@ builder.Services.AddScoped<IServiceRatingService, ServiceRatingService>();
 
 builder.Services.AddScoped<IGeminiService, GeminiService>();
 
+builder.Services.AddScoped<IHomeService, HomeService>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
