@@ -33,6 +33,19 @@
     <script src="../assets/vendor/axios.min.js"></script>
     <script src="../assets/services/axios.js"></script>
     <script src="../assets/services/getDoctorNameAndAvt.js"></script>
+    <style>
+      .table-scroll {
+        max-height: 330px; /* khoảng này trừ đi header & padding */
+        overflow-y: auto;
+      }
+
+      /* Cố định thead */
+      .sticky-header th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+    </style>
   </head>
 
   <body>
@@ -275,162 +288,184 @@
       <!-- Page wrapper  -->
       <!-- ============================================================== -->
       <div class="page-wrapper">
-        <div class="main container-fluid mt-4 h-100">
-          <!-- Tabs Navigation -->
-          <ul class="nav nav-tabs" id="doctorTabs" role="tablist">
-            <li class="nav-item">
-              <a
-                class="nav-link active"
-                id="tab1-tab"
-                data-bs-toggle="tab"
-                href="#tab1"
-                role="tab"
-                aria-controls="tab1"
-                aria-selected="true"
-                >Thống kê</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                id="tab2-tab"
-                data-bs-toggle="tab"
-                href="#tab2"
-                role="tab"
-                aria-controls="tab2"
-                aria-selected="false"
-                >Lịch khám hôm nay</a
-              >
-            </li>
-          </ul>
-
-          <!-- Tabs Content -->
-          <div class="tab-content mt-3" id="doctorTabsContent">
-            <!-- Tab 1: Thống kê -->
-            <div
-              class="tab-pane fade show active"
-              id="tab1"
-              role="tabpanel"
-              aria-labelledby="tab1-tab"
-            >
-              <div class="row">
-                <!-- Tổng số lịch khám -->
-                <div class="col-md-3">
-                  <div class="card text-center h-100">
-                    <div class="card-body">
-                      <i
-                        class="fas fa-calendar-alt fa-2x text-primary mb-2"
-                      ></i>
-                      <h5 class="card-title">Tổng lịch khám</h5>
-                      <p class="card-text display-4">120</p>
-                    </div>
-                  </div>
+        <div class="main container-fluid h-100">
+          <div class="row">
+            <!-- Tổng số lịch khám -->
+            <div class="col-md-3">
+              <div class="card text-center h-100">
+                <div class="card-body">
+                  <i class="fas fa-calendar-alt fa-2x text-primary mb-2"></i>
+                  <h5 class="card-title">Tổng lịch khám</h5>
+                  <p class="card-text display-4">120</p>
                 </div>
-                <!-- Lịch đăng ký thành công -->
-                <div class="col-md-3">
-                  <div class="card text-center h-100">
-                    <div class="card-body">
-                      <i
-                        class="fas fa-check-circle fa-2x text-success mb-2"
-                      ></i>
-                      <h5 class="card-title">Lịch thành công</h5>
-                      <p class="card-text display-4">100</p>
-                      <small>83%</small>
-                    </div>
-                  </div>
-                </div>
-                <!-- Lịch hủy -->
-                <div class="col-md-3">
-                  <div class="card text-center h-100">
-                    <div class="card-body">
-                      <i class="fas fa-times-circle fa-2x text-danger mb-2"></i>
-                      <h5 class="card-title">Lịch hủy</h5>
-                      <p class="card-text display-4">20</p>
-                      <small>17%</small>
-                    </div>
-                  </div>
-                </div>
-                <!-- Số lượng bệnh nhân -->
-                <div class="col-md-3">
-                  <div class="card text-center h-100">
-                    <div class="card-body">
-                      <i class="fas fa-user-injured fa-2x text-info mb-2"></i>
-                      <h5 class="card-title">Số bệnh nhân</h5>
-                      <p class="card-text display-4">80</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Ô chọn năm -->
-              <div class="d-flex align-items-center justify-content-end mb-3">
-                <label for="yearSelect" class="me-2 pt-3">Chọn năm:</label>
-                <select id="yearSelect" class="form-select w-auto">
-                  <option value="2025" selected>2025</option>
-                  <option value="2024">2024</option>
-                  <option value="2023">2023</option>
-                </select>
-              </div>
-              <!-- Biểu đồ -->
-              <div class="mt-4">
-                <canvas id="chartStatistics"></canvas>
               </div>
             </div>
-
-            <!-- Tab 2: Lịch khám hôm nay -->
-            <div
-              class="tab-pane fade"
-              id="tab2"
-              role="tabpanel"
-              aria-labelledby="tab2-tab"
-            >
-              <!-- Ô tìm kiếm -->
-              <div class="mb-3">
-                <input
-                  type="text"
-                  id="searchInput"
-                  class="form-control w-25"
-                  placeholder="Tìm kiếm bệnh nhân..."
-                />
+            <!-- Lịch đăng ký thành công -->
+            <div class="col-md-3">
+              <div class="card text-center h-100">
+                <div class="card-body">
+                  <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                  <h5 class="card-title">Lịch thành công</h5>
+                  <p class="card-text display-4">100</p>
+                  <small>83%</small>
+                </div>
               </div>
-              <div class="table-responsive">
-                <table
-                  class="table table-bordered table-hover"
-                  id="appointmentTable"
-                >
-                  <thead class="table-light">
-                    <tr>
-                      <th>Mã bệnh nhân</th>
-                      <th>Tên bệnh nhân</th>
-                      <th>Ngày khám</th>
-                      <th>Ca khám</th>
-                      <th>Dịch vụ khám</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>BN001</td>
-                      <td>Nguyễn Văn A</td>
-                      <td>21/04/2025</td>
-                      <td>Sáng</td>
-                      <td>Khám tổng quát</td>
-                    </tr>
-                    <tr class="table-secondary">
-                      <td>BN002</td>
-                      <td>Trần Thị B</td>
-                      <td>21/04/2025</td>
-                      <td>Chiều</td>
-                      <td>Khám chuyên khoa</td>
-                    </tr>
-                    <tr>
-                      <td>BN003</td>
-                      <td>Lê Văn C</td>
-                      <td>21/04/2025</td>
-                      <td>Tối</td>
-                      <td>Khám sức khỏe</td>
-                    </tr>
-                  </tbody>
-                </table>
+            </div>
+            <!-- Lịch hủy -->
+            <div class="col-md-3">
+              <div class="card text-center h-100">
+                <div class="card-body">
+                  <i class="fas fa-times-circle fa-2x text-danger mb-2"></i>
+                  <h5 class="card-title">Lịch hủy</h5>
+                  <p class="card-text display-4">20</p>
+                  <small>17%</small>
+                </div>
+              </div>
+            </div>
+            <!-- Số lượng bệnh nhân -->
+            <div class="col-md-3">
+              <div class="card text-center h-100">
+                <div class="card-body">
+                  <i class="fas fa-user-injured fa-2x text-info mb-2"></i>
+                  <h5 class="card-title">Số bệnh nhân</h5>
+                  <p class="card-text display-4">80</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Hiển thị bác sĩ tiêu biểu + biểu đồ lịch khám theo tháng -->
+          <div class="row mt-3">
+            <div class="col-md-6 p-2">
+              <div class="card" style="min-height: 420px">
+                <div class="card-header">
+                  <h6 class="card-title pt-2">Lịch khám hôm nay</h6>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive table-scroll">
+                    <table
+                      class="table table-bordered table-hover table-striped text-center"
+                      id="appointmentTable"
+                    >
+                      <thead class="table-primary sticky-header">
+                        <tr>
+                          <th class="align-middle">Mã bệnh nhân</th>
+                          <th class="align-middle">Tên bệnh nhân</th>
+                          <th class="align-middle">Ngày khám</th>
+                          <th class="align-middle">Ca khám</th>
+                          <th class="align-middle">Dịch vụ khám</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>BN001</td>
+                          <td>Nguyễn Văn A</td>
+                          <td>21/04/2025</td>
+                          <td>Sáng</td>
+                          <td>Khám tổng quát</td>
+                        </tr>
+                        <tr>
+                          <td>BN001</td>
+                          <td>Nguyễn Văn A</td>
+                          <td>21/04/2025</td>
+                          <td>Sáng</td>
+                          <td>Khám tổng quát</td>
+                        </tr>
+                        <tr>
+                          <td>BN001</td>
+                          <td>Nguyễn Văn A</td>
+                          <td>21/04/2025</td>
+                          <td>Sáng</td>
+                          <td>Khám tổng quát</td>
+                        </tr>
+                        <tr>
+                          <td>BN001</td>
+                          <td>Nguyễn Văn A</td>
+                          <td>21/04/2025</td>
+                          <td>Sáng</td>
+                          <td>Khám tổng quát</td>
+                        </tr>
+                        <tr>
+                          <td>BN001</td>
+                          <td>Nguyễn Văn A</td>
+                          <td>21/04/2025</td>
+                          <td>Sáng</td>
+                          <td>Khám tổng quát</td>
+                        </tr>
+                        <tr>
+                          <td>BN001</td>
+                          <td>Nguyễn Văn A</td>
+                          <td>21/04/2025</td>
+                          <td>Sáng</td>
+                          <td>Khám tổng quát</td>
+                        </tr>
+                        <tr>
+                          <td>BN001</td>
+                          <td>Nguyễn Văn A</td>
+                          <td>21/04/2025</td>
+                          <td>Sáng</td>
+                          <td>Khám tổng quát</td>
+                        </tr>
+                        <tr>
+                          <td>BN003</td>
+                          <td>Lê Văn C</td>
+                          <td>21/04/2025</td>
+                          <td>Tối</td>
+                          <td>Khám sức khỏe</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 p-2">
+              <div class="card" style="min-height: 420px">
+                <div class="card-header">
+                  <div class="d-flex">
+                    <h6 class="card-title pt-2">Thống kê lịch khám</h6>
+                    <!-- Ô chọn năm -->
+                    <div class="text-end ms-auto">
+                      <div
+                        class="d-flex align-items-center justify-content-end"
+                      >
+                        <label for="yearSelect" class="me-2 pt-2"
+                          >Chọn năm:</label
+                        >
+                        <select id="yearSelect" class="form-select w-auto">
+                          <option value="2025" selected>2025</option>
+                          <option value="2024">2024</option>
+                          <option value="2023">2023</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <canvas id="chartStatistics"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Hiển thị tỷ lệ đánh giá + Biểu đồ tình trạng lịch khám -->
+          <div class="row">
+            <div class="col-md-6 p-2">
+              <div class="card" style="min-height: 420px">
+                <div class="card-header">
+                  <h6 class="card-title pt-2">Tình trạng lịch khám</h6>
+                </div>
+                <div class="card-body">
+                  <canvas id="chartAppointmentStatus"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 p-2">
+              <div class="card" style="min-height: 420px">
+                <div class="card-header">
+                  <h6 class="card-title pt-2">Tỷ lệ đánh giá</h6>
+                </div>
+                <div class="card-body">
+                  <canvas id="rating"></canvas>
+                </div>
               </div>
             </div>
           </div>
@@ -486,6 +521,129 @@
               const selectedYear = $(this).val(); // Lấy giá trị năm được chọn
               chart.data.datasets[0].data = dataByYear[selectedYear]; // Cập nhật dữ liệu
               chart.update(); // Cập nhật biểu đồ
+            });
+          });
+        </script>
+        <script>
+          $(document).ready(function () {
+            // Dữ liệu mẫu
+            const statuses = [
+              "Đang xử lý",
+              "Đã đặt",
+              "Hoàn thành",
+              "Đã hoàn thành",
+              "Đã hủy",
+            ];
+            const counts = [50, 80, 60, 40, 20]; // Số lượng tương ứng với từng trạng thái
+
+            // Khởi tạo biểu đồ
+            const ctx = document
+              .getElementById("chartAppointmentStatus")
+              .getContext("2d");
+            const chart = new Chart(ctx, {
+              type: "bar", // Loại biểu đồ: thanh ngang
+              data: {
+                labels: statuses, // Tên các trạng thái
+                datasets: [
+                  {
+                    label: "Số lượng lịch khám",
+                    data: counts, // Số lượng lịch khám theo trạng thái
+                    backgroundColor: [
+                      "rgba(255, 159, 64, 0.6)", // Đang xử lý
+                      "rgba(54, 162, 235, 0.6)", // Đã đặt
+                      "rgba(75, 192, 192, 0.6)", // Hoàn thành
+                      "rgba(153, 102, 255, 0.6)", // Đã hoàn thành
+                      "rgba(255, 99, 132, 0.6)", // Đã hủy
+                    ],
+                    borderColor: [
+                      "rgba(255, 159, 64, 1)",
+                      "rgba(54, 162, 235, 1)",
+                      "rgba(75, 192, 192, 1)",
+                      "rgba(153, 102, 255, 1)",
+                      "rgba(255, 99, 132, 1)",
+                    ],
+                    borderWidth: 1,
+                  },
+                ],
+              },
+              options: {
+                indexAxis: "y", // Đặt trục Y làm trục chính (thanh ngang)
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: "top", // Vị trí của chú thích
+                  },
+                },
+                scales: {
+                  x: {
+                    beginAtZero: true, // Bắt đầu trục X từ 0
+                  },
+                },
+              },
+            });
+          });
+        </script>
+
+        <script>
+          $(document).ready(function () {
+            // Dữ liệu mẫu
+            const ratings = [
+              "1 sao",
+              "2 sao",
+              "3 sao",
+              "4 sao",
+              "5 sao",
+            ];
+            const percentages = [30, 20, 15, 15, 20]; // Tỷ lệ phần trăm
+
+            // Khởi tạo biểu đồ
+            const ctx = document
+              .getElementById("rating")
+              .getContext("2d");
+            const chart = new Chart(ctx, {
+              type: "doughnut", // Loại biểu đồ: hình bánh rỗng
+              data: {
+                labels: ratings, // Tên các dịch vụ
+                datasets: [
+                  {
+                    data: percentages, // Tỷ lệ phần trăm
+                    backgroundColor: [
+                      "rgba(255, 99, 132, 0.6)", // Màu sắc cho từng phần
+                      "rgba(54, 162, 235, 0.6)",
+                      "rgba(255, 206, 86, 0.6)",
+                      "rgba(75, 192, 192, 0.6)",
+                      "rgba(153, 102, 255, 0.6)",
+                    ],
+                    borderColor: [
+                      "rgba(255, 99, 132, 1)",
+                      "rgba(54, 162, 235, 1)",
+                      "rgba(255, 206, 86, 1)",
+                      "rgba(75, 192, 192, 1)",
+                      "rgba(153, 102, 255, 1)",
+                    ],
+                    borderWidth: 1,
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: "top", // Vị trí của chú thích
+                  },
+                  tooltip: {
+                    callbacks: {
+                      label: function (tooltipItem) {
+                        const label = ratings[tooltipItem.dataIndex];
+                        const value = percentages[tooltipItem.dataIndex];
+                        return `${label}: ${value}%`;
+                      },
+                    },
+                  },
+                },
+              },
             });
           });
         </script>
