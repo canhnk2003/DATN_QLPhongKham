@@ -113,17 +113,15 @@ async function exportToExcel() {
     // Lấy tên bệnh nhân và bác sĩ đồng thời cho tất cả các mục trong dsLK
     const formattedData = await Promise.all(
       dsLK.map(async (item) => {
-        const patientName = await getNameById("Patients", item.benhNhanId); // Lấy tên bệnh nhân
-        const doctorName = await getNameById("Doctors", item.bacSiId); // Lấy tên bác sĩ
-
         return {
           "Mã lịch khám": item.lichKhamId,
           "Mã bệnh nhân": item.benhNhanId,
           "Mã bác sĩ": item.bacSiId,
-          "Tên bệnh nhân": patientName, // Sử dụng tên bệnh nhân lấy từ API
+          "Bệnh nhân": item.tenBenhNhan,
           "Ngày khám": new Date(item.ngayKham).toLocaleDateString("en-GB"),
           "Giờ khám": item.gioKham,
-          "Tên bác sĩ": doctorName, // Sử dụng tên bác sĩ lấy từ API
+          "Bác sĩ": item.tenBacSi, 
+          "Dịch vụ": item.tenDichVu, 
           "Trạng thái": item.trangThaiLichKham,
         };
       })
@@ -162,7 +160,7 @@ function editAppointment() {
     ngayKham: $("#dialog-appointment-edit #appointmentDate").val(),
     gioKham: $("#dialog-appointment-edit #appointmentTime").val(),
     trangThaiLichKham: "",
-    dichVuId:$("#dialog-appointment-edit #service").val(),
+    dichVuId: $("#dialog-appointment-edit #service").val(),
     benhNhan: patient,
   };
   //Check data hợp lệ
@@ -569,44 +567,17 @@ function addEventSelect(selectElement, dsBacSi, appointmentTimeSelect) {
   }
 }
 
-//Lấy thông tin bệnh nhân theo id
-async function getNameById(controller, id) {
-  try {
-    const response = await axiosJWT.get(`/api/${controller}/${id}`);
-    const object = response.data;
-    return object.hoTen; // Trả về họ tên
-  } catch (error) {
-    console.error("Lỗi không tìm được bệnh nhân: ", error);
-    return null; // Trả về null nếu có lỗi
-  }
-}
-
 // //Hiển thị dữ liệu lên bảng
 //Hiển thị dữ liệu lên bảng
 async function display(data) {
   const tableBody = document.querySelector("#tblAppointment tbody");
   tableBody.innerHTML = ""; // Xóa nội dung cũ nếu có
 
-  // Tạo danh sách các Promise để lấy tên bệnh nhân
-  const patientNamesPromises = data.map((item) =>
-    getNameById("Patients", item.benhNhanId)
-  );
-  const patientNames = await Promise.all(patientNamesPromises); // Chờ tất cả Promise hoàn thành
-  // Tạo danh sách các Promise để lấy tên bác sĩ
-  const doctorNamesPromises = data.map((item) =>
-    getNameById("Doctors", item.bacSiId)
-  );
-  const doctorNames = await Promise.all(doctorNamesPromises); // Chờ tất cả Promise hoàn thành
-
   data.forEach((item, index) => {
     // // Định dạng hiển thị dd/MM/yyyy
     const dateString = item.ngayKham;
     const date = new Date(dateString);
     const formattedDate = date.toLocaleDateString("en-GB"); // 'en-GB' chuẩn Anh (ngày/tháng/năm)
-
-    // Lấy tên bệnh nhân từ mảng đã xử lý
-    const patientName = patientNames[index];
-    const doctorName = doctorNames[index];
 
     // Xử lý màu badge
     const status = item.trangThaiLichKham;
@@ -632,12 +603,13 @@ async function display(data) {
     row.setAttribute("lk-id", item.lichKhamId);
 
     row.innerHTML = `
-      <td style="text-align: center;">${index + 1}</td>
-      <td style="padding-left: 7%;";>${patientName}</td>
-      <td style="text-align: center";>${formattedDate}</td>
-      <td style="text-align: center";>${item.gioKham}</td>
-      <td style="padding-left: 4%;";>${doctorName}</td>
-      <td style="text-align: center";><span class="badge rounded-pill ${bgColor}">${
+      <td>${index + 1}</td>
+      <td>${item.tenBenhNhan}</td>
+      <td>${formattedDate}</td>
+      <td>${item.gioKham}</td>
+      <td>${item.tenBacSi}</td>
+      <td>${item.tenDichVu}</td>
+      <td><span class="badge rounded-pill ${bgColor}">${
       item.trangThaiLichKham
     }</span></td>
       <td>

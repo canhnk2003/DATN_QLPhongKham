@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "0/lNnFa2Grb6tmCuF4FP2EGptGaLSEuyb/10XwtE+rY=",
+  "Hash": "MsYmeexGAmwdGUz5KHoTH9+u+YVRYQ01TG3uZR7G4rM=",
   "Source": "QuanLyPhongKham.WebAPI",
   "BasePath": "_content/QuanLyPhongKham.WebAPI",
   "Mode": "Default",
@@ -306,6 +306,23 @@
       "OriginalItemSpec": "wwwroot\\uploads\\login.png"
     },
     {
+      "Identity": "D:\\DATN\\DATN_QLPhongKham\\Backend\\QuanLyPhongKham.WebAPI\\QuanLyPhongKham.WebAPI\\wwwroot\\uploads\\m4wdcycn.fa1.png",
+      "SourceId": "QuanLyPhongKham.WebAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\DATN\\DATN_QLPhongKham\\Backend\\QuanLyPhongKham.WebAPI\\QuanLyPhongKham.WebAPI\\wwwroot\\",
+      "BasePath": "_content/QuanLyPhongKham.WebAPI",
+      "RelativePath": "uploads/m4wdcycn.fa1.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\m4wdcycn.fa1.png"
+    },
+    {
       "Identity": "D:\\DATN\\DATN_QLPhongKham\\Backend\\QuanLyPhongKham.WebAPI\\QuanLyPhongKham.WebAPI\\wwwroot\\uploads\\midliin5.crt.png",
       "SourceId": "QuanLyPhongKham.WebAPI",
       "SourceType": "Discovered",
@@ -372,6 +389,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\qandkkhz.ewy.png"
+    },
+    {
+      "Identity": "D:\\DATN\\DATN_QLPhongKham\\Backend\\QuanLyPhongKham.WebAPI\\QuanLyPhongKham.WebAPI\\wwwroot\\uploads\\qazk2p2a.fmx.png",
+      "SourceId": "QuanLyPhongKham.WebAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\DATN\\DATN_QLPhongKham\\Backend\\QuanLyPhongKham.WebAPI\\QuanLyPhongKham.WebAPI\\wwwroot\\",
+      "BasePath": "_content/QuanLyPhongKham.WebAPI",
+      "RelativePath": "uploads/qazk2p2a.fmx.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\qazk2p2a.fmx.png"
     },
     {
       "Identity": "D:\\DATN\\DATN_QLPhongKham\\Backend\\QuanLyPhongKham.WebAPI\\QuanLyPhongKham.WebAPI\\wwwroot\\uploads\\qiel3qp0.t22.png",

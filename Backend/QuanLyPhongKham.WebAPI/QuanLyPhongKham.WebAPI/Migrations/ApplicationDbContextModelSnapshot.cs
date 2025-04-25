@@ -279,7 +279,7 @@ namespace QuanLyPhongKham.WebAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BacSis");
+                    b.ToTable("BacSis", (string)null);
                 });
 
             modelBuilder.Entity("QuanLyPhongKham.Models.Entities.BacSiDichVu", b =>
@@ -294,7 +294,7 @@ namespace QuanLyPhongKham.WebAPI.Migrations
 
                     b.HasIndex("DichVuId");
 
-                    b.ToTable("BacSiDichVu");
+                    b.ToTable("BacSiDichVu", (string)null);
                 });
 
             modelBuilder.Entity("QuanLyPhongKham.Models.Entities.BenhNhan", b =>
@@ -347,7 +347,7 @@ namespace QuanLyPhongKham.WebAPI.Migrations
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("BenhNhans");
+                    b.ToTable("BenhNhans", (string)null);
                 });
 
             modelBuilder.Entity("QuanLyPhongKham.Models.Entities.DanhGiaDichVu", b =>
@@ -387,7 +387,7 @@ namespace QuanLyPhongKham.WebAPI.Migrations
                         .IsUnique()
                         .HasFilter("[LichKhamId] IS NOT NULL");
 
-                    b.ToTable("DanhGiaDichVus");
+                    b.ToTable("DanhGiaDichVus", (string)null);
                 });
 
             modelBuilder.Entity("QuanLyPhongKham.Models.Entities.DichVu", b =>
@@ -423,7 +423,7 @@ namespace QuanLyPhongKham.WebAPI.Migrations
 
                     b.HasIndex("KhoaId");
 
-                    b.ToTable("DichVus");
+                    b.ToTable("DichVus", (string)null);
                 });
 
             modelBuilder.Entity("QuanLyPhongKham.Models.Entities.KetQuaKham", b =>
@@ -457,7 +457,7 @@ namespace QuanLyPhongKham.WebAPI.Migrations
                         .IsUnique()
                         .HasFilter("[LichKhamId] IS NOT NULL");
 
-                    b.ToTable("KetQuaKhams");
+                    b.ToTable("KetQuaKhams", (string)null);
                 });
 
             modelBuilder.Entity("QuanLyPhongKham.Models.Entities.Khoa", b =>
@@ -482,7 +482,7 @@ namespace QuanLyPhongKham.WebAPI.Migrations
 
                     b.HasKey("KhoaId");
 
-                    b.ToTable("Khoas");
+                    b.ToTable("Khoas", (string)null);
                 });
 
             modelBuilder.Entity("QuanLyPhongKham.Models.Entities.LichKham", b =>
@@ -526,7 +526,7 @@ namespace QuanLyPhongKham.WebAPI.Migrations
 
                     b.HasIndex("BenhNhanId");
 
-                    b.ToTable("LichKhams");
+                    b.ToTable("LichKhams", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
