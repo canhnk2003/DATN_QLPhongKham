@@ -473,6 +473,7 @@ async function getAvata() {
 
     if (bn.hinhAnh) {
       $("#avatar").attr("src", `http://localhost:37649${bn.hinhAnh}`);
+      $("#uploadedImage").attr("src", "http://localhost:37649" + bn.hinhAnh);
     }
     if (bn.hoTen) {
       $("#hotenHeader").text(bn.hoTen);

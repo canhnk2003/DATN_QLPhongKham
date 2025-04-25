@@ -117,6 +117,9 @@ namespace QuanLyPhongKham.Business.Services
             prompt.AppendLine("- Gợi ý bác sĩ phù hợp theo chuyên khoa.");
             prompt.AppendLine("- Đề xuất dịch vụ khám phù hợp với nhu cầu của bệnh nhân.");
             prompt.AppendLine("- Hỗ trợ chọn lịch khám hợp lý theo giờ làm việc của bác sĩ.");
+            prompt.AppendLine("- Nếu bệnh nhân hỏi 'bác sĩ nào tốt nhất', hãy ưu tiên những người có học vị cao, nhiều năm kinh nghiệm.");
+            prompt.AppendLine("- Khi đề xuất dịch vụ, có thể hỏi thêm mục đích khám bệnh của bệnh nhân nếu chưa rõ.");
+            prompt.AppendLine("- Nếu bệnh nhân không rõ thời gian phù hợp, hãy gợi ý thời gian rảnh dựa trên lịch bác sĩ.");
             prompt.AppendLine("- Chú ý: Một bác sĩ giỏi là bác sĩ có bằng cấp là 'Giáo sư Y khoa' hoặc 'Phó Giáo sư Y Khoa'. 'Không' hiển thị id cho bệnh nhân xem, chỉ đưa ra tên tương ứng với id đó.");
             // Hướng dẫn AI cách kiểm tra lịch trống
             prompt.AppendLine("\nHãy tư vấn lịch khám phù hợp dựa trên danh sách trên:");

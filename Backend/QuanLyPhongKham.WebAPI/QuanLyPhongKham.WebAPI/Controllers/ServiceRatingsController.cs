@@ -39,8 +39,9 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllByDoctor(Guid doctorId)
         {
-            var ratings = await _serviceRatingService.GetAllRatingByDoctor(doctorId);
-            return Ok(ratings);
+            var ratings = await _serviceRatingService.GetAllWithNameAsync();
+            var ratingsByDoctor = ratings.Where(r => r.BacSiId == doctorId);
+            return Ok(ratingsByDoctor);
         }
         [HttpGet("average/{doctorId}")]
         //[Authorize(Roles = "Admin")]

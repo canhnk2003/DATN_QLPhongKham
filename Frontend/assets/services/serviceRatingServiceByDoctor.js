@@ -114,6 +114,7 @@ async function display(data) {
         <tr>
           <td style="text-align: center">${index + 1}</td>
           <td style="text-align: center">${item.tenBenhNhan || ""}</td>
+          <td style="text-align: center">${item.tenDichVu || ""}</td>
           <td style="text-align: center"> ${star}</td>
           <td style="text-align: center">${item.phanHoi || ""}</td>
           

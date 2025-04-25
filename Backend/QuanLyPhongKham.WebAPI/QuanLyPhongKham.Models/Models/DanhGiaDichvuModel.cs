@@ -15,7 +15,7 @@ namespace QuanLyPhongKham.Models.Models
         public Guid? LichKhamId { get; set; }
         public string? TenBacSi {  get; set; }
         public string? TenBenhNhan {  get; set; }
-
+        public string? TenDichVu { get; set; }
         public int? DanhGia { get; set; } = 0;
         public string? PhanHoi { get; set; }
         public DateTime? NgayTao { get; set; } = DateTime.Now;
