@@ -16,11 +16,17 @@ namespace QuanLyPhongKham.Business.Services
         private readonly IServiceRatingRepository _serviceRatingRepository;
         private readonly IDoctorRepository _doctorRepository;
         private readonly IPatientRepository _patientRepository;
-        public ServiceRatingService(IServiceRatingRepository serviceRatingRepository, IDoctorRepository doctorRepository, IPatientRepository patientRepository) : base(serviceRatingRepository)
+        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IAppointmentRepository _appointmentRepository;
+        private readonly IServiceRepository _serviceRepository;
+        public ServiceRatingService(IServiceRatingRepository serviceRatingRepository, IDoctorRepository doctorRepository, IPatientRepository patientRepository, IDepartmentRepository departmentRepository, IAppointmentRepository appointmentRepository, IServiceRepository serviceRepository) : base(serviceRatingRepository)
         {
             _serviceRatingRepository = serviceRatingRepository;
             _doctorRepository = doctorRepository;
             _patientRepository = patientRepository;
+            _departmentRepository = departmentRepository;
+            _appointmentRepository = appointmentRepository;
+            _serviceRepository = serviceRepository;
         }
 
         public override async Task<int> AddAsync(DanhGiaDichVu entity)
@@ -78,60 +84,46 @@ namespace QuanLyPhongKham.Business.Services
         {
             var ratings = await _serviceRatingRepository.GetAllAsync();
             var doctors = await _doctorRepository.GetAllAsync();
+            var khoas = await _departmentRepository.GetAllAsync();
 
-            var doctorDict = doctors.ToDictionary(b => b.BacSiId, b => b.HoTen);
+            // Tạo dictionary tra cứu khoa
+            var khoaDict = khoas.ToDictionary(k => k.KhoaId, k => k.TenKhoa);
 
-            // Gắn tên bác sĩ cho từng đánh giá
-            var dataWithNames = ratings.Select(d => new
-            {
-                TenBacSi = d.BacSiId.HasValue ? doctorDict.GetValueOrDefault(d.BacSiId.Value) : null,
-                DanhGia = d.DanhGia
-            });
-
-            // Nhóm theo tên bác sĩ, tính trung bình và số lượt
-            var grouped = dataWithNames
-                .Where(x => !string.IsNullOrEmpty(x.TenBacSi))
-                .GroupBy(x => x.TenBacSi)
-                .Select(g => new ThongKeDanhGiaModel
+            // Group đánh giá theo BacSiId
+            var groupedRatings = ratings
+                .Where(x => x.BacSiId != null)
+                .GroupBy(x => x.BacSiId.Value)
+                .ToDictionary(g => g.Key, g => new
                 {
-                    TenBacSi = g.Key,
-                    SoSaoTrungBinh = Math.Round(g.Average(x => (double)x.DanhGia), 1),
+                    SoSaoTrungBinh = Math.Round(g.Average(r => (double)r.DanhGia), 1),
                     SoLuotDanhGia = g.Count()
+                });
+
+            // Gộp dữ liệu bác sĩ + đánh giá
+            var result = doctors
+                .Where(b => groupedRatings.ContainsKey(b.BacSiId)) // Chỉ lấy bác sĩ có đánh giá
+                .Select(b => new ThongKeDanhGiaModel
+                {
+                    BacSiId = b.BacSiId,
+                    TenBacSi = b.HoTen,
+                    SoSaoTrungBinh = groupedRatings[b.BacSiId].SoSaoTrungBinh,
+                    SoLuotDanhGia = groupedRatings[b.BacSiId].SoLuotDanhGia,
+                    BangCap = !string.IsNullOrEmpty(b.TenBangCap) ? b.TenBangCap : "",
+                    MaBacSi = b.MaBacSi,
+                    SoNamKinhNghiem = b.SoNamKinhNghiem ?? 0,
+                    TenKhoa = b.KhoaId.HasValue ? khoaDict.GetValueOrDefault(b.KhoaId.Value, "") : ""
                 })
                 .OrderByDescending(x => x.SoSaoTrungBinh)
                 .ThenByDescending(x => x.SoLuotDanhGia)
                 .ToList();
 
-            int tongSoBacSi = grouped.Count;
+            int tongSoBacSi = result.Count;
 
-            for (int i = 0; i < grouped.Count; i++)
+            for (int i = 0; i < result.Count; i++)
             {
-                grouped[i].TongSoBacSi = tongSoBacSi;
-                grouped[i].ThuHang = i + 1;
+                result[i].TongSoBacSi = tongSoBacSi;
+                result[i].ThuHang = i + 1;
             }
-
-            return grouped;
-        }
-
-        public async Task<IEnumerable<DanhGiaDichvuModel>> GetAllRatingByDoctor(Guid doctorId)
-        {
-            var ratings = await _serviceRatingRepository.GetAllAsync();
-            var doctor = await _doctorRepository.GetByIdAsync(doctorId);
-            var patients = await _patientRepository.GetAllAsync();
-
-            var patientDict = patients.ToDictionary(b => b.BenhNhanId, b => b.HoTen);
-
-            var result = ratings
-                .Where(x => x.BacSiId == doctorId)
-                .Select(d => new DanhGiaDichvuModel
-                {
-                    DanhGiaId = d.DanhGiaId,
-                    TenBacSi = doctor?.HoTen,
-                    TenBenhNhan = d.BenhNhanId.HasValue ? patientDict.GetValueOrDefault(d.BenhNhanId.Value) : null,
-                    DanhGia = d.DanhGia,
-                    PhanHoi = d.PhanHoi
-                })
-                .OrderByDescending(x => x.NgayCapNhat);
 
             return result;
         }
@@ -142,19 +134,37 @@ namespace QuanLyPhongKham.Business.Services
             var ratings = await _serviceRatingRepository.GetAllAsync();
             var doctors = await _doctorRepository.GetAllAsync();
             var patients = await _patientRepository.GetAllAsync();
+            var appointments = await _appointmentRepository.GetAllAsync();
+            var services = await _serviceRepository.GetAllAsync();
 
-            var doctorDict = doctors.ToDictionary(b => b.BacSiId, b => b.HoTen);
             var patientDict = patients.ToDictionary(b => b.BenhNhanId, b => b.HoTen);
+            var doctorDict = doctors.ToDictionary(d => d.BacSiId, d => d.HoTen);
+            var appointmentDict = appointments.ToDictionary(a => a.LichKhamId, a => a.DichVuId);
+            var serviceDict = services.ToDictionary(s => s.DichVuId, s => s.TenDichVu);
 
-            var result = ratings.Select(d => new DanhGiaDichvuModel
-            {
-                DanhGiaId = d.DanhGiaId,
-                LichKhamId = d.LichKhamId,
-                TenBacSi = d.BacSiId.HasValue ? doctorDict.GetValueOrDefault(d.BacSiId.Value) : null,
-                TenBenhNhan = d.BenhNhanId.HasValue ? patientDict.GetValueOrDefault(d.BenhNhanId.Value) : null,
-                DanhGia = d.DanhGia,
-                PhanHoi = d.PhanHoi
-            });
+            var result = ratings
+            .Select(d => {
+                Guid? dichVuId = d.LichKhamId.HasValue && appointmentDict.ContainsKey(d.LichKhamId.Value)
+                    ? appointmentDict[d.LichKhamId.Value]
+                    : null;
+
+                string tenDichVu = dichVuId.HasValue && serviceDict.ContainsKey(dichVuId.Value)
+                    ? serviceDict[dichVuId.Value]
+                    : null;
+
+                return new DanhGiaDichvuModel
+                {
+                    DanhGiaId = d.DanhGiaId,
+                    BacSiId = d.BacSiId,
+                    LichKhamId = d.LichKhamId,
+                    TenBacSi = d.BacSiId.HasValue ? doctorDict.GetValueOrDefault(d.BacSiId.Value) : null,
+                    TenBenhNhan = d.BenhNhanId.HasValue ? patientDict.GetValueOrDefault(d.BenhNhanId.Value) : null,
+                    DanhGia = d.DanhGia,
+                    PhanHoi = d.PhanHoi,
+                    TenDichVu = tenDichVu,
+                };
+            })
+            .OrderByDescending(x => x.NgayCapNhat);
 
             return result;
         }

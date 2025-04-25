@@ -10,10 +10,12 @@ namespace QuanLyPhongKham.WebAPI.Controllers
     public class HomesController : ControllerBase
     {
         private readonly IHomeService _homeService;
+        private readonly IServiceRatingService _ratingService;
 
-        public HomesController(IHomeService homeService)
+        public HomesController(IHomeService homeService, IServiceRatingService ratingService)
         {
             _homeService = homeService;
+            _ratingService = ratingService;
         }
 
         [HttpGet]
@@ -28,7 +30,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllDoctorInfor()
         {
-            var infor = await _homeService.GetAllDoctorInfor();
+            var infor = await _ratingService.GetAllAverageAsync();
             return Ok(infor);
         }
 

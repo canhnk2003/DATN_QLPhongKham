@@ -2,7 +2,7 @@ var dsDG;
 var dgId = "";
 $(document).ready(async function () {
   //Lấy tất cả dữ liệu
-  getData();
+  await getData();
 
   //Lấy tất cả dữ liệu đánh giá trung bình của bác sĩ
   await getDataRatingDoctor();
@@ -52,7 +52,7 @@ function initTableSearch(inputSelector, tableSelector) {
 //Hàm lấy dữ liệu đánh giá trung bình của bác sĩ
 async function getDataRatingDoctor() {
   try {
-    const response = await axiosJWT.get(`/api/ServiceRatings/average`);
+    const response = await axiosJWT.get(`/api/v1/ServiceRatings/average`);
     const dsDGByDoctor = response.data;
     console.log(dsDGByDoctor);
     await displayDGByDoctor(dsDGByDoctor); // Hiển thị dữ liệu lên bảng
@@ -72,11 +72,12 @@ async function displayDGByDoctor(data) {
     const row = `
             <tr>
                 <td class="align-middle">${index + 1}</td>
+                <td class="align-middle">${item.maBacSi}</td>
                 <td class="align-middle">${item.tenBacSi}</td>
+                <td class="align-middle">${item.bangCap}</td>
+                <td class="align-middle">${item.soNamKinhNghiem}</td>
+                <td class="align-middle">${item.tenKhoa}</td>
                 <td class="align-middle">${item.soLuotDanhGia}</td>
-                <td class="align-middle"><span data-bs-toggle="tooltip" title="${
-                  item.soSaoTrungBinh
-                } / 5 ">${item.soSaoTrungBinh}</span></td>
                 <td class="align-middle">${star}</td>
                 <td class="align-middle">${item.thuHang} / ${item.tongSoBacSi}</td>
             </tr>
@@ -122,7 +123,7 @@ function deleteRating() {
     .prop("disabled", true)
     .text("Đang xóa...");
   axiosJWT
-    .delete(`/api/ServiceRatings/${dgId}`)
+    .delete(`/api/v1/ServiceRatings/${dgId}`)
     .then(function (response) {
       console.log("Xóa đánh giá thành công:", response.data);
       showPopup("success", "Thành công! Đánh giá đã được xóa.");
@@ -174,7 +175,7 @@ function showPopup(type, message) {
 // Lấy toàn bộ lịch khám
 async function getData() {
   try {
-    const response = await axiosJWT.get(`/api/ServiceRatings`);
+    const response = await axiosJWT.get(`/api/v1/ServiceRatings`);
     dsDG = response.data;
     console.log(dsDG);
     display(dsDG); // Hiển thị dữ liệu lên bảng
@@ -196,6 +197,7 @@ async function display(data) {
           <td style="text-align: center">${index + 1}</td>
           <td style="text-align: center">${item.tenBenhNhan || ""}</td>
           <td style="text-align: center">${item.tenBacSi || ""}</td>
+          <td style="text-align: center">${item.tenDichVu || ""}</td>
           <td style="text-align: center"> ${star}</td>
           <td style="text-align: center">${item.phanHoi || ""}</td>
           <td>

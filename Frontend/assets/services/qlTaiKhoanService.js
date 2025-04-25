@@ -116,7 +116,7 @@ function display(data) {
         <td>
                   <div class="m-table-tool">
                     <div class="m-edit m-tool-icon" data-bs-toggle="modal" data-bs-target="#dialog-confirm-reset" data-id="${item.benhNhanId}">
-                      <i class="fas fa-edit text-primary"></i>
+                    <i class="fa-solid fa-key text-primary"></i>
                     </div>
                     <div class="m-delete m-tool-icon" data-bs-toggle="modal" data-bs-target="#dialog-confirm-delete">
                       <i class="fas fa-trash-alt text-danger"></i>

@@ -25,56 +25,6 @@ namespace QuanLyPhongKham.Business.Services
             _ratingRepo = serviceRatingRepository;
             _departmentRepo = departmentRepository;
         }
-
-        public async Task<IEnumerable<ThongKeDanhGiaModel>> GetAllDoctorInfor()
-        {
-            var ratings = await _ratingRepo.GetAllAsync();
-            var doctors = await _doctorRepo.GetAllAsync();
-            var khoas = await _departmentRepo.GetAllAsync();
-
-            // Tạo dictionary tra cứu khoa
-            var khoaDict = khoas.ToDictionary(k => k.KhoaId, k => k.TenKhoa);
-
-            // Group đánh giá theo BacSiId
-            var groupedRatings = ratings
-                .Where(x => x.BacSiId != null)
-                .GroupBy(x => x.BacSiId.Value)
-                .ToDictionary(g => g.Key, g => new
-                {
-                    SoSaoTrungBinh = Math.Round(g.Average(r => (double)r.DanhGia), 1),
-                    SoLuotDanhGia = g.Count()
-                });
-
-            // Gộp dữ liệu bác sĩ + đánh giá
-            var result = doctors
-                .Where(b => groupedRatings.ContainsKey(b.BacSiId)) // Chỉ lấy bác sĩ có đánh giá
-                .Select(b => new ThongKeDanhGiaModel
-                {
-                    BacSiId = b.BacSiId,
-                    TenBacSi = b.HoTen,
-                    SoSaoTrungBinh = groupedRatings[b.BacSiId].SoSaoTrungBinh,
-                    SoLuotDanhGia = groupedRatings[b.BacSiId].SoLuotDanhGia,
-                    BangCap = !string.IsNullOrEmpty(b.TenBangCap) ? b.TenBangCap : "",
-                    MaBacSi = b.MaBacSi,
-                    SoNamKinhNghiem = b.SoNamKinhNghiem ?? 0,
-                    TenKhoa = b.KhoaId.HasValue ? khoaDict.GetValueOrDefault(b.KhoaId.Value, "") : ""
-                })
-                .OrderByDescending(x => x.SoSaoTrungBinh)
-                .ThenByDescending(x => x.SoLuotDanhGia)
-                .ToList();
-
-            int tongSoBacSi = result.Count;
-
-            for (int i = 0; i < result.Count; i++)
-            {
-                result[i].TongSoBacSi = tongSoBacSi;
-                result[i].ThuHang = i + 1;
-            }
-
-            return result;
-        }
-
-
         public async Task<ClinicInfor> GetClinicInfor()
         {
             //Lấy ra danh sách lịch khám

@@ -14,6 +14,6 @@ namespace QuanLyPhongKham.Business.Interfaces
         /// </summary>
         /// <returns></returns>
         Task<ClinicInfor> GetClinicInfor();
-        Task<IEnumerable<ThongKeDanhGiaModel>> GetAllDoctorInfor();
+        //Task<IEnumerable<ThongKeDanhGiaModel>> GetAllDoctorInfor();
     }
 }
