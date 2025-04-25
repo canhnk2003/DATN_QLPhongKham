@@ -23,13 +23,15 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         /// </summary>
         private readonly IAppointmentService _appointmentService;
         private readonly IPatientService _patientService;
+        private readonly IServiceRatingService _ratingService;
         private readonly IMapper _mapper;
 
-        public AppointmentsController(IAppointmentService appointmentService, IMapper mapper, IPatientService patientService)
+        public AppointmentsController(IAppointmentService appointmentService, IMapper mapper, IPatientService patientService, IServiceRatingService serviceRatingService)
         {
             _appointmentService = appointmentService;
             _mapper = mapper;
             _patientService = patientService;
+            _ratingService = serviceRatingService;
         }
         /// <summary>
         /// Lấy ra danh sách lịch khám
@@ -41,9 +43,8 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
-            var appoinments = await _appointmentService.GetAllAsync();
-            appoinments = appoinments.OrderByDescending(l => l.NgayCapNhat).ToList();
-            return Ok(_mapper.Map<IEnumerable<AppointmentModel>>(appoinments));
+            var appoinments = await _appointmentService.GetAppointment();
+            return Ok(appoinments);
         }
         /// <summary>
         /// Lấy ra lịch khám theo id
@@ -53,8 +54,9 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         [HttpGet("{LichKhamId}")]
         public async Task<IActionResult> GetAppointmentById(Guid LichKhamId)
         {
-            var appointment = await _appointmentService.GetByIdAsync(LichKhamId);
-            return Ok(_mapper.Map<AppointmentModel>(appointment));
+            var appointments = await _appointmentService.GetAppointment();
+            var appointment = appointments.FirstOrDefault(x => x.LichKhamId == LichKhamId);
+            return Ok(appointment);
         }
         /// <summary>
         /// Đăng ký 1 lịch khám
@@ -162,6 +164,15 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         [Authorize(Roles = "Admin,Patient")]
         public async Task<IActionResult> Delete(Guid LichKhamId)
         {
+            var relatedReviews = await _ratingService.GetAllAsync();
+            relatedReviews = relatedReviews.Where(r => r.LichKhamId == LichKhamId).ToList();
+            int count = 0;
+            foreach (var relatedReview in relatedReviews)
+            {
+                relatedReview.LichKhamId = null;
+                await _ratingService.UpdateAsync(relatedReview);
+                count++;
+            }
             int res = await _appointmentService.DeleteAsync(LichKhamId);
             return StatusCode(201, res);
         }
@@ -173,15 +184,16 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         [HttpGet("doctor/{DoctorId}")]
         public async Task<IActionResult> GetAppointmentsByDoctor(Guid DoctorId)
         {
-            var lichKhams = await _appointmentService.GetAppointmentsByDoctor(DoctorId);
-            return Ok(_mapper.Map<IEnumerable<AppointmentModel>>(lichKhams));
+            var lichKhams = await _appointmentService.GetAppointment();
+            lichKhams = lichKhams.Where(x => x.BacSiId == DoctorId);
+            return Ok(lichKhams);
         }
         [HttpGet("patient/{PatientId}")]
         public async Task<IActionResult> GetAppointmentsByPatient(Guid PatientId)
         {
-            var lichKhams = await _appointmentService.GetAppointmentsByPatient(PatientId);
-            lichKhams = lichKhams.OrderByDescending(l => l.NgayCapNhat).ToList();
-            return Ok(_mapper.Map<IEnumerable<AppointmentModel>>(lichKhams));
+            var lichKhams = await _appointmentService.GetAppointment();
+            lichKhams = lichKhams.Where(x => x.BenhNhanId == PatientId);
+            return Ok(lichKhams);
         }
         [HttpGet("appointment/{PatientId}")]
         public async Task<IActionResult> GetAppointmentLatest(Guid PatientId)

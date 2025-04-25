@@ -1,4 +1,5 @@
 ﻿using QuanLyPhongKham.Models.Entities;
+using QuanLyPhongKham.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace QuanLyPhongKham.Business.Interfaces
 {
     public interface IAppointmentService:IBaseService<LichKham>
     {
+        Task<IEnumerable<AppointmentModel>> GetAppointment();
         /// <summary>
         /// Lấy danh sách lịch khám theo id
         /// </summary>

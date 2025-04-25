@@ -245,7 +245,7 @@ function loadResults() {
     .get(`/api/Results/doctor/${bsId}`)
     .then((response) => {
       results = response.data;
-      //   console.log(results);
+        console.log(results);
       displayResults(results); // Hiển thị danh sách kết quả
     })
     .catch((error) => {

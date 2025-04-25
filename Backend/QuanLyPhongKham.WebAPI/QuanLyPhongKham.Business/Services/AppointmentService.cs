@@ -11,6 +11,7 @@ using QuanLyPhongKham.Models.Resources;
 using QuanLyPhongKham.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+using QuanLyPhongKham.Models.Models;
 
 namespace QuanLyPhongKham.Business.Services
 {
@@ -18,10 +19,14 @@ namespace QuanLyPhongKham.Business.Services
     {
         private readonly IAppointmentRepository _appointmentRepository;
         private readonly IPatientRepository _patientRepository;
-        public AppointmentService(IAppointmentRepository appointmentRepository, IPatientRepository patientRepository) : base(appointmentRepository)
+        private readonly IServiceRepository _serviceRepository;
+        private readonly IDoctorRepository _doctorRepository;
+        public AppointmentService(IAppointmentRepository appointmentRepository, IPatientRepository patientRepository, IServiceRepository serviceRepository, IDoctorRepository doctorRepository) : base(appointmentRepository)
         {
             _appointmentRepository = appointmentRepository;
             _patientRepository = patientRepository;
+            _serviceRepository = serviceRepository;
+            _doctorRepository = doctorRepository;
         }
 
         public override async Task<int> AddAsync(LichKham entity)
@@ -234,7 +239,7 @@ namespace QuanLyPhongKham.Business.Services
             }
             else
             {
-                if(appointment.TrangThaiLichKham == "Đang xử lý")
+                if (appointment.TrangThaiLichKham == "Đang xử lý")
                 {
                     appointment.TrangThaiLichKham = "Đã đặt";
                     appointment.NgayCapNhat = DateTime.Now;
@@ -295,6 +300,37 @@ namespace QuanLyPhongKham.Business.Services
                 }
                 throw new ErrorEditException();
             }
+        }
+
+        public async Task<IEnumerable<AppointmentModel>> GetAppointment()
+        {
+            var appointments = await _appointmentRepository.GetAllAsync();
+            var patients = await _patientRepository.GetAllAsync();
+            var services = await _serviceRepository.GetAllAsync();
+            var doctors = await _doctorRepository.GetAllAsync();
+
+            var result = (from a in appointments
+                          join p in patients on a.BenhNhanId equals p.BenhNhanId
+                          join d in doctors on a.BacSiId equals d.BacSiId
+                          join s in services on a.DichVuId equals s.DichVuId
+                          select new AppointmentModel
+                          {
+                              LichKhamId = a.LichKhamId,
+                              BacSiId = a.BacSiId,
+                              BenhNhanId = a.BenhNhanId,
+                              DichVuId = a.DichVuId,
+                              NgayKham = a.NgayKham,
+                              GioKham = a.GioKham,
+                              TrangThaiLichKham = a.TrangThaiLichKham,
+                              TenBacSi = d.HoTen,
+                              TenBenhNhan = p.HoTen,
+                              MaBenhNhan = p.MaBenhNhan,
+                              TenDichVu = s.TenDichVu,
+                              LyDo = a.LyDo,
+                              NgayCapNhat = a.NgayCapNhat
+                          }).OrderByDescending(x => x.NgayCapNhat).ToList();
+
+            return result;
         }
     }
 }
