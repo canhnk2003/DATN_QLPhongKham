@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using QuanLyPhongKham.Business.Interfaces;
 using QuanLyPhongKham.Business.Services;
+using QuanLyPhongKham.Models.Models;
 
 namespace QuanLyPhongKham.WebAPI.Controllers
 {
@@ -48,7 +49,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         public async Task<IActionResult> GetAppointmentToday()
         {
             var appointments = await _appointmentService.GetAppointment();
-            var appointmentTodays = appointments.Where(x=>x.NgayKham.HasValue && x.NgayKham.Value.Date == DateTime.Today).ToList();
+            var appointmentTodays = appointments.Where(x => x.NgayKham.HasValue && x.NgayKham.Value.Date == DateTime.Today).ToList();
             return Ok(appointmentTodays);
         }
 
@@ -57,7 +58,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         public async Task<IActionResult> GetAppointmentTodayByDoctor(Guid doctorId)
         {
             var appointments = await _appointmentService.GetAppointment();
-            var appointmentTodays = appointments.Where(x =>x.BacSiId == doctorId && x.NgayKham.HasValue && x.NgayKham.Value.Date == DateTime.Today).ToList();
+            var appointmentTodays = appointments.Where(x => x.BacSiId == doctorId && x.NgayKham.HasValue && x.NgayKham.Value.Date == DateTime.Today).ToList();
             return Ok(appointmentTodays);
         }
 
@@ -72,7 +73,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
             var infor = await _ratingService.GetAllAverageAsync();
             return Ok(infor);
         }
-        
+
         /// <summary>
         /// Thống kê lịch khám theo năm
         /// </summary>
@@ -84,7 +85,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
             var statistic = await _homeService.ThongKeLichKhamTheoNamAsync(null);
             return Ok(statistic);
         }
-        
+
         [HttpGet("statisticByYear/{doctorId}")]
         //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> ThongKeLichKhamTheoNamByDoctorAsys(Guid doctorId)
@@ -123,6 +124,28 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         {
             var statistic = await _homeService.ThongKeDichVuPhoBienTheoNamAsync();
             return Ok(statistic);
+        }
+
+        [HttpGet("statisticRating/{doctorId}")]
+        //[Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ThongKeDanhGiaAsysn(Guid doctorId)
+        {
+            var statistic = await _ratingService.GetAllWithNameAsync();
+            int total = statistic.Count();
+            var grouped = statistic
+                .GroupBy(x => x.DanhGia)
+                .Select(g => new DanhGiaPhanTramModel
+                {
+                    DanhGia = $"{g.Key} sao",
+                    PhanTram = Math.Round((double)g.Count() * 100 / total, 2)
+                })
+                .ToList();
+            // Đảm bảo đủ từ 1 đến 5 sao (kể cả khi không có đánh giá)
+            var fullResult = Enumerable.Range(1, 5)
+                .Select(i => grouped.FirstOrDefault(x => x.DanhGia == $"{i} sao")
+                    ?? new DanhGiaPhanTramModel { DanhGia = $"{i} sao", PhanTram = 0 })
+                .ToList();
+            return Ok(fullResult);
         }
     }
 }

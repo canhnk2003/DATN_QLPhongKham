@@ -81,6 +81,7 @@ namespace QuanLyPhongKham.Business.Services
             return clinic;
         }
 
+
         public async Task<IEnumerable<ThongKeDichVuTheoNamModel>> ThongKeDichVuPhoBienTheoNamAsync()
         {
             var appointments = await _appointmentRepo.GetAllAsync();
