@@ -41,11 +41,12 @@
     <script src="../assets/libs/jquery/dist/jquery.min.js "></script>
     <script src="../assets/vendor/axios.min.js"></script>
     <script src="../assets/services/axios.js"></script>
-    <script src="../assets/services/authService.js"></script>
+    <script src="../assets/services/AuthService/authService.js"></script>
     <!-- Main CSS File -->
     <link href="../assets/css/main.css" rel="stylesheet" />
     <link rel="stylesheet" href="../assets/css/popup.css" />
     <link rel="stylesheet" href="../assets/css/xemlichkham.css" />
+    <link rel="stylesheet" href="../assets/css/appointment-status.css" />
   </head>
 
   <body style="background-color: aliceblue">
@@ -297,13 +298,27 @@
                 <button class="btn btn-secondary me-2" data-bs-dismiss="modal">
                   Hủy
                 </button>
-                <button id="deleteReview" type="button" class="btn btn-danger d-none ms-2" data-bs-toggle="modal" data-bs-target="#modal-confirm-delete">
+                <button
+                  id="deleteReview"
+                  type="button"
+                  class="btn btn-danger d-none ms-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modal-confirm-delete"
+                >
                   Xóa
                 </button>
-                <button id="editReview" type="button" class="btn btn-primary d-none ms-2">
+                <button
+                  id="editReview"
+                  type="button"
+                  class="btn btn-primary d-none ms-2"
+                >
                   Sửa
                 </button>
-                <button id="submitReview" type="button" class="btn btn-success ms-2">
+                <button
+                  id="submitReview"
+                  type="button"
+                  class="btn btn-success ms-2"
+                >
                   Gửi
                 </button>
               </div>
@@ -474,6 +489,68 @@
             </div>
           </div>
         </div>
+
+        <!-- Modal xem trạng thái lịch khám-->
+        <div
+          class="modal fade"
+          id="progressModal"
+          tabindex="-1"
+          aria-labelledby="progressModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="progressModalLabel">
+                  Trạng thái lịch khám
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <div class="progress-container">
+                  <div class="progress-line"></div>
+                  <div class="progress-points">
+                    <div class="point processing">
+                      <i class="fas fa-spinner fa-spin text-white"></i>
+                      <div class="point-label bottom">Đang xử lý</div>
+                    </div>
+                    <div class="point cancelled">
+                      <i class="fa-solid fa-xmark text-white"></i>
+                      <div class="point-label top">Đã hủy</div>
+                    </div>
+                    <div class="point ordered">
+                      <i class="fa-solid fa-check text-white"></i>
+                      <div class="point-label bottom">Đã đặt</div>
+                    </div>
+                    <div class="point completed current">
+                      <i class="fa-regular fa-calendar-check text-white"></i>
+                      <div class="point-label top">Hoàn thành</div>
+                    </div>
+                    <div class="point finished">
+                      <i class="fa-solid fa-circle-check text-white"></i>
+                      <div class="point-label bottom">Đã hoàn thành</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Đóng
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- POPUP TOAST MESSAGE -->
         <div class="m-popup-block">
           <div class="m-popup-item m-popup-success">
@@ -538,6 +615,6 @@
     <!-- Main JS File -->
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/sidebarUser.js"></script>
-    <script src="../assets/services/medicalHistoryService.js"></script>
+    <script src="../assets/services/AppointmentService/medicalHistoryService.js"></script>
   </body>
 </html>

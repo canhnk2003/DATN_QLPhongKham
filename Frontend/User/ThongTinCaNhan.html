@@ -41,8 +41,8 @@
     <script src="../assets/libs/jquery/dist/jquery.min.js "></script>
     <script src="../assets/vendor/axios.min.js"></script>
     <script src="../assets/services/axios.js"></script>
-    <script src="../assets/services/authService.js"></script>
-    <script src="../assets/services/thongTinCaNhanService.js"></script>
+    <script src="../assets/services/AuthService/authService.js"></script>
+    <script src="../assets/services/PatientService/thongTinCaNhanService.js"></script>
     <!-- Main CSS File -->
     <link href="../assets/css/main.css" rel="stylesheet" />
     <link rel="stylesheet" href="../assets/css/popup.css" />
@@ -548,7 +548,6 @@
     <script>
       function getAvata() {
         var userId = localStorage.getItem("userId");
-        console.log(userId);
         // $('#hotenHeader').text(localStorage.getItem(loggedInUsername));
         axiosJWT
           .get(`/api/Patients/getbyuserid/${userId}`)
@@ -603,7 +602,6 @@
         }
       }
       $(document).ready(function () {
-        console.log("co chay");
         document
           .getElementById("fileInput")
           .addEventListener("change", function (event) {

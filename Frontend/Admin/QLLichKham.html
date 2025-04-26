@@ -29,12 +29,13 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="../assets/libs/xlsx/xlsx.full.min.js"></script>
 
     <script src="../assets/libs/jquery/dist/jquery.min.js "></script>
     <script src="../assets/vendor/axios.min.js"></script>
     <script src="../assets/services/axios.js"></script>
-    <script src="../assets/services/appointmentService.js"></script>
+    <script src="../assets/services/AuthService/authService.js"></script>
+    <script src="../assets/services/AppointmentService/appointmentService.js"></script>
   </head>
 
   <body>
@@ -333,7 +334,8 @@
               <thead class="table-success">
                 <tr>
                   <th class="">STT</th>
-                  <th class="">Họ và tên</th>
+                  <th class="">Mã BN</th>
+                  <th class="">Bệnh nhân</th>
                   <th class="">Ngày khám</th>
                   <th class="">Ca khám</th>
                   <th class="">Bác sĩ</th>

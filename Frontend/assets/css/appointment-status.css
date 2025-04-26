@@ -1,0 +1,233 @@
+.progress-container {
+    width: 100%;
+    max-width: 800px;
+    position: relative;
+    margin: 60px 20px 20px 20px;
+}
+
+.progress-line {
+    height: 2px;
+    background-color: #000;
+    width: 100%;
+    position: absolute;
+    top: 20px;
+    z-index: 1;
+}
+
+.progress-points {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+}
+
+.point {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Điểm hiện tại lớn hơn */
+.point.current {
+    width: 60px;
+    height: 60px;
+    margin-top: -10px;
+    /* Điều chỉnh vị trí để căn giữa với đường thẳng */
+}
+
+.point-label {
+    position: absolute;
+    text-align: center;
+    width: 150px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+}
+
+/* Nhãn của điểm hiện tại to hơn và đậm hơn */
+.point.current .point-label {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.point-label.top {
+    bottom: calc(100% + 30px);
+}
+
+.point-label.bottom {
+    top: calc(100% + 30px);
+}
+
+/* Tăng khoảng cách cho nhãn của điểm hiện tại */
+.point.current .point-label.bottom {
+    top: calc(100% + 45px);
+}
+
+.point.current .point-label.top {
+    bottom: calc(100% + 45px);
+}
+
+/* Tạo đường thẳng kết nối giữa nhãn và điểm tròn */
+.point::before {
+    content: '';
+    position: absolute;
+    width: 1px;
+    background-color: #000;
+    z-index: 1;
+}
+
+/* Đường kết nối cho nhãn trên */
+.point:nth-child(2)::before,
+.point:nth-child(4)::before {
+    height: 30px;
+    top: -30px;
+}
+
+/* Đường kết nối cho nhãn dưới */
+.point:nth-child(1)::before,
+.point:nth-child(3)::before,
+.point:nth-child(5)::before {
+    height: 30px;
+    bottom: -30px;
+}
+
+/* Điều chỉnh đường kết nối cho điểm hiện tại lớn hơn */
+.point.current::before {
+    height: 45px;
+}
+
+.point.current:nth-child(1)::before,
+.point.current:nth-child(3)::before,
+.point.current:nth-child(5)::before {
+    bottom: -45px;
+}
+
+.point.current:nth-child(2)::before,
+.point.current:nth-child(4)::before {
+    top: -45px;
+}
+
+.processing {
+    background-color: #FFBB00;
+    /* Màu vàng */
+}
+
+.ordered {
+    background-color: #1A73E8;
+    /* Màu xanh dương */
+}
+
+.completed {
+    background-color: #42FF00;
+    /* Màu xanh lá cây sáng */
+}
+
+.finished {
+    background-color: #00B050;
+    /* Màu xanh lá cây đậm */
+}
+
+.cancelled {
+    background-color: #FF0000;
+    /* Màu đỏ */
+}
+
+.modal-dialog {
+    max-width: 880px;
+}
+
+.modal-body {
+    min-height: 250px;
+    /* Đảm bảo đủ không gian cho tracker */
+    padding-top: 40px;
+    padding-bottom: 60px;
+}
+
+/* RESPONSIVE DESIGN - Chuyển sang dạng dọc khi màn hình nhỏ */
+@media (max-width: 768px) {
+    .progress-container {
+        margin: 20px;
+    }
+
+    .progress-points {
+        flex-direction: column;
+        align-items: center;
+        gap: 80px;
+    }
+
+    .progress-line {
+        width: 2px;
+        height: 100%;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+    }
+
+    .point {
+        margin: 0;
+        position: relative;
+    }
+
+    .point.current {
+        width: 60px;
+        height: 60px;
+    }
+
+    /* Label chung */
+    .point-label.top,
+    .point-label.bottom {
+        top: 50%;
+        left: calc(100% + 15px);
+        transform: translateY(-50%);
+        right: auto;
+        text-align: left;
+        width: auto;
+        min-width: 100px;
+    }
+
+    /* Đường nối chung */
+    .point::before {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 1px !important;
+        background-color: #000;
+        top: 50%;
+        left: 100%;
+        transform: translateY(-50%);
+    }
+
+    /* XỬ LÝ ĐIỂM 2 và 4 */
+    .point.current:nth-child(1)::before,
+    .point:nth-child(2)::before,
+    .point.current:nth-child(2)::before,
+    .point:nth-child(4)::before,
+    .point.current:nth-child(4)::before {
+        top: 50%;
+        transform: translateY(50%);
+    }
+
+    .point:nth-child(2) .point-label,
+    .point:nth-child(4) .point-label {
+        top: 50%;
+        transform: translateY(-50%) translateY(-10px);
+    }
+
+    /* XỬ LÝ label của point.current */
+    .point.current:nth-child(1) .point-label,
+    .point.current:nth-child(3) .point-label,
+    .point.current:nth-child(5) .point-label {
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .modal-body {
+        min-height: 450px;
+        padding: 30px 10px;
+    }
+}

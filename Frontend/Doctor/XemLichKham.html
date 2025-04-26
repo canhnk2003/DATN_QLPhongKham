@@ -20,9 +20,10 @@
       rel="stylesheet"
     />
     <script src="../assets/libs/jquery/dist/jquery.min.js "></script>
-    <script src="../assets/services/appointmentServiceByDoctor.js"></script>
+    <script src="../assets/services/AppointmentService/appointmentServiceByDoctor.js"></script>
     <script src="../assets/vendor/axios.min.js"></script>
     <script src="../assets/services/axios.js"></script>
+    <script src="../assets/services/AuthService/authService.js"></script>
     <script src="../assets/services/getDoctorNameAndAvt.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../assets/css/style.css" />
@@ -35,9 +36,6 @@
     <![endif]-->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-    <script src="../assets/vendor/axios.min.js"></script>
-    <script src="../assets/services/axios.js"></script>
   </head>
 
   <body>
@@ -169,41 +167,6 @@
                   > -->
                   </span>
                 </a>
-                <!-- <div
-                  class="dropdown-menu dropdown-menu-end user-dd animated flipInY"
-                >
-                  <a class="dropdown-item my-2" href="javascript:void(0)"
-                    ><i data-feather="user" class="svg-icon mr-2 ml-1"></i> My
-                    Profile</a
-                  >
-                  <a class="dropdown-item my-2" href="javascript:void(0)"
-                    ><i
-                      data-feather="credit-card"
-                      class="svg-icon mr-2 ml-1"
-                    ></i>
-                    My Balance</a
-                  >
-                  <a class="dropdown-item my-2" href="javascript:void(0)"
-                    ><i data-feather="mail" class="svg-icon mr-2 ml-1"></i>
-                    Inbox</a
-                  >
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="javascript:void(0)"
-                    ><i data-feather="settings" class="svg-icon mr-2 ml-1"></i>
-                    Account Setting</a
-                  >
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="javascript:void(0)"
-                    ><i data-feather="power" class="svg-icon mr-2 ml-1"></i>
-                    Logout</a
-                  >
-                  <div class="dropdown-divider"></div>
-                  <div class="pl-4 p-3">
-                    <a href="javascript:void(0)" class="btn btn-sm btn-info"
-                      >View Profile</a
-                    >
-                  </div>
-                </div> -->
               </li>
               <!-- ============================================================== -->
               <!-- User profile and search -->
@@ -346,7 +309,10 @@
                 <tr>
                   <th class="m-data-center" style="width: 70px">STT</th>
                   <th class="m-data-right" style="text-align: center">
-                    Họ và tên
+                    Mã BN
+                  </th>
+                  <th class="m-data-right" style="text-align: center">
+                    Bệnh nhân
                   </th>
                   <th
                     class="m-data-left"
@@ -359,6 +325,9 @@
                     style="width: 120px; text-align: center"
                   >
                     Ca khám
+                  </th>
+                  <th class="m-data-left" style="text-align: center">
+                    Dịch vụ
                   </th>
                   <th class="m-data-left" style="text-align: center">
                     Trạng thái

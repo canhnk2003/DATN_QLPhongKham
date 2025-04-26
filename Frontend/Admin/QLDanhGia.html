@@ -29,8 +29,10 @@
 
     <script src="../assets/libs/jquery/dist/jquery.min.js "></script>
     <script src="../assets/vendor/axios.min.js"></script>
+    <script src="../assets/libs/xlsx/xlsx.full.min.js"></script>
     <script src="../assets/services/axios.js"></script>
-    <script src="../assets/services/serviceRatingService.js"></script>
+    <script src="../assets/services/AuthService/authService.js"></script>
+    <script src="../assets/services/RatingService/serviceRatingService.js"></script>
   </head>
 
   <body>
@@ -305,6 +307,13 @@
                 data-bs-target="#dialog-show-rating"
               >
                 <i class="fa-solid fa-eye text-success" data-bs-toggle="tooltip"></i>
+              </div>
+              <div
+                class="m-toolbar-export m-toolbar-icon"
+                title="Tải xuống"
+                data-bs-toggle="tooltip"
+              >
+              <i class="fas fa-download text-info"></i>
               </div>
               <div
                 class="m-toolbar-refresh m-toolbar-icon"
