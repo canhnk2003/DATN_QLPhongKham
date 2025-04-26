@@ -28,11 +28,12 @@
       href="../assets/vendor/fontawesome-free/css/all.min.css"
       rel="stylesheet"
     />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../assets/libs/chart.js/dist/Chart.min.js"></script>
     <script src="../assets/libs/jquery/dist/jquery.min.js "></script>
     <script src="../assets/vendor/axios.min.js"></script>
     <script src="../assets/services/axios.js"></script>
     <script src="../assets/services/getDoctorNameAndAvt.js"></script>
+    <script src="../assets/services/HomeService/HomeDoctorService.js"></script>
     <style>
       .table-scroll {
         max-height: 330px; /* khoảng này trừ đi header & padding */
@@ -296,7 +297,7 @@
                 <div class="card-body">
                   <i class="fas fa-calendar-alt fa-2x text-primary mb-2"></i>
                   <h5 class="card-title">Tổng lịch khám</h5>
-                  <p class="card-text display-4">120</p>
+                  <p class="card-text display-4" id="sumAppointment">120</p>
                 </div>
               </div>
             </div>
@@ -306,8 +307,8 @@
                 <div class="card-body">
                   <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
                   <h5 class="card-title">Lịch thành công</h5>
-                  <p class="card-text display-4">100</p>
-                  <small>83%</small>
+                  <p class="card-text display-4" id="sumAppointmentSuc">100</p>
+                  <small id="sumAppointmentSucPer">83%</small>
                 </div>
               </div>
             </div>
@@ -317,8 +318,8 @@
                 <div class="card-body">
                   <i class="fas fa-times-circle fa-2x text-danger mb-2"></i>
                   <h5 class="card-title">Lịch hủy</h5>
-                  <p class="card-text display-4">20</p>
-                  <small>17%</small>
+                  <p class="card-text display-4" id="sumAppointmentCan">20</p>
+                  <small id="sumAppointmentCanPer">17%</small>
                 </div>
               </div>
             </div>
@@ -328,7 +329,7 @@
                 <div class="card-body">
                   <i class="fas fa-user-injured fa-2x text-info mb-2"></i>
                   <h5 class="card-title">Số bệnh nhân</h5>
-                  <p class="card-text display-4">80</p>
+                  <p class="card-text display-4" id="sumPatient">80</p>
                 </div>
               </div>
             </div>
@@ -343,16 +344,18 @@
                 <div class="card-body">
                   <div class="table-responsive table-scroll">
                     <table
-                      class="table table-bordered table-hover table-striped text-center"
+                      class="table table-hover table-striped text-center"
                       id="appointmentTable"
                     >
                       <thead class="table-primary sticky-header">
                         <tr>
-                          <th class="align-middle">Mã bệnh nhân</th>
-                          <th class="align-middle">Tên bệnh nhân</th>
+                          <th class="align-middle">STT</th>
+                          <th class="align-middle">Mã BN</th>
+                          <th class="align-middle">Bệnh nhân</th>
                           <th class="align-middle">Ngày khám</th>
                           <th class="align-middle">Ca khám</th>
-                          <th class="align-middle">Dịch vụ khám</th>
+                          <th class="align-middle">Dịch vụ</th>
+                          <th class="align-middle">Trạng thái</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -475,176 +478,7 @@
 
         <script>
           $(document).ready(function () {
-            // Dữ liệu mẫu cho các năm
-            const dataByYear = {
-              2025: [10, 60, 30, 40, 20, 50],
-              2024: [15, 25, 35, 45, 55, 65],
-              2023: [5, 15, 25, 35, 45, 55],
-            };
-
-            // Khởi tạo biểu đồ
-            const ctx = $("#chartStatistics")[0].getContext("2d");
-            const chart = new Chart(ctx, {
-              type: "line",
-              data: {
-                labels: [
-                  "Tháng 1",
-                  "Tháng 2",
-                  "Tháng 3",
-                  "Tháng 4",
-                  "Tháng 5",
-                  "Tháng 6",
-                ],
-                datasets: [
-                  {
-                    label: "Lịch khám",
-                    data: dataByYear[2025], // Dữ liệu mặc định là năm 2025
-                    borderColor: "rgba(75, 192, 192, 1)",
-                    backgroundColor: "rgba(75, 192, 192, 0.2)",
-                    borderWidth: 2,
-                  },
-                ],
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    position: "top",
-                  },
-                },
-              },
-            });
-
-            // Lắng nghe sự kiện thay đổi năm
-            $("#yearSelect").on("change", function () {
-              const selectedYear = $(this).val(); // Lấy giá trị năm được chọn
-              chart.data.datasets[0].data = dataByYear[selectedYear]; // Cập nhật dữ liệu
-              chart.update(); // Cập nhật biểu đồ
-            });
-          });
-        </script>
-        <script>
-          $(document).ready(function () {
-            // Dữ liệu mẫu
-            const statuses = [
-              "Đang xử lý",
-              "Đã đặt",
-              "Hoàn thành",
-              "Đã hoàn thành",
-              "Đã hủy",
-            ];
-            const counts = [50, 80, 60, 40, 20]; // Số lượng tương ứng với từng trạng thái
-
-            // Khởi tạo biểu đồ
-            const ctx = document
-              .getElementById("chartAppointmentStatus")
-              .getContext("2d");
-            const chart = new Chart(ctx, {
-              type: "bar", // Loại biểu đồ: thanh ngang
-              data: {
-                labels: statuses, // Tên các trạng thái
-                datasets: [
-                  {
-                    label: "Số lượng lịch khám",
-                    data: counts, // Số lượng lịch khám theo trạng thái
-                    backgroundColor: [
-                      "rgba(255, 159, 64, 0.6)", // Đang xử lý
-                      "rgba(54, 162, 235, 0.6)", // Đã đặt
-                      "rgba(75, 192, 192, 0.6)", // Hoàn thành
-                      "rgba(153, 102, 255, 0.6)", // Đã hoàn thành
-                      "rgba(255, 99, 132, 0.6)", // Đã hủy
-                    ],
-                    borderColor: [
-                      "rgba(255, 159, 64, 1)",
-                      "rgba(54, 162, 235, 1)",
-                      "rgba(75, 192, 192, 1)",
-                      "rgba(153, 102, 255, 1)",
-                      "rgba(255, 99, 132, 1)",
-                    ],
-                    borderWidth: 1,
-                  },
-                ],
-              },
-              options: {
-                indexAxis: "y", // Đặt trục Y làm trục chính (thanh ngang)
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    position: "top", // Vị trí của chú thích
-                  },
-                },
-                scales: {
-                  x: {
-                    beginAtZero: true, // Bắt đầu trục X từ 0
-                  },
-                },
-              },
-            });
-          });
-        </script>
-
-        <script>
-          $(document).ready(function () {
-            // Dữ liệu mẫu
-            const ratings = [
-              "1 sao",
-              "2 sao",
-              "3 sao",
-              "4 sao",
-              "5 sao",
-            ];
-            const percentages = [30, 20, 15, 15, 20]; // Tỷ lệ phần trăm
-
-            // Khởi tạo biểu đồ
-            const ctx = document
-              .getElementById("rating")
-              .getContext("2d");
-            const chart = new Chart(ctx, {
-              type: "doughnut", // Loại biểu đồ: hình bánh rỗng
-              data: {
-                labels: ratings, // Tên các dịch vụ
-                datasets: [
-                  {
-                    data: percentages, // Tỷ lệ phần trăm
-                    backgroundColor: [
-                      "rgba(255, 99, 132, 0.6)", // Màu sắc cho từng phần
-                      "rgba(54, 162, 235, 0.6)",
-                      "rgba(255, 206, 86, 0.6)",
-                      "rgba(75, 192, 192, 0.6)",
-                      "rgba(153, 102, 255, 0.6)",
-                    ],
-                    borderColor: [
-                      "rgba(255, 99, 132, 1)",
-                      "rgba(54, 162, 235, 1)",
-                      "rgba(255, 206, 86, 1)",
-                      "rgba(75, 192, 192, 1)",
-                      "rgba(153, 102, 255, 1)",
-                    ],
-                    borderWidth: 1,
-                  },
-                ],
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    position: "top", // Vị trí của chú thích
-                  },
-                  tooltip: {
-                    callbacks: {
-                      label: function (tooltipItem) {
-                        const label = ratings[tooltipItem.dataIndex];
-                        const value = percentages[tooltipItem.dataIndex];
-                        return `${label}: ${value}%`;
-                      },
-                    },
-                  },
-                },
-              },
-            });
+            
           });
         </script>
 

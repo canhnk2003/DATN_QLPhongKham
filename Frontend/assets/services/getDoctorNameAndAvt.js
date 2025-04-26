@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 function getAvata() {
     var userId = localStorage.getItem("userId");
-    console.log(userId);
+    // console.log(userId);
     // $('#hotenHeader').text(localStorage.getItem(loggedInUsername));
     axiosJWT
       .get(`/api/Doctors/getbyuserid/${userId}`)
