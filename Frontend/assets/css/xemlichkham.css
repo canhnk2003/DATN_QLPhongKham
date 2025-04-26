@@ -5,8 +5,8 @@
     padding: 15px;
 }
 
-.badge-booked {
-    background-color: #19d044;
+.complete {
+    background-color: #3edb00;
     /* Màu xanh cho badge đã đặt*/
 }
 .dropdown-toggle::after {

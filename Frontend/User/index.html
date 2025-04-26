@@ -55,8 +55,9 @@
     <script src="../assets/libs/jquery/dist/jquery.min.js "></script>
     <script src="../assets/vendor/axios.min.js"></script>
     <script src="../assets/services/axios.js"></script>
-    <script src="../assets/services/dichVuIndexService.js"></script>
-    <script src="../assets/services/thongTinBacSiIndex.js"></script>
+    <script src="../assets/services/AuthService/authService.js"></script>
+    <script src="../assets/services/ServiceService/dichVuIndexService.js"></script>
+    <script src="../assets/services/DoctorService/thongTinBacSiIndex.js"></script>
   </head>
   <style>
     .content {
@@ -629,8 +630,8 @@
                 Đăng ký lịch khám thành công! Cảm ơn!
               </div>
               <div class="text-center">
-                <button id="btnGetOldInfor">Lấy thông tin cũ</button>
-                <button id="btnDatLich">Đặt lịch khám</button>
+                <button id="btnGetOldInfor" class="mb-2">Lấy thông tin cũ</button>
+                <button id="btnDatLich" class="mb-2">Đặt lịch khám</button>
                 <button
                   type="button"
                   id="btnXemLichKham"
@@ -1262,12 +1263,12 @@
     <script src="../assets/js/main.js"></script>
 
     <!-- Dialog JS File -->
-    <script src="../assets/services/appointmentServiceByPatient.js"></script>
+    <script src="../assets/services/AppointmentService/appointmentServiceByPatient.js"></script>
     <script src="../assets/services/chatbotService.js"></script>
     <script>
       function getAvata() {
         var userId = localStorage.getItem("userId");
-        console.log(userId);
+        // console.log(userId);
         // $('#hotenHeader').text(localStorage.getItem(loggedInUsername));
         axiosJWT
           .get(`/api/Patients/getbyuserid/${userId}`)

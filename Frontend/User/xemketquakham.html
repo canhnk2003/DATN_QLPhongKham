@@ -40,8 +40,8 @@
 
     <script src="../assets/libs/jquery/dist/jquery.min.js "></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <script src="../assets/libs/jspdf/jspdf.umd.min.js"></script>
+    <script src="../assets/libs/jspdf/jspdf.plugin.autotable.min.js"></script>
     <script src="../assets/font_js/NotoSerif-Light.js"></script>
     <script src="../assets/font_js/NotoSerif-LightItalic.js"></script>
     <script src="../assets/font_js/NotoSerif-SemiBold.js"></script>
@@ -49,9 +49,9 @@
 
     <script src="../assets/vendor/axios.min.js"></script>
     <script src="../assets/services/axios.js"></script>
-    <script src="../assets/services/authService.js"></script>
-    <script src="../assets/services/xemKetQuaKham.js"></script>
-    <script src="../assets/services/thongTinCaNhanService.js"></script>
+    <script src="../assets/services/AuthService/authService.js"></script>
+    <script src="../assets/services/ResultService/xemKetQuaKham.js"></script>
+    <script src="../assets/services/PatientService/thongTinCaNhanService.js"></script>
 
     <!-- Main CSS File -->
     <link href="../assets/css/main.css" rel="stylesheet" />
@@ -433,7 +433,6 @@
     <script>
       function getAvata() {
         var userId = localStorage.getItem("userId");
-        console.log(userId);
         // $('#hotenHeader').text(localStorage.getItem(loggedInUsername));
         axiosJWT
           .get(`/api/Patients/getbyuserid/${userId}`)
@@ -447,64 +446,8 @@
             console.error("Lỗi không tìm được:", error);
           });
       }
-      function kiemTraEmail() {
-        const emailInput = document.getElementById("email");
-        const email = emailInput.value;
-        // Biểu thức chính quy kiểm tra định dạng email hợp lệ
-        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
-        if (emailRegex.test(email)) {
-          emailInput.classList.remove("input-error");
-        } else {
-          emailInput.classList.add("input-error");
-        }
-      }
-      function kiemTraSDT() {
-        const sdtInput = document.getElementById("sdt");
-        const sdt = sdtInput.value;
-        // Biểu thức chính quy kiểm tra định dạng email hợp lệ
-        const sdtRegex = /^0[0-9]*$/;
-
-        if (sdtRegex.test(sdt)) {
-          sdtInput.classList.remove("input-error");
-        } else {
-          sdtInput.classList.add("input-error");
-        }
-      }
-      function kiemTraMatKhau() {
-        const passwordInput = document.getElementById("newPassword");
-
-        const password = passwordInput.value;
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{4,}$/;
-
-        if (regex.test(password)) {
-          passwordInput.classList.remove("input-error");
-          $("#pass-msg").text("");
-        } else {
-          passwordInput.classList.add("input-error");
-          $("#pass-msg").text(
-            "Mật khẩu phải chứa ít nhất 1 ký tự hoa, thường, số, ký tự đặc biệt"
-          );
-        }
-      }
       $(document).ready(function () {
-        console.log("co chay");
-        document
-          .getElementById("fileInput")
-          .addEventListener("change", function (event) {
-            var file = event.target.files[0]; // Lấy file người dùng chọn
-            if (file) {
-              var reader = new FileReader();
-
-              reader.onload = function (e) {
-                // Set nguồn ảnh mới cho thẻ <img>
-                document.getElementById("previewImage").src = e.target.result;
-              };
-
-              // Đọc file ảnh dưới dạng Data URL (base64)
-              reader.readAsDataURL(file);
-            }
-          });
         getAvata();
       });
     </script>
