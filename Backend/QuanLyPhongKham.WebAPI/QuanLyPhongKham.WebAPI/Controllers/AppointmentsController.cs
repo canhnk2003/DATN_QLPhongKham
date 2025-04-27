@@ -24,14 +24,20 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         private readonly IAppointmentService _appointmentService;
         private readonly IPatientService _patientService;
         private readonly IServiceRatingService _ratingService;
+        private readonly IEmailService _emailService;
+        private readonly IDoctorService _doctorService;
+        private readonly IServiceService _serviceService;
         private readonly IMapper _mapper;
 
-        public AppointmentsController(IAppointmentService appointmentService, IMapper mapper, IPatientService patientService, IServiceRatingService serviceRatingService)
+        public AppointmentsController(IAppointmentService appointmentService, IMapper mapper, IPatientService patientService, IServiceRatingService serviceRatingService, IEmailService emailService, IDoctorService doctorService, IServiceService serviceService)
         {
             _appointmentService = appointmentService;
             _mapper = mapper;
             _patientService = patientService;
             _ratingService = serviceRatingService;
+            _emailService = emailService;
+            _doctorService = doctorService;
+            _serviceService = serviceService;
         }
         /// <summary>
         /// Lấy ra danh sách lịch khám
@@ -88,7 +94,55 @@ namespace QuanLyPhongKham.WebAPI.Controllers
             lichKham.BenhNhan = benhNhan;
             int res = await _appointmentService.AddAsync(_mapper.Map<LichKham>(lichKham));
             await _patientService.UpdateAsync(benhNhan);
-            return StatusCode(201, res);
+
+            var doctor = await _doctorService.GetByIdAsync(lichKham.BacSiId);
+            var service = await _serviceService.GetByIdAsync((Guid)lichKham.DichVuId);
+
+            var body = $@"
+                <html lang='vi'>
+                <head>
+                    <meta charset='UTF-8'>
+                    <title>Xác Nhận Đặt Lịch Khám</title>
+                    <style>
+                        body {{background-color: #f4f4f9; color: #333; padding: 20px; }}
+                        .container {{ width: 100%; max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }}
+                        .header {{ background-color: #007bff; color: #fff; text-align: center; padding: 15px; border-radius: 8px 8px 0 0; }}
+                        .content {{ margin-top: 20px; }}
+                        .footer {{ margin-top: 30px; text-align: center; font-size: 14px; background-color: #f9f9f9; padding: 15px; border-radius: 0 0 8px 8px; }}
+                    </style>
+                </head>
+                <body>
+                    <div class='container'>
+                        <div class='header'>
+                            <h2>Xác nhận Đặt lịch khám</h2>
+                        </div>
+                        <div class='content'>
+                            <p>Xin chào {lichKham.BenhNhan.HoTen},</p>
+                            <p>Cảm ơn bạn đã đặt lịch khám tại phòng khám của chúng tôi. Dưới đây là thông tin lịch khám của bạn:</p>
+                            <table>
+                                <tr><td><strong>Ngày khám:</strong></td><td>{lichKham.NgayKham:dd/MM/yyyy}</td></tr>
+                                <tr><td><strong>Giờ khám:</strong></td><td>{lichKham.GioKham}</td></tr>
+                                <tr><td><strong>Bác sĩ:</strong></td><td>{doctor.HoTen}</td></tr>
+                                <tr><td><strong>Dịch vụ:</strong></td><td>{service.TenDichVu}</td></tr>
+                            </table>
+                            <p>Chúng tôi sẽ chuẩn bị tốt nhất để đón tiếp bạn vào đúng giờ. Hẹn gặp lại bạn tại phòng khám!</p>
+                        </div>
+                        <div class='footer'>
+                            <p>Phòng Khám ABC</p>
+                            <p><a href='http://127.0.0.1:5500/User/index.html'>Truy cập trang web của chúng tôi</a></p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+                ";
+
+            await _emailService.SendEmailAsync(lichKham.BenhNhan.Email, "Xác nhận Đặt lịch khám", body);
+            return Ok(new
+            {
+                statusCode = 201,
+                response = res,
+                message = "Đặt lịch thành công và đã gửi email xác nhận."
+            });
         }
         /// <summary>
         /// Sửa 1 lịch khám theo id

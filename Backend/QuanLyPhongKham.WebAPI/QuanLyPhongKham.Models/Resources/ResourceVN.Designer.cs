@@ -106,6 +106,15 @@ namespace QuanLyPhongKham.Models.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dịch vụ không được phép để trống!.
+        /// </summary>
+        public static string Error_DichVuNotEmpty {
+            get {
+                return ResourceManager.GetString("Error_DichVuNotEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cập nhật dữ liệu không thành công!.
         /// </summary>
         public static string Error_Edit {

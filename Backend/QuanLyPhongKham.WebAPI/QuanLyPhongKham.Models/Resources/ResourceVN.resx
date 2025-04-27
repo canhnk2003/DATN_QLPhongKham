@@ -136,6 +136,9 @@
     <value>Xóa dữ liệu không thành công!</value>
     <comment>Lỗi xóa dữ liệu</comment>
   </data>
+  <data name="Error_DichVuNotEmpty" xml:space="preserve">
+    <value>Dịch vụ không được phép để trống!</value>
+  </data>
   <data name="Error_Edit" xml:space="preserve">
     <value>Cập nhật dữ liệu không thành công!</value>
     <comment>Lỗi sửa dữ liệu</comment>
