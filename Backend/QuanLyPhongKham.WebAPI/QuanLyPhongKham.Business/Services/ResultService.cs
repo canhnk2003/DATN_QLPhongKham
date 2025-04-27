@@ -73,17 +73,6 @@ namespace QuanLyPhongKham.Business.Services
             }
         }
 
-
-
-
-        public KetQuaKham? GetKetQuaKhamByLichKhamId(Guid lichKhamId)
-        {
-            var kq = _resultRepository.GetKetQuaKhamByLichKhamId(lichKhamId);
-            return kq;
-
-        }
-
-
         public override async Task<int> UpdateAsync(KetQuaKham entity)
         {
             var checkData = _resultRepository.CheckDataValidate(entity);
@@ -106,6 +95,12 @@ namespace QuanLyPhongKham.Business.Services
                     throw new ErrorEditException();
                 }
             }
+        }
+
+        public KetQuaKham? GetKetQuaKhamByLichKhamId(Guid lichKhamId)
+        {
+            var kq = _resultRepository.GetKetQuaKhamByLichKhamId(lichKhamId);
+            return kq;
         }
     }
 }

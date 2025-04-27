@@ -188,12 +188,20 @@ namespace QuanLyPhongKham.Business.Services
             {
                 errorData.Add("GioKham", ResourceVN.Error_GioKhamNotEmpty);
             }
+
+            //Kiểm tra dịch vụ không được để trống
+            if (string.IsNullOrEmpty(lichKham.DichVuId.ToString()))
+            {
+                errorData.Add("DichVuId", ResourceVN.Error_DichVuNotEmpty);
+            }
+
             //Kiểm tra thông tin bệnh nhân
             var benhNhan = await _patientRepository.GetByIdAsync(lichKham.BenhNhanId);
             if (benhNhan == null)
             {
                 errorData.Add("BenhNhan/BenhNhanId", ResourceVN.Error_NotFound);
             }
+
             //1.3. Email không được để trống
             if (string.IsNullOrEmpty(lichKham.BenhNhan.Email))
             {

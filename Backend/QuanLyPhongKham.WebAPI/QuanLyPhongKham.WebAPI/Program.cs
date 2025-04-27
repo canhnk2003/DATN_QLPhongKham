@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using QuanLyPhongKham.Business.Interfaces;
 using QuanLyPhongKham.Business.Services;
@@ -94,6 +93,8 @@ builder.Services.AddScoped<IServiceRatingService, ServiceRatingService>();
 builder.Services.AddScoped<IGeminiService, GeminiService>();
 
 builder.Services.AddScoped<IHomeService, HomeService>();
+
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
