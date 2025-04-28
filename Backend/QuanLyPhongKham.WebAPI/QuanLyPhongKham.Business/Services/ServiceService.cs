@@ -5,6 +5,7 @@ using QuanLyPhongKham.Data.Interfaces;
 using QuanLyPhongKham.Data.Repositories;
 using QuanLyPhongKham.Models.Entities;
 using QuanLyPhongKham.Models.Exceptions;
+using QuanLyPhongKham.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -89,6 +90,28 @@ namespace QuanLyPhongKham.Business.Services
         public async Task<IEnumerable<DichVu>> GetByKhoaId(Guid khoaId)
         {
             return await _serviceRepository.GetByKhoaId(khoaId);
+        }
+
+        public async Task<int> ImportDataFromExcel(List<DichVu> dichVus)
+        {
+			int countSuccess = 0;
+			foreach(var model in dichVus)
+			{
+				try
+				{
+					await AddAsync(model);
+					countSuccess++;
+				}
+				catch(ErrorValidDataException e)
+				{
+					continue;
+				}
+				catch (Exception e)
+				{
+					continue;
+				}
+			}
+			return countSuccess;
         }
     }
 }

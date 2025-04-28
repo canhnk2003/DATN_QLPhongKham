@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuanLyPhongKham.Business.Interfaces;
 using QuanLyPhongKham.Business.Services;
@@ -25,7 +26,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetInfor()
         {
             var infor = await _homeService.GetClinicInfor(null);
@@ -33,7 +34,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         }
 
         [HttpGet("{doctorId}")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> GetInforByDoctor(Guid doctorId)
         {
             var infor = await _homeService.GetClinicInfor(doctorId);
@@ -45,7 +46,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("appointment")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAppointmentToday()
         {
             var appointments = await _appointmentService.GetAppointment();
@@ -54,7 +55,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         }
 
         [HttpGet("appointment/{doctorId}")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> GetAppointmentTodayByDoctor(Guid doctorId)
         {
             var appointments = await _appointmentService.GetAppointment();
@@ -67,7 +68,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("admin")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllDoctorInfor()
         {
             var infor = await _ratingService.GetAllAverageAsync();
@@ -79,7 +80,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("statisticByYear")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ThongKeLichKhamTheoNamAsys()
         {
             var statistic = await _homeService.ThongKeLichKhamTheoNamAsync(null);
@@ -87,7 +88,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         }
 
         [HttpGet("statisticByYear/{doctorId}")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> ThongKeLichKhamTheoNamByDoctorAsys(Guid doctorId)
         {
             var statistic = await _homeService.ThongKeLichKhamTheoNamAsync(doctorId);
@@ -99,7 +100,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("statisticByStatus")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ThongKeLichKhamTheoTrangThaiAsys()
         {
             var statistic = await _homeService.ThongKeLichKhamTheoTrangThaiAsync(null);
@@ -107,7 +108,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         }
 
         [HttpGet("statisticByStatus/{doctorId}")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> ThongKeLichKhamTheoTrangThaiByDoctorAsys(Guid doctorId)
         {
             var statistic = await _homeService.ThongKeLichKhamTheoTrangThaiAsync(doctorId);
@@ -119,7 +120,7 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("statisticServicePopular")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ThongKeDichvuPhoBienAsysn()
         {
             var statistic = await _homeService.ThongKeDichVuPhoBienTheoNamAsync();
@@ -127,10 +128,11 @@ namespace QuanLyPhongKham.WebAPI.Controllers
         }
 
         [HttpGet("statisticRating/{doctorId}")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> ThongKeDanhGiaAsysn(Guid doctorId)
         {
             var statistic = await _ratingService.GetAllWithNameAsync();
+            statistic = statistic.Where(x => x.BacSiId == doctorId).ToList();
             int total = statistic.Count();
             var grouped = statistic
                 .GroupBy(x => x.DanhGia)

@@ -128,6 +128,37 @@ $(document).ready(function () {
   $(".m-toolbar-export").click(function () {
     exportToExcel();
   });
+  $(".m-toolbar-import").on("click", function () {
+    $("#fileInput").click();
+  });
+  // Sự kiện thêm dữ liệu từ excel
+  $("#fileInput").on("change", function () {
+    var file = $("#fileInput")[0].files[0];
+    if (!file) {
+      showErrorPopup("Vui lòng chọn file.");
+      return;
+    }
+
+    var formData = new FormData();
+    formData.append("file", file); // Thêm file vào formData
+
+    // Sử dụng Axios để gửi file lên server
+    axiosJWT
+      .post("/api/Doctors/import-bacsi", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Đảm bảo gửi với type này
+        },
+      })
+      .then(function (response) {
+        // Nếu upload thành công
+        showSuccessPopup("Thêm thành công! " + response.data.message);
+      })
+      .catch(function (error) {
+        // Nếu có lỗi trong quá trình upload
+        showErrorPopup("Có lỗi xảy ra! Vui lòng thử lại sau!");
+        console.error("Error:", error);
+      });
+  });
 });
 
 // Xử lý khi nhấn xuất file
@@ -140,12 +171,12 @@ async function exportToExcel() {
           "Định danh": item.bacSiId,
           "Mã BS": item.maBacSi,
           "Bác sĩ": item.hoTen,
-          "Email": item.email,
-          "Số điện thoại": item.soDienThoai, 
-          "Kinh nghiệm": item.soNamKinhNghiem + " năm", 
+          Email: item.email,
+          "Số điện thoại": item.soDienThoai,
+          "Kinh nghiệm": item.soNamKinhNghiem + " năm",
           "Bằng cấp": item.tenBangCap,
           "Giờ làm việc": item.gioLamViec,
-          "ĐỊa chỉ": item.diaChi
+          "ĐỊa chỉ": item.diaChi,
         };
       })
     );
@@ -171,8 +202,11 @@ function getData() {
     .get(`/api/Doctors`)
     .then(function (response) {
       dsBS = response.data;
-      console.log(dsBS);
+      // console.log(dsBS);
+      $(".preloader").addClass("d-block");
       display(dsBS);
+
+      $(".preloader").removeClass("d-block");
     })
     .catch(function (error) {
       console.error("Lỗi không tìm được:", error);
@@ -184,10 +218,10 @@ function display(data) {
 
   // Tạo một Map để ánh xạ từ khoaId sang tenKhoa
   const khoaMap = new Map();
-  if(dsKhoa != null) {
+  if (dsKhoa != null) {
     dsKhoa.forEach((item) => {
-        khoaMap.set(item.khoaId, item.tenKhoa);
-      });
+      khoaMap.set(item.khoaId, item.tenKhoa);
+    });
   }
   // Lặp qua danh sách bác sĩ và xây dựng các hàng bảng
   data.forEach((item, index) => {
@@ -292,10 +326,13 @@ function getMaxBacSiCode(dsBS) {
   const nextCode = maxCode + 1;
   return "BS" + nextCode.toString().padStart(3, "0");
 }
-function showSuccessPopup() {
+function showSuccessPopup(message = "") {
   // Hiển thị popup
   const popup = document.getElementById("success-popup");
   popup.style.visibility = "visible"; // Hoặc có thể dùng popup.classList.add('visible');
+  if (message) {
+    $(".m-popup-text-success span").text(message);
+  }
 
   // Tự động ẩn popup sau 3 giây (3000ms)
   setTimeout(() => {

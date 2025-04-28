@@ -158,7 +158,7 @@ $(document).ready(async function () {
         showSuccessPopup("Xóa dịch vụ thành công!"); // Thông báo thành công
       })
       .catch((error) => {
-        showErrorPopup();
+        showErrorPopup("Lỗi xóa dịch vụ!");
         console.error("Lỗi khi xóa dịch vụ:", error);
       })
       .finally(() => {
@@ -170,37 +170,69 @@ $(document).ready(async function () {
   $(".m-toolbar-export").click(function () {
     exportToExcel();
   });
+
+  $(".m-toolbar-import").on("click", function () {
+    $("#fileInput").click();
+  });
+  // Sự kiện thêm dữ liệu từ excel
+  $("#fileInput").on("change", function () {
+    var file = $("#fileInput")[0].files[0];
+    if (!file) {
+      showErrorPopup("Vui lòng chọn file.");
+      return;
+    }
+
+    var formData = new FormData();
+    formData.append("file", file); // Thêm file vào formData
+
+    // Sử dụng Axios để gửi file lên server
+    axiosJWT
+      .post("/api/Services/import-dichvu", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Đảm bảo gửi với type này
+        },
+      })
+      .then(function (response) {
+        // Nếu upload thành công
+        showSuccessPopup("Thêm thành công! " + response.data.message);
+      })
+      .catch(function (error) {
+        // Nếu có lỗi trong quá trình upload
+        showErrorPopup("Có lỗi xảy ra! Vui lòng thử lại sau!");
+        console.error("Error:", error);
+      });
+  });
 });
 
 // Xử lý khi nhấn xuất file
 async function exportToExcel() {
-    try {
-      // Lấy tên bệnh nhân và bác sĩ đồng thời cho tất cả các mục trong dsLK
-      const formattedData = await Promise.all(
-        services.map(async (item) => {
-          return {
-            "Định danh": item.dichVuId,
-            "Mã DV": item.maDichVu,
-            "Tên dịch vụ": item.tenDichVu,
-            "Mô tả": item.moTaDichVu,
-            "Đơn giá": item.donGia.toLocaleString('vi-VN') + ' VND'
-          };
-        })
-      );
-  
-      // Tạo workbook và worksheet
-      const worksheet = XLSX.utils.json_to_sheet(formattedData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "DichVu");
-  
-      // Xuất file Excel
-      XLSX.writeFile(workbook, "DichVu.xlsx");
-    } catch (error) {
-      console.error("Lỗi khi xuất dữ liệu:", error);
-      // Hiển thị thông báo lỗi nếu cần
-      showPopup("error", "Không thể xuất dữ liệu!");
-    }
+  try {
+    // Lấy tên bệnh nhân và bác sĩ đồng thời cho tất cả các mục trong dsLK
+    const formattedData = await Promise.all(
+      services.map(async (item) => {
+        return {
+          "Định danh": item.dichVuId,
+          "Mã DV": item.maDichVu,
+          "Tên dịch vụ": item.tenDichVu,
+          "Mô tả": item.moTaDichVu,
+          "Đơn giá": item.donGia.toLocaleString("vi-VN") + " VND",
+        };
+      })
+    );
+
+    // Tạo workbook và worksheet
+    const worksheet = XLSX.utils.json_to_sheet(formattedData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "DichVu");
+
+    // Xuất file Excel
+    XLSX.writeFile(workbook, "DichVu.xlsx");
+  } catch (error) {
+    console.error("Lỗi khi xuất dữ liệu:", error);
+    // Hiển thị thông báo lỗi nếu cần
+    showPopup("error", "Không thể xuất dữ liệu!");
   }
+}
 
 // Hàm tải danh sách dịch vụ
 async function loadServices() {

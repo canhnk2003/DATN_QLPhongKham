@@ -12,7 +12,7 @@ namespace QuanLyPhongKham.Business.Interfaces
     {
         Task<IEnumerable<BacSi>> GetBacSisByKhoaId(Guid id);
         Task<BacSi> GetByUserId(string userId);
-        
 
+        Task<int> ImportDataFromExcel(List<BacSi> bacsiModels);
     }
 }

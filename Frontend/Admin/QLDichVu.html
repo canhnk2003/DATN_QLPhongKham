@@ -19,6 +19,10 @@
       href="../assets/extra-libs/jvector/jquery-jvectormap-2.0.2.css"
       rel="stylesheet"
     />
+    <link
+      href="../assets/vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+    />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../assets/css/style.css" />
     <link rel="stylesheet" href="../assets/css/content.css" />
@@ -345,10 +349,14 @@
               />
             </div>
             <div class="m-toolbar-actionbar">
-              <div class="m-toolbar-export m-toolbar-icon">
+              <input type="file" id="fileInput" name="file" class="d-none" required/>
+              <div for="#fileInput" class="m-toolbar-import m-toolbar-icon" title="Thêm dữ liệu từ Excel" data-bs-toggle="tooltip">
+                <i class="fa-solid fa-file-arrow-up" style="color: #35a9d0"></i>
+              </div>
+              <div class="m-toolbar-export m-toolbar-icon" title="Tải xuống" data-bs-toggle="tooltip">
                 <i class="fas fa-download" style="color: #35a9d0"></i>
               </div>
-              <div class="m-toolbar-refresh m-toolbar-icon">
+              <div class="m-toolbar-refresh m-toolbar-icon" id="refresh-data" title="Tải lại" data-bs-toggle="tooltip">
                 <i class="fas fa-sync-alt" style="color: #35a9d0"></i>
               </div>
             </div>
@@ -628,7 +636,12 @@
     <script src="../assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js"></script>
     <script src="../assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js"></script>
     <!-- <script src="../assets/js/pages/dashboards/dashboard1.min.js"></script> -->
-
+    <script>
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+      })
+      </script>
     <script>
       $(document).ready(function () {
         // Lấy ngày hiện tại
