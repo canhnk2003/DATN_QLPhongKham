@@ -26,6 +26,8 @@ namespace QuanLyPhongKham.Business.Services
             string maBSNext = _doctorRepository.GetNextMaBacSi();
             entity.BacSiId = Guid.NewGuid();
             entity.MaBacSi = maBSNext;
+            entity.NgayTao = DateTime.Now;
+            entity.NgayCapNhat = DateTime.Now;
             //Kiểm tra dữ liệu hợp lệ
             var checkData = _doctorRepository.CheckDataValidateForInsert(entity);
 
@@ -56,7 +58,6 @@ namespace QuanLyPhongKham.Business.Services
                 throw new ErrorNotFoundException();
             }
             return bs;
-
         }
 
         public async Task<IEnumerable<BacSi>> GetBacSisByKhoaId(Guid id)
@@ -75,6 +76,7 @@ namespace QuanLyPhongKham.Business.Services
             }
             else
             {
+                entity.NgayCapNhat = DateTime.Now;
                 int res = await _doctorRepository.UpdateAsync(entity);
 
                 if (res > 0)
@@ -86,6 +88,28 @@ namespace QuanLyPhongKham.Business.Services
                     throw new ErrorEditException();
                 }
             }
+        }
+
+        public async Task<int> ImportDataFromExcel(List<BacSi> bacsis)
+        {
+            int countSuccess = 0;
+            foreach (var model in bacsis)
+            {
+                try
+                {
+                    await AddAsync(model);
+                    countSuccess++;
+                }
+                catch (ErrorValidDataException e)
+                {
+                    continue;
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+            }
+            return countSuccess;
         }
     }
     

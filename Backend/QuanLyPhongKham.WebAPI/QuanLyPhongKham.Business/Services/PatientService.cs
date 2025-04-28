@@ -25,6 +25,8 @@ namespace QuanLyPhongKham.Business.Services
             string maBNNext = _patientRepository.GetNextMaBenhNhan();
             entity.BenhNhanId = Guid.NewGuid();
             entity.MaBenhNhan = maBNNext;
+            entity.NgayCapNhat = DateTime.Now;
+            entity.NgayTao = DateTime.Now;
             //Kiểm tra dữ liệu hợp lệ
             var checkData = _patientRepository.CheckDataValidateForInsert(entity);
 
@@ -58,6 +60,7 @@ namespace QuanLyPhongKham.Business.Services
             }
             else
             {
+                entity.NgayCapNhat = DateTime.Now;
                 int res = await _patientRepository.UpdateAsync(entity);
 
                 if (res > 0)

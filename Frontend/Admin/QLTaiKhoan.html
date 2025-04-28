@@ -352,7 +352,7 @@
               />
             </div>
             <div class="m-toolbar-actionbar">
-              <div id="refresh-data" class="m-toolbar-refresh m-toolbar-icon">
+              <div id="refresh-data" class="m-toolbar-refresh m-toolbar-icon" title="Tải lại" data-bs-toggle="tooltip">
                 <i class="fas fa-sync-alt" style="color: #35a9d0"></i>
               </div>
             </div>
@@ -592,7 +592,14 @@
     <script src="../assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js"></script>
     <script src="../assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js"></script>
     <!-- <script src="../assets/js/pages/dashboards/dashboard1.min.js"></script> -->
-
+    <script>
+      var tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      );
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    </script>
     <script>
       function kiemTraMatKhau() {
         const passwordInput = document.getElementById("password-add");
