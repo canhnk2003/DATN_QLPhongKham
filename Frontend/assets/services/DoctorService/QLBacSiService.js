@@ -57,6 +57,7 @@ $(document).ready(function () {
       .then(function (response) {
         console.log("Thêm thành công:", response.data);
         getData(); // Tải lại dữ liệu sau khi cập nhật
+        showSuccessPopup("Thêm thành công");
       })
       .catch(function (error) {
         showErrorPopup();
@@ -81,7 +82,7 @@ $(document).ready(function () {
       khoaId: khoaIdValue || null,
     };
 
-    console.log("Dữ liệu cập nhật:", updatedDoctor);
+    // console.log("Dữ liệu cập nhật:", updatedDoctor);
 
     // Gửi yêu cầu cập nhật tới API
     axiosJWT
@@ -111,6 +112,7 @@ $(document).ready(function () {
       .then(function (response) {
         console.log("Xóa thành công:", response.data);
         getData(); // Tải lại dữ liệu sau khi cập nhật
+        showSuccessPopup("Xóa thành công.");
       })
       .catch(function (error) {
         showErrorPopup();
@@ -152,6 +154,7 @@ $(document).ready(function () {
       .then(function (response) {
         // Nếu upload thành công
         showSuccessPopup("Thêm thành công! " + response.data.message);
+        getData();
       })
       .catch(function (error) {
         // Nếu có lỗi trong quá trình upload
@@ -203,10 +206,11 @@ function getData() {
     .then(function (response) {
       dsBS = response.data;
       // console.log(dsBS);
+      $(".preloader").removeClass("d-none");
       $(".preloader").addClass("d-block");
       display(dsBS);
-
       $(".preloader").removeClass("d-block");
+      $(".preloader").addClass("d-none");
     })
     .catch(function (error) {
       console.error("Lỗi không tìm được:", error);

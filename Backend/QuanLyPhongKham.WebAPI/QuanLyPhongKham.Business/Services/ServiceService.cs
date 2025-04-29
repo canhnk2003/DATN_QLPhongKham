@@ -42,7 +42,7 @@ namespace QuanLyPhongKham.Business.Services
 			{
 				// Tạo ID mới cho dịch vụ và thiết lập các trạng thái cần thiết
 				entity.DichVuId = Guid.NewGuid();
-				entity.MaDichVu = _serviceRepository.GetNextMaDichVu();
+				entity.MaDichVu = await _serviceRepository.GetNextMaDichVu(entity.KhoaId.Value);
 				entity.NgayTao = DateTime.Now;
 				entity.NgayCapNhat = DateTime.Now;
 

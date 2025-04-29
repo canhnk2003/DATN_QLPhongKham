@@ -23,7 +23,7 @@ namespace QuanLyPhongKham.Business.Services
 
         public override async Task<int> AddAsync(BacSi entity)
         {
-            string maBSNext = _doctorRepository.GetNextMaBacSi();
+            string maBSNext = await _doctorRepository.GetNextMaBacSi(entity.KhoaId.Value);
             entity.BacSiId = Guid.NewGuid();
             entity.MaBacSi = maBSNext;
             entity.NgayTao = DateTime.Now;
@@ -90,27 +90,6 @@ namespace QuanLyPhongKham.Business.Services
             }
         }
 
-        public async Task<int> ImportDataFromExcel(List<BacSi> bacsis)
-        {
-            int countSuccess = 0;
-            foreach (var model in bacsis)
-            {
-                try
-                {
-                    await AddAsync(model);
-                    countSuccess++;
-                }
-                catch (ErrorValidDataException e)
-                {
-                    continue;
-                }
-                catch (Exception e)
-                {
-                    continue;
-                }
-            }
-            return countSuccess;
-        }
     }
     
 }

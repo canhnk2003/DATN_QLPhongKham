@@ -629,7 +629,7 @@ async function display1(dsLK) {
     const serviceName = service ? service.tenDichVu : "Chưa xác định";
     const col = `
           <div class="col-md-4">
-              <div class="card custom-card" lkId="${lichKham.lichKhamId}">
+              <div class="card custom-card h-100" lkId="${lichKham.lichKhamId}">
                   <div class="d-flex justify-content-between align-items-start">
                       <span class="badge rounded-pill ${getBadgeClass(status)}">
                          ${getIcon(status)} ${status}

@@ -522,8 +522,12 @@ function getData() {
     .get(`/api/v1/Appointments/doctor/${bsId}`)
     .then(function (response) {
       dsLK = response.data;
+      $(".preloader").removeClass("d-none");
+      $(".preloader").addClass("d-block");
       // console.log(dsLK);
       display(dsLK);
+      $(".preloader").removeClass("d-block");
+      $(".preloader").addClass("d-none");
     })
     .catch(function (error) {
       console.error("Lỗi không tìm được:", error);

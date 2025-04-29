@@ -4,7 +4,7 @@ var dgByDoctor = "";
 const userId = localStorage.getItem("userId");
 $(document).ready(async function () {
   const bacSiId = await getDoctorByUserId(); // Lấy thông tin bác sĩ theo userId
-//   console.log("Bác sĩ ID:", bacSiId);
+  //   console.log("Bác sĩ ID:", bacSiId);
   //Lấy tất cả dữ liệu
   await getData(bacSiId);
 
@@ -77,7 +77,9 @@ function initTableSearch(inputSelector, tableSelector) {
 //Hàm lấy dữ liệu đánh giá trung bình của bác sĩ
 async function getDataRatingDoctor(bacSiId) {
   try {
-    const response = await axiosJWT.get(`/api/v1/ServiceRatings/average/${bacSiId}`);
+    const response = await axiosJWT.get(
+      `/api/v1/ServiceRatings/average/${bacSiId}`
+    );
     dgByDoctor = response.data;
     // console.log(dgByDoctor);
     await displayDGByDoctor(dgByDoctor); // Hiển thị dữ liệu lên bảng
@@ -89,11 +91,11 @@ async function getDataRatingDoctor(bacSiId) {
 //Hiển thị dữ liệu lên bảng đánh giá trung bình của bác sĩ
 async function displayDGByDoctor(data) {
   // Gán dữ liệu số lượt và trung bình
-  $('#sumRating').text(data.soLuotDanhGia);
-  $('#averageRating').text(data.soSaoTrungBinh);
+  $("#sumRating").text(data.soLuotDanhGia);
+  $("#averageRating").text(data.soSaoTrungBinh);
   const star = generateStarRating(data.soSaoTrungBinh);
-  $('.m-rating-star').html(star); // Hiển thị sao đánh giá trung bình
-  $('.rating-text').text(data.thuHang + " / " + data.tongSoBacSi); // Hiển thị thứ hạng
+  $(".m-rating-star").html(star); // Hiển thị sao đánh giá trung bình
+  $(".rating-text").text(data.thuHang + " / " + data.tongSoBacSi); // Hiển thị thứ hạng
 }
 
 // Hàm tạo ra đánh giá sao với gradient
@@ -128,7 +130,11 @@ async function getData(bacSiId) {
       `/api/v1/ServiceRatings/doctor/${bacSiId}`
     );
     dsDG = response.data;
+    $(".preloader").removeClass("d-none");
+    $(".preloader").addClass("d-block");
     display(dsDG); // Hiển thị dữ liệu lên bảng
+    $(".preloader").removeClass("d-block");
+    $(".preloader").addClass("d-none");
   } catch (error) {
     console.error("Lỗi không tìm được:", error);
   }

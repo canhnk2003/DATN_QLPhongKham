@@ -60,7 +60,11 @@ function getData() {
     .get(`/api/Patients/getbydoctorid/${bsId}`)
     .then(function (response) {
       dsBN = response.data;
+      $(".preloader").removeClass("d-none");
+      $(".preloader").addClass("d-block");
       display(dsBN);
+      $(".preloader").removeClass("d-block");
+      $(".preloader").addClass("d-none");
     })
     .catch(function (error) {
       console.error("Lỗi không tìm được:", error);

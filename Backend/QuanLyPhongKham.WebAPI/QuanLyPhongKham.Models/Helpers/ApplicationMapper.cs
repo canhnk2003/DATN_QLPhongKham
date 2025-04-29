@@ -15,13 +15,11 @@ namespace QuanLyPhongKham.Models.Helpers
         {
             CreateMap<BenhNhan, BenhNhanModel>().ReverseMap();
             CreateMap<LichKham, AppointmentModel>().ReverseMap();
-
             CreateMap<BacSi, BacSiModel>().ReverseMap();
             CreateMap<KetQuaKham, ResultModel>().ReverseMap();
-        
-
 			CreateMap<DichVu, DichVuModel>().ReverseMap();
             CreateMap<DanhGiaDichVu, DanhGiaDichvuModel>().ReverseMap();
+            CreateMap<Khoa, KhoaModel>().ReverseMap();
 		}
 	}
 }

@@ -1,25 +1,29 @@
-$(document).ready(function(){
-    getAvata();
+$(document).ready(function () {
+  $(".preloader").removeClass("d-none");
+  $(".preloader").addClass("d-block");
+  getAvata();
+  $(".preloader").removeClass("d-block");
+  $(".preloader").addClass("d-none");
 });
 
 function getAvata() {
-    var userId = localStorage.getItem("userId");
-    // console.log(userId);
-    // $('#hotenHeader').text(localStorage.getItem(loggedInUsername));
-    axiosJWT
-      .get(`/api/Doctors/getbyuserid/${userId}`)
-      .then(function (response) {
-        let bn = response.data;
-        if (bn.hinhAnh != null) {
-          $("#avatar").attr("src", "http://localhost:37649" + bn.hinhAnh);
-          $("#avatar").css({
-            'width': '40px',
-            'height': '40px'
+  var userId = localStorage.getItem("userId");
+  // console.log(userId);
+  // $('#hotenHeader').text(localStorage.getItem(loggedInUsername));
+  axiosJWT
+    .get(`/api/Doctors/getbyuserid/${userId}`)
+    .then(function (response) {
+      let bn = response.data;
+      if (bn.hinhAnh != null) {
+        $("#avatar").attr("src", "http://localhost:37649" + bn.hinhAnh);
+        $("#avatar").css({
+          width: "40px",
+          height: "40px",
         });
-          $("#nameDoctor").text(bn.hoTen);
-        }
-      })
-      .catch(function (error) {
-        console.error("Lỗi không tìm được:", error);
-      });
-  }
+        $("#nameDoctor").text(bn.hoTen);
+      }
+    })
+    .catch(function (error) {
+      console.error("Lỗi không tìm được:", error);
+    });
+}

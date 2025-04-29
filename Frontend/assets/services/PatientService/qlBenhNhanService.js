@@ -49,6 +49,7 @@ $(document).ready(function () {
       .then(function (response) {
         console.log("Thêm thành công:", response.data);
         getData(); // Tải lại dữ liệu sau khi cập nhật
+        showSuccessPopup("Thêm thành công.");
       })
       .catch(function (error) {
         showErrorPopup();
@@ -107,6 +108,7 @@ $(document).ready(function () {
       .then(function (response) {
         console.log("Xóa thành công:", response.data);
         getData(); // Tải lại dữ liệu sau khi cập nhật
+        showSuccessPopup("Xóa thành công.");
       })
       .catch(function (error) {
         showErrorPopup();
@@ -137,7 +139,7 @@ async function exportToExcel() {
           "Định danh": item.benhNhanId,
           "Mã bệnh nhân": item.maBenhNhan,
           "Họ tên": item.hoTen,
-          "Email": item.email,
+          Email: item.email,
           "Ngày sinh": new Date(item.ngaySinh).toLocaleDateString("en-GB"),
           "Giới tính": item.gioiTinh,
           "Địa chỉ": item.diaChi,
@@ -167,8 +169,12 @@ function getData() {
     .get(`/api/Patients`)
     .then(function (response) {
       dsBN = response.data;
+      $(".preloader").removeClass("d-none");
+      $(".preloader").addClass("d-block");
       //   console.log(dsBN);
       display(dsBN);
+      $(".preloader").removeClass("d-block");
+      $(".preloader").addClass("d-none");
     })
     .catch(function (error) {
       console.error("Lỗi không tìm được:", error);
@@ -273,10 +279,13 @@ function getMaxBenhNhanCode(dsBN) {
   return "BN" + nextCode.toString().padStart(3, "0");
 }
 
-function showSuccessPopup() {
+function showSuccessPopup(message = "") {
   // Hiển thị popup
   const popup = document.getElementById("success-popup");
   popup.style.visibility = "visible"; // Hoặc có thể dùng popup.classList.add('visible');
+  if (message) {
+    $(".m-popup-text-success span").text(message);
+  }
 
   // Tự động ẩn popup sau 3 giây (3000ms)
   setTimeout(() => {

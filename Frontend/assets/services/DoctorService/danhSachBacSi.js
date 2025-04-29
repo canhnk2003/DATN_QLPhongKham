@@ -44,7 +44,7 @@ function displayDoctors(data) {
             <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100" id="doctorInfor">
                 <div bs-id="${doctor.bacSiId}"></div>
                     <div class="team-member d-flex align-items-start">
-                    <div class="pic"><img src="${imageUrl}" class="img-fluid" alt="${doctor.hoTen}"></div>
+                    <div class="pic"><img src="${imageUrl}" class="img-fluid" style="width: 150px; height: 150px; object-fit: cover;" alt="${doctor.hoTen}"></div>
                     <div class="member-info">
                         <h4 id="tenBacSi">${doctor.hoTen}</h4>
                         <span id="tenBangCap">${doctor.tenBangCap}</span>

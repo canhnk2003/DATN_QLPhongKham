@@ -28,4 +28,8 @@
     <ProjectReference Include="..\QuanLyPhongKham.Models\QuanLyPhongKham.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
 </Project>

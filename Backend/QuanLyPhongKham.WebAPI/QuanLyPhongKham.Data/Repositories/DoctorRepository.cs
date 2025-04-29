@@ -107,31 +107,6 @@ namespace QuanLyPhongKham.Data.Repositories
             return errorData;
         }
 
-        public string GetNextMaBacSi()
-        {
-            //Lấy danh sách mã bác sĩ
-            var maxMaBS = _context.BacSis
-                .AsEnumerable() //Chuyển sang client side
-                .Select(bs => new
-                {
-                    MaBS = bs.MaBacSi,
-                    So = int.Parse(bs.MaBacSi.Substring(2)) // Tách phần số, bỏ qua 2 ký tự đầu tiên "BS"
-                })
-                .OrderByDescending(bs => bs.So) // Sắp xếp theo số, giảm dần
-                .FirstOrDefault();
-
-            // Nếu không có bác sĩ nào trong hệ thống, mã bắt đầu từ "BS001"
-            if (maxMaBS == null)
-            {
-                return "BS001";
-            }
-
-            // Lấy phần số lớn nhất và cộng thêm 1
-            int nextSo = maxMaBS.So + 1;
-
-            // Kết hợp phần chữ "BS" và phần số (cộng thêm 1), định dạng phần số với 3 chữ số
-            return $"BS{nextSo:D3}";
-        }
 
         public async Task<BacSi> GetByUserId(string userId)
         {
@@ -142,6 +117,34 @@ namespace QuanLyPhongKham.Data.Repositories
         public async Task<IEnumerable<BacSi>> GetBacSisByKhoaId(Guid id)
         {
             return await _context.BacSis.Where(b => b.KhoaId == id).ToListAsync();
+        }
+
+        public async Task<string> GetNextMaBacSi(Guid khoaId)
+        {
+            var khoa = await _context.Khoas.FirstOrDefaultAsync(k => k.KhoaId.Equals(khoaId));
+            var maKhoaByBS = khoa.MaKhoa;
+            //Lấy danh sách mã bác sĩ
+            var maxMaBS = _context.BacSis
+                .AsEnumerable() //Chuyển sang client side
+                .Select(bs => new
+                {
+                    MaBS = bs.MaBacSi,
+                    So = int.Parse(bs.MaBacSi.Substring(7)) // Tách phần số, bỏ qua 2 ký tự đầu tiên "BS"
+                })
+                .OrderByDescending(bs => bs.So) // Sắp xếp theo số, giảm dần
+                .FirstOrDefault();
+
+            // Nếu không có bác sĩ nào trong hệ thống, mã bắt đầu từ "KXXXBS001"
+            if (maxMaBS == null)
+            {
+                return maKhoaByBS + "_BS001";
+            }
+
+            // Lấy phần số lớn nhất và cộng thêm 1
+            int nextSo = maxMaBS.So + 1;
+
+            // Kết hợp phần chữ "BS" và phần số (cộng thêm 1), định dạng phần số với 3 chữ số
+            return maKhoaByBS + $"_BS{nextSo:D3}";
         }
     }
 }
