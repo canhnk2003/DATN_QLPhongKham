@@ -243,16 +243,6 @@
                 >
               </li>
 
-              <!-- <li class="sidebar-item">
-              <a class="sidebar-link sidebar-link" href="QLThuocVatTu.html" aria-expanded="false"><i
-                  data-feather="database" class="feather-icon"></i><span class="hide-menu">Kho thuốc - Vật tư</span></a>
-            </li> -->
-
-              <!-- <li class="sidebar-item">
-              <a class="sidebar-link sidebar-link" href="QLKhamBenh.html" aria-expanded="false"><i
-                  data-feather="activity" class="feather-icon"></i><span class="hide-menu">Khám chữa bệnh</span></a>
-            </li> -->
-
               <li class="sidebar-item">
                 <a
                   class="sidebar-link sidebar-link"
@@ -270,6 +260,15 @@
                   aria-expanded="false"
                   ><i data-feather="file-text" class="feather-icon"></i
                   ><span class="hide-menu">Dịch vụ</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link sidebar-link"
+                  href="QLKhoa.html"
+                  aria-expanded="false"
+                  ><i data-feather="briefcase" class="feather-icon"></i
+                  ><span class="hide-menu">Khoa</span></a
                 >
               </li>
               <li class="list-divider"></li>
@@ -349,30 +348,49 @@
               />
             </div>
             <div class="m-toolbar-actionbar">
-              <input type="file" id="fileInput" name="file" class="d-none" required/>
-              <div for="#fileInput" class="m-toolbar-import m-toolbar-icon" title="Thêm dữ liệu từ Excel" data-bs-toggle="tooltip">
+              <input
+                type="file"
+                id="fileInput"
+                name="file"
+                class="d-none"
+                required
+              />
+              <div
+                for="#fileInput"
+                class="m-toolbar-import m-toolbar-icon"
+                title="Thêm dữ liệu từ Excel"
+                data-bs-toggle="tooltip"
+              >
                 <i class="fa-solid fa-file-arrow-up" style="color: #35a9d0"></i>
               </div>
-              <div class="m-toolbar-export m-toolbar-icon" title="Tải xuống" data-bs-toggle="tooltip">
+              <div
+                class="m-toolbar-export m-toolbar-icon"
+                title="Tải xuống"
+                data-bs-toggle="tooltip"
+              >
                 <i class="fas fa-download" style="color: #35a9d0"></i>
               </div>
-              <div class="m-toolbar-refresh m-toolbar-icon" id="refresh-data" title="Tải lại" data-bs-toggle="tooltip">
+              <div
+                class="m-toolbar-refresh m-toolbar-icon"
+                id="refresh-data"
+                title="Tải lại"
+                data-bs-toggle="tooltip"
+              >
                 <i class="fas fa-sync-alt" style="color: #35a9d0"></i>
               </div>
             </div>
           </div>
           <div class="data-table">
-            <table id="tblDichVu" class="table-hover">
+            <table id="tblDichVu" class="table-hover text-center">
               <thead class="table-success">
                 <tr>
                   <th style="display: none"></th>
-                  <th class="m-data-left" style="width: 50px">STT</th>
-                  <th class="m-data-left" style="width: 220px">Tên dịch vụ</th>
-                  <th class="m-data-left" style="width: 125px">Giá</th>
-                  <th class="m-data-left" style="width: 150px">Khoa</th>
-                  <th class="m-data-left" style="width: 350px">Mô tả</th>
-                  <th class="m-data-left" style="width: 120px">Ngày tạo</th>
-                  <th class="m-data-left">Ngày cập nhật</th>
+                  <th >STT</th>
+                  <th>Mã DV</th>
+                  <th>Tên dịch vụ</th>
+                  <th>Giá</th>
+                  <th>Khoa</th>
+                  <th >Mô tả</th>
                   <th></th>
                 </tr>
               </thead>
@@ -637,11 +655,13 @@
     <script src="../assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js"></script>
     <!-- <script src="../assets/js/pages/dashboards/dashboard1.min.js"></script> -->
     <script>
-      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      var tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      );
       var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-      })
-      </script>
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    </script>
     <script>
       $(document).ready(function () {
         // Lấy ngày hiện tại

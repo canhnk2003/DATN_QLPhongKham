@@ -237,16 +237,6 @@
                 >
               </li>
 
-              <!-- <li class="sidebar-item">
-              <a class="sidebar-link sidebar-link" href="QLThuocVatTu.html" aria-expanded="false"><i
-                  data-feather="database" class="feather-icon"></i><span class="hide-menu">Kho thuốc - Vật tư</span></a>
-            </li> -->
-
-              <!-- <li class="sidebar-item">
-              <a class="sidebar-link sidebar-link" href="QLKhamBenh.html" aria-expanded="false"><i
-                  data-feather="activity" class="feather-icon"></i><span class="hide-menu">Khám chữa bệnh</span></a>
-            </li> -->
-
               <li class="sidebar-item">
                 <a
                   class="sidebar-link sidebar-link"
@@ -264,6 +254,15 @@
                   aria-expanded="false"
                   ><i data-feather="file-text" class="feather-icon"></i
                   ><span class="hide-menu">Dịch vụ</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link sidebar-link"
+                  href="QLKhoa.html"
+                  aria-expanded="false"
+                  ><i data-feather="briefcase" class="feather-icon"></i
+                  ><span class="hide-menu">Khoa</span></a
                 >
               </li>
               <li class="list-divider"></li>
@@ -660,11 +659,13 @@
     <!-- <script src="../assets/js/pages/dashboards/dashboard1.min.js"></script> -->
   </body>
   <script>
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipTriggerList = [].slice.call(
+      document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    );
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
-    </script>
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  </script>
   <script>
     function kiemTraTen() {
       const ten = document.getElementById("hoten-add");

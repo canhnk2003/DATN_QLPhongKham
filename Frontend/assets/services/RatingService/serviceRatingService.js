@@ -71,7 +71,7 @@ async function exportToExcel() {
           "Bác sĩ": item.tenBacSi,
           "Bằng cấp": item.bangCap,
           "Kinh nghiệm": item.soNamKinhNghiem + " năm",
-          "Khoa": item.tenKhoa,
+          Khoa: item.tenKhoa,
           "Tổng lượt đánh giá": item.soLuotDanhGia,
           "Đánh giá trung bình": item.soSaoTrungBinh,
           "Xếp hạng": item.thuHang + "/" + item.tongSoBacSi,
@@ -236,7 +236,11 @@ async function getData() {
     const response = await axiosJWT.get(`/api/v1/ServiceRatings`);
     dsDG = response.data;
     // console.log(dsDG);
+    $(".preloader").removeClass("d-none");
+    $(".preloader").addClass("d-block");
     display(dsDG); // Hiển thị dữ liệu lên bảng
+    $(".preloader").removeClass("d-block");
+    $(".preloader").addClass("d-none");
   } catch (error) {
     console.error("Lỗi không tìm được:", error);
   }

@@ -91,8 +91,12 @@ function getData() {
     .get(`/api/Auth`)
     .then(function (response) {
       dsTK = response.data;
+      $(".preloader").removeClass("d-none");
+      $(".preloader").addClass("d-block");
       // console.log(dsTK);
       display(dsTK);
+      $(".preloader").removeClass("d-block");
+      $(".preloader").addClass("d-none");
     })
     .catch(function (error) {
       console.error("Lỗi không tìm được:", error);

@@ -423,7 +423,11 @@ function getData() {
     .then(function (response) {
       dsLK = response.data;
       // console.log(dsLK);
+      $(".preloader").removeClass("d-none");
+      $(".preloader").addClass("d-block");
       display(dsLK);
+      $(".preloader").removeClass("d-block");
+      $(".preloader").addClass("d-none");
     })
     .catch(function (error) {
       console.error("Lỗi không tìm được:", error);
@@ -566,7 +570,6 @@ function addEventSelect(selectElement, dsBacSi, appointmentTimeSelect) {
   }
 }
 
-// //Hiển thị dữ liệu lên bảng
 //Hiển thị dữ liệu lên bảng
 async function display(data) {
   const tableBody = document.querySelector("#tblAppointment tbody");
@@ -593,9 +596,9 @@ async function display(data) {
 
     // Xử lý trạng thái của nút "m-edit"
     const editDisabled =
-      status === "Đã hủy" || status === "Hoàn thành" ? "disabled" : "";
+      status === "Đã hủy" || status === "Hoàn thành" || status === "Đã hoàn thành" ? "disabled" : "";
     const editClass =
-      status === "Đã hủy" || status === "Hoàn thành" ? "disabled" : "";
+      status === "Đã hủy" || status === "Hoàn thành" || status === "Đã hoàn thành" ? "disabled" : "";
 
     // Tạo hàng mới
     const row = document.createElement("tr");

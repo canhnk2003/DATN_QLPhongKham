@@ -137,11 +137,11 @@
     /* Màu đỏ */
 }
 
-.modal-dialog {
+#progressModal .modal-dialog {
     max-width: 880px;
 }
 
-.modal-body {
+#progressModal .modal-body {
     min-height: 250px;
     /* Đảm bảo đủ không gian cho tracker */
     padding-top: 40px;
@@ -226,7 +226,7 @@
         transform: translateY(-50%);
     }
 
-    .modal-body {
+    #progressModal .modal-body {
         min-height: 450px;
         padding: 30px 10px;
     }

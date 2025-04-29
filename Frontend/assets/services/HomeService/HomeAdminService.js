@@ -1,5 +1,7 @@
 $(document).ready(async function () {
   //Lấy thông tin phòng khám
+  $(".preloader").removeClass("d-none");
+  $(".preloader").addClass("d-block");
   await getClinicInfo();
 
   //Lấy thông tin bác sĩ nổi bật
@@ -20,7 +22,8 @@ $(document).ready(async function () {
 
   //Lấy thông tin lịch khám theo ngày
   await getDataStatisticsByDate();
-
+  $(".preloader").removeClass("d-block");
+  $(".preloader").addClass("d-none");
   //Xử lý sự kiện nhấn vào tim kiếm
   // Sự kiện khi nhập vào ô tìm kiếm
   $("#searchInput").on("keyup", function () {

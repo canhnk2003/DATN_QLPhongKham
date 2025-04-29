@@ -246,7 +246,11 @@ function loadResults() {
     .then((response) => {
       results = response.data;
       // console.log(results);
+      $(".preloader").removeClass("d-none");
+      $(".preloader").addClass("d-block");
       displayResults(results); // Hiển thị danh sách kết quả
+      $(".preloader").removeClass("d-block");
+      $(".preloader").addClass("d-none");
     })
     .catch((error) => {
       console.error("Lỗi khi tải danh sách kết quả:", error);

@@ -7,9 +7,12 @@ $(document).ready(async function () {
   $(".m-toolbar-refresh").click(function () {
     loadServices();
   });
-  $(".m-input-search").on("input", function () {
-    const searchValue = removeAccents($(this).val().toLowerCase()); // Lấy giá trị nhập vào và chuẩn hóa
-    filterServices(searchValue); // Gọi hàm lọc danh sách
+  // Sự kiện khi nhập vào ô tìm kiếm
+  $(".m-input-search").on("keyup", function () {
+    var value = $(this).val().toLowerCase();
+    $("#tblDichVu tbody tr").filter(function () {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    });
   });
 
   // Gắn sự kiện cho nút hiển thị modal Thêm
@@ -195,6 +198,7 @@ $(document).ready(async function () {
       .then(function (response) {
         // Nếu upload thành công
         showSuccessPopup("Thêm thành công! " + response.data.message);
+        loadServices();
       })
       .catch(function (error) {
         // Nếu có lỗi trong quá trình upload
@@ -239,7 +243,11 @@ async function loadServices() {
   try {
     const response = await axiosJWT.get("/api/Services");
     services = response.data;
+    $(".preloader").removeClass("d-none");
+    $(".preloader").addClass("d-block");
     displayServices(services); // Hiển thị danh sách dịch vụ
+    $(".preloader").removeClass("d-block");
+    $(".preloader").addClass("d-none");
   } catch (error) {
     console.error("Lỗi khi tải danh sách dịch vụ:", error);
   }
@@ -286,12 +294,11 @@ function displayServices(data) {
             <tr>
                 <td empIdCell style="display: none">${service.dichVuId}</td>
                 <td>${index + 1}</td>
+                <td>${service.maDichVu}</td>
                 <td>${service.tenDichVu}</td>
                 <td>${service.donGia.toLocaleString()}đ</td>
                 <td>${khoaName}</td> <!-- Hiển thị tên khoa -->
                 <td>${service.moTaDichVu || "Không có mô tả"}</td>
-                <td>${formatDate(service.ngayTao)}</td>
-                <td>${formatDate(service.ngayCapNhat)}</td>
                 <td>
                   <div class="m-table-tool">
                     <div class="m-edit m-tool-icon" data-service-id="${
@@ -361,14 +368,6 @@ function getMaxDichVuCode(service) {
   });
   const nextCode = maxCode + 1;
   return "DV" + nextCode.toString().padStart(3, "0");
-}
-
-// Hàm lọc danh sách dịch vụ theo từ khóa tìm kiếm
-function filterServices(searchValue) {
-  const filteredServices = services.filter((service) =>
-    removeAccents(service.tenDichVu.toLowerCase()).includes(searchValue)
-  );
-  displayServices(filteredServices); // Hiển thị danh sách sau khi lọc
 }
 
 // Hàm loại bỏ dấu tiếng Việt và chuyển thành chữ thường

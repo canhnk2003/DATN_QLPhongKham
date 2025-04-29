@@ -1,9 +1,11 @@
 let userId = localStorage.getItem("userId");
 let doctorId = "";
 $(document).ready(async function () {
+  $(".preloader").removeClass("d-none");
+  $(".preloader").addClass("d-block");
   //Lấy bác sĩ Id từ userId
   await getDoctorByUserId();
-//   console.log("userId:", doctorId);
+  //   console.log("userId:", doctorId);
 
   //Lấy thông tin phòng khám
   await getClinicInfo();
@@ -22,6 +24,8 @@ $(document).ready(async function () {
 
   //Lấy thông tin lịch khám theo ngày
   await getDataStatisticsByDate();
+  $(".preloader").removeClass("d-block");
+  $(".preloader").addClass("d-none");
 });
 
 //Hàm lấy thông tin phòng khám

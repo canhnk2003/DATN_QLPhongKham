@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!-- Favicon icon -->
+    <title>Quản lý khoa</title>
+    <!-- Custom CSS -->
+    <link href="../assets/extra-libs/c3/c3.min.css" rel="stylesheet" />
+    <link
+      href="../assets/libs/chartist/dist/chartist.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../assets/extra-libs/jvector/jquery-jvectormap-2.0.2.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../assets/vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/content.css" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../assets/libs/xlsx/xlsx.full.min.js"></script>
+
+    <script src="../assets/libs/jquery/dist/jquery.min.js "></script>
+    <script src="../assets/vendor/axios.min.js"></script>
+    <script src="../assets/services/axios.js"></script>
+    <script src="../assets/services/AuthService/authService.js"></script>
+    <script src="../assets/services/DepartmentService/departmentService.js"></script>
+    <style>
+      .table-scroll {
+        max-height: 380px; /* khoảng này trừ đi header & padding */
+        overflow-y: auto;
+      }
+
+      /* Cố định thead */
+      .sticky-header th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+      <div class="lds-ripple">
+        <div class="lds-pos"></div>
+        <div class="lds-pos"></div>
+      </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div
+      id="main-wrapper"
+      data-theme="light"
+      data-layout="vertical"
+      data-navbarbg="skin6"
+      data-sidebartype="full"
+      data-sidebar-position="fixed"
+      data-header-position="fixed"
+      data-boxed-layout="full"
+    >
+      <!-- ============================================================== -->
+      <!-- Topbar header - style you can find in pages.scss -->
+      <!-- ============================================================== -->
+      <header class="topbar" data-navbarbg="skin6">
+        <nav class="navbar top-navbar navbar-expand-md">
+          <div class="navbar-header" data-logobg="skin6">
+            <!-- This is for the sidebar toggle which is visible on mobile only -->
+            <a
+              class="nav-toggler waves-effect waves-light d-block d-md-none"
+              href="javascript:void(0)"
+              ><i class="ti-menu ti-close"></i
+            ></a>
+            <!-- ============================================================== -->
+            <!-- Logo -->
+            <!-- ============================================================== -->
+            <div class="navbar-brand">
+              <!-- Logo icon -->
+              <a href="index.html">
+                <b class="logo-icon">
+                  <!-- Dark Logo icon -->
+                  <img
+                    src="../assets/img/logo-icon.png"
+                    alt="homepage"
+                    class="dark-logo"
+                  />
+                  <!-- Light Logo icon -->
+                  <img
+                    src="../assets/img/logo-icon.png"
+                    alt="homepage"
+                    class="light-logo"
+                  />
+                </b>
+                <!--End Logo icon -->
+                <!-- Logo text -->
+                <span class="logo-text">
+                  <!-- dark Logo text -->
+                  <img
+                    src="../assets/img/logo-text.png"
+                    alt="homepage"
+                    class="dark-logo"
+                  />
+                  <!-- Light Logo text -->
+                  <img
+                    src="../assets/img/logo-light-text.png"
+                    class="light-logo"
+                    alt="homepage"
+                  />
+                </span>
+              </a>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Logo -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Toggle which is visible on mobile only -->
+            <!-- ============================================================== -->
+            <a
+              class="topbartoggler d-block d-md-none waves-effect waves-light"
+              href="javascript:void(0)"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+              ><i class="ti-more"></i
+            ></a>
+          </div>
+          <!-- ============================================================== -->
+          <!-- End Logo -->
+          <!-- ============================================================== -->
+          <div class="navbar-collapse collapse" id="navbarSupportedContent">
+            <!-- ============================================================== -->
+            <!-- toggle and nav items -->
+            <!-- ============================================================== -->
+            <ul class="navbar-nav float-left mr-auto ml-3 pl-1">
+              <!-- Notification -->
+            </ul>
+            <!-- ============================================================== -->
+            <!-- Right side toggle and nav items -->
+            <!-- ============================================================== -->
+            <ul class="navbar-nav float-right">
+              <!-- ============================================================== -->
+              <!-- User profile and search -->
+              <!-- ============================================================== -->
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="javascript:void(0)"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <img
+                    src="../assets/img/users/profile-pic.jpg"
+                    alt="user"
+                    class="rounded-circle"
+                    width="40"
+                  />
+                  <span class="ml-2 d-none d-lg-inline-block"
+                    ><span>Hello,</span>
+                    <span class="text-dark">Admin</span>
+                  </span>
+                </a>
+              </li>
+              <!-- ============================================================== -->
+              <!-- User profile and search -->
+              <!-- ============================================================== -->
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!-- ============================================================== -->
+      <!-- End Topbar header -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Left Sidebar - style you can find in sidebar.scss  -->
+      <!-- ============================================================== -->
+      <aside class="left-sidebar" data-sidebarbg="skin6">
+        <!-- Sidebar scroll-->
+        <div class="scroll-sidebar" data-sidebarbg="skin6">
+          <!-- Sidebar navigation-->
+          <nav class="sidebar-nav">
+            <ul id="sidebarnav">
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link sidebar-link"
+                  href="MainAdmin.html"
+                  aria-expanded="false"
+                  ><i data-feather="home" class="feather-icon"></i
+                  ><span class="hide-menu">Trang chủ</span></a
+                >
+              </li>
+              <li class="list-divider"></li>
+              <li class="nav-small-cap">
+                <span class="hide-menu">Quản lý</span>
+              </li>
+
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="QLBenhNhan.html"
+                  aria-expanded="false"
+                  ><i data-feather="user" class="feather-icon"></i
+                  ><span class="hide-menu">Bệnh nhân</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link sidebar-link"
+                  href="QLBacSi.html"
+                  aria-expanded="false"
+                  ><i data-feather="users" class="feather-icon"></i
+                  ><span class="hide-menu">Bác sĩ</span></a
+                >
+              </li>
+
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link sidebar-link"
+                  href="QLLichKham.html"
+                  aria-expanded="false"
+                  ><i data-feather="calendar" class="feather-icon"></i
+                  ><span class="hide-menu">Lịch khám</span></a
+                >
+              </li>
+
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link sidebar-link"
+                  href="QLDichVu.html"
+                  aria-expanded="false"
+                  ><i data-feather="file-text" class="feather-icon"></i
+                  ><span class="hide-menu">Dịch vụ</span></a
+                >
+              </li>
+              <li class="sidebar-item selected">
+                <a
+                  class="sidebar-link sidebar-link active"
+                  href="QLKhoa.html"
+                  aria-expanded="false"
+                  ><i data-feather="briefcase" class="feather-icon"></i
+                  ><span class="hide-menu">Khoa</span></a
+                >
+              </li>
+              <li class="list-divider"></li>
+              <li class="nav-small-cap">
+                <span class="hide-menu">Khách hàng</span>
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link sidebar-link"
+                  href="QLDanhGia.html"
+                  aria-expanded="false"
+                  ><i data-feather="star" class="feather-icon"></i
+                  ><span class="hide-menu">Đánh giá - Phản hồi</span></a
+                >
+              </li>
+
+              <li class="list-divider"></li>
+              <li class="nav-small-cap">
+                <span class="hide-menu">Người dùng</span>
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link sidebar-link"
+                  href="QLTaiKhoan.html"
+                  aria-expanded="false"
+                  ><i data-feather="edit-3" class="feather-icon"></i
+                  ><span class="hide-menu">Quản lý tài khoản</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link sidebar-link"
+                  href="../login.html"
+                  aria-expanded="false"
+                  ><i data-feather="log-out" class="feather-icon"></i
+                  ><span class="hide-menu">Logout</span></a
+                >
+              </li>
+            </ul>
+          </nav>
+          <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll-->
+      </aside>
+      <!-- ============================================================== -->
+      <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Page wrapper  -->
+      <!-- ============================================================== -->
+      <div class="page-wrapper">
+        <div class="main">
+          <div class="m-title-table">
+            <div class="m-title-table-left">
+              <div class="m-title-text"><h2>Quản lý khoa</h2></div>
+            </div>
+            <div class="m-title-table-right"></div>
+          </div>
+          <div class="m-toolbar-table">
+            <div class="m-toolbar-quickfilter">
+              <input
+                class="m-input m-input-icon m-input-search"
+                type="text"
+                placeholder="Tìm kiếm..."
+              />
+            </div>
+            <div class="m-toolbar-actionbar row">
+              <div
+                class="m-toolbar-icon col-md-3"
+                id="add"
+                title="Thêm mới"
+                data-bs-toggle="tooltip"
+              >
+                <i class="fa-solid fa-plus text-success"></i>
+              </div>
+              <div
+                class="m-toolbar-icon col-md-3"
+                id="update"
+                title="Cập nhật"
+                data-bs-toggle="tooltip"
+              >
+                <i class="fas fa-edit text-warning"></i>
+              </div>
+              <div
+                class="m-toolbar-icon col-md-3"
+                title="Xóa"
+                data-bs-toggle="modal"
+                data-bs-target="#dialog-confirm-delete"
+              >
+                <i class="fas fa-trash-alt text-danger"></i>
+              </div>
+              <div
+                class="m-toolbar-refresh m-toolbar-icon col-md-3"
+                id="refresh-data"
+                title="Tải lại"
+                data-bs-toggle="tooltip"
+              >
+                <i class="fas fa-sync-alt text-primary"></i>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <div class="form-floating mt-2 mb-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="tenKhoa"
+                  placeholder="Tên khoa"
+                  name="tenKhoa"
+                />
+                <label for="tenKhoa">Tên khoa</label>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive table-scroll">
+            <table
+              class="table table-hover table-striped text-center"
+              id="tblDepartment"
+            >
+              <thead class="table-primary sticky-header">
+                <tr>
+                  <th class="align-middle" scope="col">STT</th>
+                  <th class="align-middle" scope="col">Mã khoa</th>
+                  <th class="align-middle" scope="col">Tên khoa</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="align-middle">1</td>
+                  <td class="align-middle">Nguyễn Văn A</td>
+                  <td class="align-middle">5</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Trần Thị B</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Trần Thị B</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Trần Thị B</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Trần Thị B</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Trần Thị B</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Trần Thị B</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Trần Thị B</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Trần Thị B</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Trần Thị B</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Trần Thị B</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Trần Thị B</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Trần Thị B</td>
+                  <td>10</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- DIALOG XÁC NHẬN XÓA -->
+          <div class="modal fade" id="dialog-confirm-delete">
+            <div class="modal-dialog modal-md">
+              <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Xác nhận xóa</h4>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                  ></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                  <div class="content">
+                    Bạn có chắc chắn muốn xóa phòng ban này?
+                  </div>
+                </div>
+                <!-- Modal footer -->
+                <div
+                  class="modal-footer"
+                  style="background: rgb(232, 232, 232)"
+                >
+                  <button
+                    type="button"
+                    class="btn btn-light me-2"
+                    data-bs-dismiss="modal"
+                  >
+                    Hủy
+                  </button>
+                  <button type="button" id="btnDelete" class="btn btn-danger" data-bs-dismiss="modal">
+                    Xóa
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- POPUP TOAST MESSAGE -->
+          <div class="m-popup-block">
+            <div class="m-popup-item m-popup-success">
+              <div class="m-popup-icon m-popup-icon-success"></div>
+              <div class="m-popup-text m-popup-text-success">
+                <span>Thành công! </span>Công việc đã bị xóa.
+              </div>
+              <div class="m-popup-tool">
+                <div class="m-popup-undo">Hoàn tác</div>
+                <div class="m-popup-close"></div>
+              </div>
+            </div>
+            <div class="m-popup-item m-popup-error">
+              <div class="m-popup-icon m-popup-icon-error"></div>
+              <div class="m-popup-text m-popup-text-error">
+                <span>Lỗi! </span>Không thể cập nhật được dữ liệu.
+              </div>
+              <div class="m-popup-tool">
+                <div class="m-popup-undo">Xem hướng dẫn</div>
+                <div class="m-popup-close"></div>
+              </div>
+            </div>
+            <div class="m-popup-item m-popup-warning">
+              <div class="m-popup-icon m-popup-icon-warning"></div>
+              <div class="m-popup-text m-popup-text-warning">
+                <span>Cảnh báo! </span>Dữ liệu của bạn đã bị thay đổi bởi người
+                dùng khác
+              </div>
+              <div class="m-popup-tool">
+                <div class="m-popup-undo"></div>
+                <div class="m-popup-close"></div>
+              </div>
+            </div>
+            <div class="m-popup-item m-popup-info">
+              <div class="m-popup-icon m-popup-icon-info"></div>
+              <div class="m-popup-text m-popup-text-info">
+                <span>Thông tin! </span>Bạn nên đọc kỹ nội dung trước khi phê
+                duyệt.
+              </div>
+              <div class="m-popup-tool">
+                <div class="m-popup-undo"></div>
+                <div class="m-popup-close"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="footer text-center text-muted">
+          Designed and Developed by <b class="text-primary">Nhóm 7</b>
+        </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+      </div>
+      <!-- ============================================================== -->
+      <!-- End Page wrapper  -->
+      <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <!-- <script src="../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script> -->
+    <link
+      rel="stylesheet"
+      href="../assets/vendor/bootstrap/css/bootstrap.min.css"
+    />
+    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- apps -->
+    <!-- apps -->
+    <script src="../assets/js/app-style-switcher.js"></script>
+    <script src="../assets/js/feather.min.js"></script>
+    <script src="../assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="../assets/js/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="../assets/js/custom.min.js"></script>
+    <!--This page JavaScript -->
+    <script src="../assets/extra-libs/c3/d3.min.js"></script>
+    <script src="../assets/extra-libs/c3/c3.min.js"></script>
+    <script src="../assets/libs/chartist/dist/chartist.min.js"></script>
+    <script src="../assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+    <script src="../assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="../assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js"></script>
+    <!-- <script src="../assets/js/pages/dashboards/dashboard1.min.js"></script> -->
+    <script>
+      var tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      );
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    </script>
+  </body>
+</html>

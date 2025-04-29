@@ -9,7 +9,7 @@ namespace QuanLyPhongKham.Data.Interfaces
 {
 	public interface IServiceRepository : IBaseRepository<DichVu>
 	{
-		string GetNextMaDichVu();
+		Task<string> GetNextMaDichVu(Guid khoaId);
 		Dictionary<string, string>? CheckDataValidate(DichVu dichVu);
 		Dictionary<string, string>? CheckDataValidateForInsert(DichVu dichVu);
 		Task<IEnumerable<DichVu>> GetByKhoaId(Guid khoaId);

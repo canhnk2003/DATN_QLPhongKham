@@ -9,7 +9,7 @@ namespace QuanLyPhongKham.Data.Interfaces
 {
     public interface IDoctorRepository : IBaseRepository<BacSi>
     {
-        string GetNextMaBacSi();
+        Task<string> GetNextMaBacSi(Guid khoaId);
         Dictionary<string, string>? CheckDataValidate (BacSi bacSi);
         Dictionary<string, string>? CheckDataValidateForInsert(BacSi bacSi);
         Task<IEnumerable<BacSi>> GetBacSisByKhoaId(Guid id);

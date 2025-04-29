@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace QuanLyPhongKham.Models.Entities
@@ -16,7 +17,7 @@ namespace QuanLyPhongKham.Models.Entities
         public decimal DonGia { get; set; }
         public DateTime? NgayTao { get; set; } = DateTime.Now;
         public DateTime? NgayCapNhat { get; set; } = DateTime.Now;
-
+        [JsonIgnore]
         public Khoa? Khoa { get; set; }
         public virtual ICollection<BacSiDichVu>? BacSiDichVus { get; set; }
     }

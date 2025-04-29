@@ -98,7 +98,7 @@ function generateMedicalExaminationForm(ketQuaKhamId) {
     doc,
     "Số điện thoại:",
     safeText(result.benhNhan?.soDienThoai),
-    120,
+    135,
     y
   );
 
