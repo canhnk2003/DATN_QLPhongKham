@@ -33,6 +33,19 @@
     <script src="../assets/services/axios.js"></script>
     <script src="../assets/services/AuthService/authService.js"></script>
     <script src="../assets/services/RatingService/serviceRatingService.js"></script>
+    <style>
+      .table-scroll {
+        max-height: 430px; /* khoảng này trừ đi header & padding */
+        overflow-y: auto;
+      }
+
+      /* Cố định thead */
+      .sticky-header th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+    </style>
   </head>
 
   <body>
@@ -412,7 +425,8 @@
                         ><i class="fa-solid fa-magnifying-glass"></i
                       ></span>
                     </div>
-                    <table
+                    <div class="table-responsive table-scroll">
+                      <table
                       class="table table-hover table-striped text-center"
                       id="tblRatingAverage"
                     >
@@ -452,6 +466,8 @@
                         </tr>
                       </tbody>
                     </table>
+                    </div>
+                   
                   </div>
                 </div>
                 <!-- Modal footer -->

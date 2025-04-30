@@ -637,7 +637,7 @@ async function display(data) {
     row.innerHTML = `
       <td style="text-align: center;">${index + 1}</td>
       <td style="text-align: center;">${item.maBenhNhan}</td>
-      <td class="patient-name">${patientName}</td>
+      <td style="text-align: center;">${patientName}</td>
       <td style="text-align: center";>${formattedDate}</td>
       <td style="text-align: center";>${item.gioKham}</td>
       <td style="text-align: center";>${item.tenDichVu}</td>

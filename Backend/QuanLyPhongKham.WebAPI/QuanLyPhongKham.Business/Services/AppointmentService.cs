@@ -336,7 +336,7 @@ namespace QuanLyPhongKham.Business.Services
                               TenDichVu = s.TenDichVu,
                               LyDo = a.LyDo,
                               NgayCapNhat = a.NgayCapNhat
-                          }).OrderByDescending(x => x.NgayCapNhat).ToList();
+                          }).OrderByDescending(x => x.NgayKham).ToList();
 
             return result;
         }
