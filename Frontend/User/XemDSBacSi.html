@@ -244,5 +244,26 @@
 
     <!-- Main JS File -->
     <script src="../assets/js/main.js"></script>
+    <script>
+      function getAvata() {
+        var userId = localStorage.getItem("userId");
+        // $('#hotenHeader').text(localStorage.getItem(loggedInUsername));
+        axiosJWT
+          .get(`/api/Patients/getbyuserid/${userId}`)
+          .then(function (response) {
+            let bn = response.data;
+            if (bn.hinhAnh != null) {
+              $("#avatar").attr("src", "http://localhost:37649" + bn.hinhAnh);
+            }
+          })
+          .catch(function (error) {
+            console.error("Lỗi không tìm được:", error);
+          });
+      }
+
+      $(document).ready(function () {
+        getAvata();
+      });
+    </script>
   </body>
 </html>
