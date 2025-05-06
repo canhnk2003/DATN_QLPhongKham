@@ -131,7 +131,7 @@ namespace QuanLyPhongKham.Business.Services
             // Hướng dẫn AI về xác nhận thông tin đặt lịch
             prompt.AppendLine("\nKhi bệnh nhân muốn đặt lịch, hãy xác nhận và kiểm tra lại thông tin:");
             prompt.AppendLine("- Chú ý: Nếu mà trạng thái trong lịch khám là 'Đang xử lý' hoặc 'Đã hủy' thì vẫn có thể đặt lịch được.");
-            prompt.AppendLine("- Chú ý: Để đặt được lịch khám thì 'Ngày khám phải lớn hơn ngày hiện tại' ngày hiện tại là 14/04/2025, 'email phải đúng định dạng', số điện thoại phải là số.");
+            prompt.AppendLine("- Chú ý: Để đặt được lịch khám thì 'Ngày khám phải lớn hơn ngày hiện tại' ngày hiện tại là 15/05/2025, 'email phải đúng định dạng', số điện thoại phải là số.");
             prompt.AppendLine($"- Nếu bệnh nhân cung cấp đầy đủ thông tin (họ tên, số điện thoại, email, ngày khám, ca khám, bác sĩ, dịch vụ khám), hãy hỏi: ");
             prompt.AppendLine($"'Bạn có muốn đặt lịch khám với thông tin sau không?'\n ");
             prompt.AppendLine($"Sau đó, hiển thị thông tin theo định dạng: ");
